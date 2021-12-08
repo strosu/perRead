@@ -1,4 +1,4 @@
-namespace PerReadServer.Models
+namespace PerRead
 {
     public class WeatherForecast
     {

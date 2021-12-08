@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using PerReadServer.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PerReadServer.Controllers
+namespace PerRead.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -19,7 +18,7 @@ namespace PerReadServer.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
