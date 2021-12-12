@@ -1,38 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {Home} from './components/Home'
+import {NavBar} from './components/NavBar'
+import {About} from './components/about'
+import {SignUp} from './components/signup'
+import {Authors} from './components/authors'
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-      // <div className="App">
-      //   <header className="App-header">
-      //     <img src={logo} className="App-logo" alt="logo" />
-      //     <p>
-      //       Edit <code>src/App.js</code> and save to reload. sdc dsf ds fsf
-      //     </p>
-      //     <a
-      //       className="App-link"
-      //       href="https://reactjs.org"
-      //       target="_blank"
-      //       rel="noopener noreferrer"
-      //     >
-      //       Learn React
-      //     </a>
-      //   </header>
-      // </div>
-    );
-  }
+function App() {
+  return (
+    <Router>
+      <NavBar />
+      <Switch>
+        <Route path='/' exact component={Home} />
+        <Route path='/about' component={About} />
+        <Route path='/sign-up' component={SignUp} />
+        <Route path='/authors' component={Authors} />
+        {/* <Route path='/articles' component={SignUp} /> */}
+      </Switch>
+    </Router>
+  );
 }
+  
+export default App;
