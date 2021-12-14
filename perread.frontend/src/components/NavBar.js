@@ -18,7 +18,11 @@ export class NavBar extends Component {
       <>
         <Nav>
           <Bars />
-    
+          <NavMenu>
+            <NavLink to='/' activeStyle>
+              Home
+            </NavLink>
+          </NavMenu>
           <NavMenu>
             <NavLink to='/about' activeStyle>
               About

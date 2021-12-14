@@ -1,3 +1,7 @@
+using PerRead.Backend.Repositories;
+using PerRead.Backend.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(
@@ -10,6 +14,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+AddServices(builder);
 
 var app = builder.Build();
 
@@ -29,3 +34,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void AddServices(WebApplicationBuilder builder)
+{
+    builder.Services.AddDbContext<AppDbContext>(
+        options => options.UseSqlite(builder.Configuration.GetConnectionString("PerReadLocalDb")));
+
+    builder.Services.AddScoped<IArticleService, ArticleService>();
+    builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+}
