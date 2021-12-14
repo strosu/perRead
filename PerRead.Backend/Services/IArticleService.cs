@@ -5,7 +5,7 @@ namespace PerRead.Backend.Services
 {
     public interface IArticleService
     {
-        IEnumerable<Article> GetAll();
+        Task<IEnumerable<Article>> GetAll();
 
         Article GetById(int id);
 
@@ -26,9 +26,9 @@ namespace PerRead.Backend.Services
             return _articleRepository.Create(articleModel);
         }
 
-        public IEnumerable<Article> GetAll()
+        public async Task<IEnumerable<Article>> GetAll()
         {
-            return _articleRepository.GetAll();
+            return await _articleRepository.GetAll();
         }
 
         public Article GetById(int id)

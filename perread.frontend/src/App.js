@@ -6,6 +6,7 @@ import {NavBar} from './components/NavBar'
 import {About} from './components/about'
 import {SignUp} from './components/signup'
 import {Authors} from './components/authors'
+import {Articles} from './components/articles'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/about' component={About} />
         <Route path='/sign-up' component={SignUp} />
         <Route path='/authors' component={Authors} />
+        <Route path='/articles' component={Articles} />
         {/* <Route path='/articles' component={SignUp} /> */}
       </Switch>
     </Router>

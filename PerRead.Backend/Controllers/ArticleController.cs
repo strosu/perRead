@@ -16,9 +16,9 @@ namespace PerRead.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Article> Get()
+        public async Task<IEnumerable<Article>> Get()
         {
-            return _articleService.GetAll();
+            return await _articleService.GetAll();
         }
 
     }

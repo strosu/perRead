@@ -50,7 +50,7 @@ export class Authors extends Component {
     }
 
     async refreshData() {
-        const response = await fetch('https://localhost:7176/WeatherForecast');
+        const response = await fetch('https://localhost:7176/author');
         const data = await response.json();
         this.setState({ authors: data, isLoading: false });
     }

@@ -21,8 +21,33 @@ namespace PerRead.Backend.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Article> GetAll()
+        public async Task<IEnumerable<Article>> GetAll()
         {
+            var articles = _context.Articles;
+            if (articles.Any())
+            {
+                return articles;
+            }
+
+            var author = new Author 
+            { 
+                Name = "Author1",
+                AuthorId = 1,
+                PopularityRank = 1
+            };
+
+            _context.Articles.Add(
+                new Article 
+                { 
+                    ArticleId = 1,
+                    Author = author,
+                    Price = 11,
+                    Title = "First Article",
+                    Tags = new List<Tag>() { new Tag { TagId = 1, TagName ="politics" } }
+                });
+
+            await _context.SaveChangesAsync();
+
             return _context.Articles;
         }
     }
@@ -31,7 +56,7 @@ namespace PerRead.Backend.Repositories
     {
         Article Create(Article article);
 
-        IEnumerable<Article> GetAll();
+        Task<IEnumerable<Article>> GetAll();
 
         Article Get(int id);
     }
