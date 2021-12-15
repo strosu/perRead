@@ -12,7 +12,8 @@ namespace PerRead.Backend.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    AuthorId = table.Column<string>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     PopularityRank = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -22,12 +23,25 @@ namespace PerRead.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    TagId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TagName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.TagId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
                 {
                     ArticleId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AuthorId = table.Column<string>(type: "TEXT", nullable: true),
+                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<uint>(type: "INTEGER", nullable: false)
                 },
@@ -38,26 +52,32 @@ namespace PerRead.Backend.Migrations
                         name: "FK_Articles_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
-                        principalColumn: "AuthorId");
+                        principalColumn: "AuthorId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tags",
+                name: "ArticleTags",
                 columns: table => new
                 {
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
                     TagId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TagName = table.Column<string>(type: "TEXT", nullable: false),
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.TagId);
+                    table.PrimaryKey("PK_ArticleTags", x => new { x.ArticleId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_Tags_Articles_ArticleId",
-                        column: x => x.ArticleId,
+                        name: "FK_ArticleTags_Articles_TagId",
+                        column: x => x.TagId,
                         principalTable: "Articles",
-                        principalColumn: "ArticleId");
+                        principalColumn: "ArticleId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "TagId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -66,18 +86,21 @@ namespace PerRead.Backend.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_ArticleId",
-                table: "Tags",
-                column: "ArticleId");
+                name: "IX_ArticleTags_TagId",
+                table: "ArticleTags",
+                column: "TagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "ArticleTags");
 
             migrationBuilder.DropTable(
                 name: "Articles");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Authors");

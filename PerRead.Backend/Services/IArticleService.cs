@@ -7,9 +7,9 @@ namespace PerRead.Backend.Services
     {
         Task<IEnumerable<Article>> GetAll();
 
-        Article GetById(int id);
+        Task<Article?> Get(int id);
 
-        Article Create(Article articleModel);
+        Task<Article?> Create(Article articleModel);
     }
 
     public class ArticleService : IArticleService
@@ -21,9 +21,9 @@ namespace PerRead.Backend.Services
             _articleRepository = articleRepository;
         }
 
-        public Article Create(Article articleModel)
+        public async Task<Article?> Create(Article articleModel)
         {
-            return _articleRepository.Create(articleModel);
+            return await _articleRepository.Create(articleModel);
         }
 
         public async Task<IEnumerable<Article>> GetAll()
@@ -31,19 +31,11 @@ namespace PerRead.Backend.Services
             return await _articleRepository.GetAll();
         }
 
-        public Article GetById(int id)
+        public async Task<Article?> Get(int id)
         {
-            return _articleRepository.Get(id);
+            return await _articleRepository.Get(id);
 
         }
-        //public IEnumerable<Article> GetAll()
-        //{
-        //    return new List<Article> 
-        //    {
-        //        new Article() { Title = "First", Id = 1, Price = 11, Tags = new List<string> { "politics" } },
-        //        new Article() { Title = "Second", Id = 2, Price = 22, Tags = new List<string> { "entertainment" } }
-        //    };
-        //}
     }
 }
 

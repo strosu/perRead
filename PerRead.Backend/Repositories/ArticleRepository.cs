@@ -1,4 +1,5 @@
-﻿using PerRead.Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models;
 
 namespace PerRead.Backend.Repositories
 {
@@ -11,22 +12,22 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public Article Create(Article article)
+        public async Task<Article> Create(Article article)
         {
             throw new NotImplementedException();
         }
 
-        public Article Get(int id)
+        public async Task<Article?> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Articles.SingleOrDefaultAsync(x => x.ArticleId == id);
         }
 
         public async Task<IEnumerable<Article>> GetAll()
         {
             var articles = _context.Articles;
-            if (articles.Any())
+            if (await articles.AnyAsync())
             {
-                return articles;
+                return await articles.ToListAsync();
             }
 
             var author = new Author 
@@ -36,6 +37,10 @@ namespace PerRead.Backend.Repositories
                 PopularityRank = 1
             };
 
+            var tag = new Tag {TagId = 1, TagName = "politics" };
+
+            _context.Tags.Add(tag);
+
             _context.Articles.Add(
                 new Article 
                 { 
@@ -43,7 +48,7 @@ namespace PerRead.Backend.Repositories
                     Author = author,
                     Price = 11,
                     Title = "First Article",
-                    Tags = new List<Tag>() { new Tag { TagId = 1, TagName ="politics" } }
+                    Tags = new List<ArticleTag>() { new ArticleTag { TagId = 1, ArticleId = 1 } }
                 });
 
             await _context.SaveChangesAsync();
@@ -54,10 +59,10 @@ namespace PerRead.Backend.Repositories
 
     public interface IArticleRepository
     {
-        Article Create(Article article);
+        Task<Article?> Create(Article article);
 
         Task<IEnumerable<Article>> GetAll();
 
-        Article Get(int id);
+        Task<Article?> Get(int id);
     }
 }

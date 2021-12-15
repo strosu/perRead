@@ -16,9 +16,24 @@ namespace PerRead.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public async Task<IEnumerable<Article>> Get()
         {
             return await _articleService.GetAll();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var article = await _articleService.Get(id);
+
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(article);
         }
 
     }
