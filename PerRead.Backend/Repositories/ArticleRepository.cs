@@ -27,7 +27,11 @@ namespace PerRead.Backend.Repositories
             var articles = _context.Articles;
             if (await articles.AnyAsync())
             {
-                return await articles.ToListAsync();
+                return await articles
+                    .Include(x => x.Author)
+                    .Include(x => x.Tags)
+                    .ThenInclude(x => x.Tag)
+                    .ToListAsync();
             }
 
             var author = new Author 
