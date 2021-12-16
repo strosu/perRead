@@ -1,4 +1,5 @@
 ﻿using PerRead.Backend.Models;
+using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -9,7 +10,7 @@ namespace PerRead.Backend.Services
 
         Task<Article?> Get(int id);
 
-        Task<Article?> Create(Article articleModel);
+        Task<Article?> Create(ArticleCommand article);
     }
 
     public class ArticleService : IArticleService
@@ -21,9 +22,30 @@ namespace PerRead.Backend.Services
             _articleRepository = articleRepository;
         }
 
-        public async Task<Article?> Create(Article articleModel)
+        public async Task<Article?> Create(ArticleCommand article)
         {
-            return await _articleRepository.Create(articleModel);
+            // Business logic
+            if (article == null)
+            {
+                throw new ArgumentNullException(nameof(article));
+            }
+
+            if (article.Author == null)
+            {
+                throw new ArgumentNullException(nameof(article.Author));
+            }
+
+            if (article.Content == null)
+            {
+                throw new ArgumentNullException(nameof(article.Content));
+            }
+
+            if (article.Tags == null || !article.Tags.Any())
+            {
+                throw new ArgumentException("Each article requires at least one tag");
+            }
+
+            return await _articleRepository.Create(article);
         }
 
         public async Task<IEnumerable<Article>> GetAll()

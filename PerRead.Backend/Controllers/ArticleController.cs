@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Models;
+using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Services;
 
 namespace PerRead.Controllers
@@ -36,5 +37,19 @@ namespace PerRead.Controllers
             return Ok(article);
         }
 
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> Post([FromBody]ArticleCommand articleCommand)
+        {
+            try
+            {
+                var article = await _articleService.Create(articleCommand);
+                return Ok(article);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

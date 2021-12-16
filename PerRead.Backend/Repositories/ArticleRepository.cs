@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models;
+using PerRead.Backend.Models.Commands;
 
 namespace PerRead.Backend.Repositories
 {
@@ -12,9 +13,54 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(Article article)
+        public async Task<Article> Create(ArticleCommand article)
         {
-            throw new NotImplementedException();
+            // Make sure the tags exist
+            var tagMap = new List<Tag>();
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                foreach (var tag in article.Tags)
+                {
+                    var foundTag = (await _context.Tags.FirstOrDefaultAsync(x => x.TagName == tag));
+
+                    if (foundTag != null)
+                    {
+                        tagMap.Add(foundTag);
+                    }
+                    else
+                    {
+                        var newTag = new Tag { TagName = tag };
+                        _context.Tags.Add(newTag);
+                        tagMap.Add(newTag);
+                    }
+                }
+
+                _context.SaveChanges();
+
+                // Add the article
+                var newArticle = new Article
+                {
+                    Title = article.Title,
+                    Author = await _context.Authors.FirstAsync(),
+                    Price = article.Price,
+                };
+
+                _context.Articles.Add(newArticle);
+                _context.SaveChanges();
+
+                newArticle.Tags = tagMap.Select(x => new ArticleTag
+                {
+                    ArticleId = newArticle.ArticleId,
+                    TagId = x.TagId
+                }).ToList();
+
+                _context.SaveChanges();
+
+                transaction.Commit();
+
+                return newArticle;
+            }
         }
 
         public async Task<Article?> Get(int id)
@@ -63,7 +109,7 @@ namespace PerRead.Backend.Repositories
 
     public interface IArticleRepository
     {
-        Task<Article?> Create(Article article);
+        Task<Article?> Create(ArticleCommand article);
 
         Task<IEnumerable<Article>> GetAll();
 
