@@ -1,0 +1,29 @@
+BACKEND:
+
+- support for user management:
+    - create new user
+    - authenticate as user
+    - restrict access; play with roles, i.e. don't allow any user to craete new articles
+    - add reading tokens to the current user (requires signing in)
+
+- figure out potential controllers: 
+    - add reading tokens (under Account)
+    - unlock article (under Article?)
+    - get Article (under Article)
+    - show unlocked articles; for privacy reasons, maybe don't store the list? need an alrorithm that would hash and see if an article is already unlocked (similar to password checking)
+    - Authors controller; need some form of readMe for Authors
+
+- revisit tags, safety around parallel requests
+
+- do some basic search for titles
+    - do more advanced search for article contents? grep maybe?
+
+FRONTEND:
+
+- login!!
+    - sign up
+    - sign in
+
+- input form for creating new article
+- rework article presentation "page"
+- unlock article UI

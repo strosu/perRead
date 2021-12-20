@@ -12,18 +12,18 @@ export class NewArticle extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example' })
+            body: JSON.stringify({ title: 'React POST Request Example', author: 'gogu', price: 22, content: 'first article content yay', tags: ['randomness2'] })
         };
 
-        fetch('https://localhost:7176/article/create', requestOptions);
-            // .then(response => response.json())
-            // .then(data => this.setState({ newArticle: state }));
+        fetch('https://localhost:7176/article/create', requestOptions)
+            .then(response => response.json())
+            .then(data => this.setState({ newArticle: data }));
 
-        console.log()
+        console.log(this.state.newArticle)
     }
 
     render() {
-        return(
+        return (
             <div>
                 <h1>Test</h1>
                 <button onClick={this.submitNewArticle}>

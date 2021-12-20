@@ -18,49 +18,53 @@ namespace PerRead.Backend.Repositories
             // Make sure the tags exist
             var tagMap = new List<Tag>();
 
-            using (var transaction = _context.Database.BeginTransaction())
+            //using (var transaction = _context.Database.BeginTransaction())
+            //{
+
+            //}
+
+            foreach (var tag in article.Tags)
             {
-                foreach (var tag in article.Tags)
-                {
-                    var foundTag = (await _context.Tags.FirstOrDefaultAsync(x => x.TagName == tag));
+                var foundTag = (await _context.Tags.FirstOrDefaultAsync(x => x.TagName == tag));
 
-                    if (foundTag != null)
-                    {
-                        tagMap.Add(foundTag);
-                    }
-                    else
-                    {
-                        var newTag = new Tag { TagName = tag };
-                        _context.Tags.Add(newTag);
-                        tagMap.Add(newTag);
-                    }
+                if (foundTag != null)
+                {
+                    tagMap.Add(foundTag);
                 }
-
-                _context.SaveChanges();
-
-                // Add the article
-                var newArticle = new Article
+                else
                 {
-                    Title = article.Title,
-                    Author = await _context.Authors.FirstAsync(),
-                    Price = article.Price,
-                };
-
-                _context.Articles.Add(newArticle);
-                _context.SaveChanges();
-
-                newArticle.Tags = tagMap.Select(x => new ArticleTag
-                {
-                    ArticleId = newArticle.ArticleId,
-                    TagId = x.TagId
-                }).ToList();
-
-                _context.SaveChanges();
-
-                transaction.Commit();
-
-                return newArticle;
+                    var newTag = new Tag { TagName = tag };
+                    _context.Tags.Add(newTag);
+                    tagMap.Add(newTag);
+                }
             }
+
+            _context.SaveChanges();
+
+            // Add the article
+            var newArticle = new Article
+            {
+                Title = article.Title,
+                Author = await _context.Authors.FirstAsync(),
+                Price = article.Price,
+            };
+
+            _context.Articles.Add(newArticle);
+            _context.SaveChanges();
+
+            //transaction.Commit();
+
+            newArticle.Tags = tagMap.Select(x => new ArticleTag
+            {
+                ArticleId = newArticle.ArticleId,
+                TagId = x.TagId
+            }).ToList();
+
+            _context.SaveChanges();
+
+            //transaction.Commit();
+
+            return newArticle;
         }
 
         public async Task<Article?> Get(int id)
