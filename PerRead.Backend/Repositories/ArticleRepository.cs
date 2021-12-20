@@ -60,7 +60,9 @@ namespace PerRead.Backend.Repositories
                 TagId = x.TagId
             }).ToList();
 
-            _context.SaveChanges();
+            _context.Articles.Update(newArticle);
+
+            //_context.SaveChanges();
 
             //transaction.Commit();
 
@@ -75,39 +77,41 @@ namespace PerRead.Backend.Repositories
         public async Task<IEnumerable<Article>> GetAll()
         {
             var articles = _context.Articles;
-            if (await articles.AnyAsync())
-            {
-                return await articles
-                    .Include(x => x.Author)
-                    .Include(x => x.Tags)
-                    .ThenInclude(x => x.Tag)
-                    .ToListAsync();
-            }
+            return await articles
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .ThenInclude(x => x.Tag)
+                .ToListAsync();
 
-            var author = new Author 
-            { 
-                Name = "Author1",
-                AuthorId = 1,
-                PopularityRank = 1
-            };
+            //if (await articles.AnyAsync())
+            //{
 
-            var tag = new Tag {TagId = 1, TagName = "politics" };
+            //}
 
-            _context.Tags.Add(tag);
+            //var author = new Author 
+            //{ 
+            //    Name = "Author1",
+            //    AuthorId = 1,
+            //    PopularityRank = 1
+            //};
 
-            _context.Articles.Add(
-                new Article 
-                { 
-                    ArticleId = 1,
-                    Author = author,
-                    Price = 11,
-                    Title = "First Article",
-                    Tags = new List<ArticleTag>() { new ArticleTag { TagId = 1, ArticleId = 1 } }
-                });
+            //var tag = new Tag {TagId = 1, TagName = "politics" };
 
-            await _context.SaveChangesAsync();
+            //_context.Tags.Add(tag);
 
-            return _context.Articles;
+            //_context.Articles.Add(
+            //    new Article 
+            //    { 
+            //        ArticleId = 1,
+            //        Author = author,
+            //        Price = 11,
+            //        Title = "First Article",
+            //        Tags = new List<ArticleTag>() { new ArticleTag { TagId = 1, ArticleId = 1 } }
+            //    });
+
+            //await _context.SaveChangesAsync();
+
+            //return _context.Articles;
         }
     }
 

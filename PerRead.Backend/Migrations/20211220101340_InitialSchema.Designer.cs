@@ -10,7 +10,7 @@ using PerRead.Backend.Repositories;
 namespace PerRead.Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211215101648_InitialSchema")]
+    [Migration("20211220101340_InitialSchema")]
     partial class InitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -52,7 +52,7 @@ export class Articles extends Component {
                             <tr key={article.articleId}>
                                 <td>{article.title}</td>
                                 <td>{article.author.name}</td>
-                                <td>{article.tags[0].tag.tagName}</td>
+                                <td>{article.tags[0]?.tag.tagName}</td>
                                 <td>{article.price}</td>
                                 {/* <td>{article.summary}</td> */}
                             </tr>
