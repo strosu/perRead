@@ -63,12 +63,14 @@ namespace PerRead.Backend.Services
 
         public async Task Delete(int id)
         {
-            if (await Get(id) == null)
+            var article = await _articleRepository.Get(id);
+
+            if (article == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
 
-            await _articleRepository.Delete(id);
+            await _articleRepository.Delete(article);
         }
     }
 }

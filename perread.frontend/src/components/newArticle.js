@@ -8,14 +8,14 @@ export class NewArticle extends Component {
         this.submitNewArticle = this.submitNewArticle.bind(this);
     }
 
-    submitNewArticle() {
+    async submitNewArticle() {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title: 'React POST Request Example', author: 'gogu', price: 22, content: 'first article content yay', tags: ['vvvv3'] })
         };
 
-        fetch('https://localhost:7176/article', requestOptions)
+        await fetch('https://localhost:7176/article', requestOptions)
             .then(response => response.json())
             .then(data => this.setState({ newArticle: data }));
 
@@ -26,10 +26,11 @@ export class NewArticle extends Component {
         return (
             <div>
                 <h1>Test</h1>
-                <button onClick={this.submitNewArticle}>
-                    Submit new article
-                </button>
-
+                <Link to="/articles">
+                    <button onClick={this.submitNewArticle}>
+                        Submit new article
+                    </button>
+                </Link>
                 {/* <Link to="/articles" className="btn btn-primary">Submit</Link> */}
             </div>
         );

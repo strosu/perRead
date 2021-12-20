@@ -39,7 +39,7 @@ namespace PerRead.Backend.Repositories
                 }
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             // Add the article
             var newArticle = new Article
@@ -50,7 +50,7 @@ namespace PerRead.Backend.Repositories
             };
 
             _context.Articles.Add(newArticle);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             //transaction.Commit();
 
@@ -58,17 +58,19 @@ namespace PerRead.Backend.Repositories
             //_context.Articles.Update(createdArticle);
 
             newArticle.Tags = tagMap.ToList();
+            newArticle.Title += newArticle.ArticleId;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             //transaction.Commit();
 
             return newArticle;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Article article)
         {
-            
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Article?> Get(int id)
@@ -138,6 +140,6 @@ namespace PerRead.Backend.Repositories
 
         Task<Article?> Get(int id);
 
-        Task Delete(int id);
+        Task Delete(Article article);
     }
 }

@@ -55,6 +55,9 @@ export class Articles extends Component {
                                 <td>{article.tags[0]?.tagName}</td>
                                 <td>{article.price}</td>
                                 {/* <td>{article.summary}</td> */}
+                                <td>
+                                    <Button onClick={() => this.click(article.articleId)} className="domain-button" type='primary'>Delete</Button>
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -72,5 +75,17 @@ export class Articles extends Component {
         const response = await fetch('https://localhost:7176/article');
         const data = await response.json();
         this.setState({ articles: data, isLoading: false });
+    }
+
+    async click(articleId) {
+        const requestOptions = {
+            method: 'DELETE',
+        };
+
+        await fetch(`https://localhost:7176/article/${articleId}`, requestOptions);
+            // .then(response => response.json())
+            // .then(data => this.setState({ newArticle: data }));
+        
+        await this.refreshData(); 
     }
 }
