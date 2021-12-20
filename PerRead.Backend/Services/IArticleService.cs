@@ -11,6 +11,8 @@ namespace PerRead.Backend.Services
         Task<Article?> Get(int id);
 
         Task<Article?> Create(ArticleCommand article);
+
+        Task Delete(int id);
     }
 
     public class ArticleService : IArticleService
@@ -57,6 +59,16 @@ namespace PerRead.Backend.Services
         {
             return await _articleRepository.Get(id);
 
+        }
+
+        public async Task Delete(int id)
+        {
+            if (await Get(id) == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+
+            await _articleRepository.Delete(id);
         }
     }
 }

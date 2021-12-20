@@ -54,19 +54,21 @@ namespace PerRead.Backend.Repositories
 
             //transaction.Commit();
 
-            newArticle.Tags = tagMap.Select(x => new ArticleTag
-            {
-                ArticleId = newArticle.ArticleId,
-                TagId = x.TagId
-            }).ToList();
+            //var createdArticle = await _context.Articles.FindAsync(newArticle.ArticleId);
+            //_context.Articles.Update(createdArticle);
 
-            _context.Articles.Update(newArticle);
+            newArticle.Tags = tagMap.ToList();
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             //transaction.Commit();
 
             return newArticle;
+        }
+
+        public async Task Delete(int id)
+        {
+            
         }
 
         public async Task<Article?> Get(int id)
@@ -76,11 +78,24 @@ namespace PerRead.Backend.Repositories
 
         public async Task<IEnumerable<Article>> GetAll()
         {
+            if (!(await _context.Authors.AnyAsync()))
+            {
+                var author = new Author
+                {
+                    Name = "Author1",
+                    AuthorId = 1,
+                    PopularityRank = 1
+                };
+
+                _context.Authors.Add(author);
+                await _context.SaveChangesAsync();
+            }
+
             var articles = _context.Articles;
             return await articles
                 .Include(x => x.Author)
                 .Include(x => x.Tags)
-                .ThenInclude(x => x.Tag)
+                //.ThenInclude(x => x.Tag)
                 .ToListAsync();
 
             //if (await articles.AnyAsync())
@@ -122,5 +137,7 @@ namespace PerRead.Backend.Repositories
         Task<IEnumerable<Article>> GetAll();
 
         Task<Article?> Get(int id);
+
+        Task Delete(int id);
     }
 }

@@ -12,10 +12,10 @@ export class NewArticle extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example', author: 'gogu', price: 22, content: 'first article content yay', tags: ['randomness2'] })
+            body: JSON.stringify({ title: 'React POST Request Example', author: 'gogu', price: 22, content: 'first article content yay', tags: ['vvvv3'] })
         };
 
-        fetch('https://localhost:7176/article/create', requestOptions)
+        fetch('https://localhost:7176/article', requestOptions)
             .then(response => response.json())
             .then(data => this.setState({ newArticle: data }));
 

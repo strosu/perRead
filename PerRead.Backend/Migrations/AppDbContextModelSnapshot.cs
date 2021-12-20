@@ -16,6 +16,21 @@ namespace PerRead.Backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
 
+            modelBuilder.Entity("ArticleTag", b =>
+                {
+                    b.Property<int>("ArticlesArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagsTagId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ArticlesArticleId", "TagsTagId");
+
+                    b.HasIndex("TagsTagId");
+
+                    b.ToTable("ArticleTag");
+                });
+
             modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
                 {
                     b.Property<int>("ArticleId")
@@ -37,21 +52,6 @@ namespace PerRead.Backend.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("PerRead.Backend.Models.ArticleTag", b =>
-                {
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ArticleId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("PerRead.Backend.Models.Author", b =>
@@ -87,6 +87,21 @@ namespace PerRead.Backend.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("ArticleTag", b =>
+                {
+                    b.HasOne("PerRead.Backend.Models.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PerRead.Backend.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
                 {
                     b.HasOne("PerRead.Backend.Models.Author", "Author")
@@ -98,36 +113,7 @@ namespace PerRead.Backend.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("PerRead.Backend.Models.ArticleTag", b =>
-                {
-                    b.HasOne("PerRead.Backend.Models.Article", "Article")
-                        .WithMany("Tags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PerRead.Backend.Models.Tag", "Tag")
-                        .WithMany("Articles")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
-                {
-                    b.Navigation("Tags");
-                });
-
             modelBuilder.Entity("PerRead.Backend.Models.Author", b =>
-                {
-                    b.Navigation("Articles");
-                });
-
-            modelBuilder.Entity("PerRead.Backend.Models.Tag", b =>
                 {
                     b.Navigation("Articles");
                 });

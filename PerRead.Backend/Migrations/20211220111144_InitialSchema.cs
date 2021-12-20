@@ -57,24 +57,24 @@ namespace PerRead.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleTags",
+                name: "ArticleTag",
                 columns: table => new
                 {
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TagId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ArticlesArticleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TagsTagId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleTags", x => new { x.ArticleId, x.TagId });
+                    table.PrimaryKey("PK_ArticleTag", x => new { x.ArticlesArticleId, x.TagsTagId });
                     table.ForeignKey(
-                        name: "FK_ArticleTags_Articles_TagId",
-                        column: x => x.TagId,
+                        name: "FK_ArticleTag_Articles_ArticlesArticleId",
+                        column: x => x.ArticlesArticleId,
                         principalTable: "Articles",
                         principalColumn: "ArticleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ArticleTags_Tags_TagId",
-                        column: x => x.TagId,
+                        name: "FK_ArticleTag_Tags_TagsTagId",
+                        column: x => x.TagsTagId,
                         principalTable: "Tags",
                         principalColumn: "TagId",
                         onDelete: ReferentialAction.Cascade);
@@ -86,15 +86,15 @@ namespace PerRead.Backend.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleTags_TagId",
-                table: "ArticleTags",
-                column: "TagId");
+                name: "IX_ArticleTag_TagsTagId",
+                table: "ArticleTag",
+                column: "TagsTagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArticleTags");
+                name: "ArticleTag");
 
             migrationBuilder.DropTable(
                 name: "Articles");

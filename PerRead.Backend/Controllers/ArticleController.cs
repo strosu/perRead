@@ -16,15 +16,15 @@ namespace PerRead.Controllers
             _articleService = articleService;
         }
 
-        [HttpGet]
-        [Route("")]
+        [HttpGet("")]
+        //[Route("")]
         public async Task<IEnumerable<Article>> Get()
         {
             return await _articleService.GetAll();
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
+        //[Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var article = await _articleService.Get(id);
@@ -37,9 +37,9 @@ namespace PerRead.Controllers
             return Ok(article);
         }
 
-        [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Post([FromBody]ArticleCommand articleCommand)
+        [HttpPost("")]
+        //[Route("create")]
+        public async Task<IActionResult> Post([FromBody] ArticleCommand articleCommand)
         {
             try
             {
@@ -49,6 +49,21 @@ namespace PerRead.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _articleService.Delete(id);
+                return NoContent();
+
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound();
             }
         }
     }
