@@ -1,5 +1,7 @@
 BACKEND:
 
+- proper implementation for many to many - DONE
+
 - support for user management:
     - create new user
     - authenticate as user
@@ -19,6 +21,8 @@ BACKEND:
     - do more advanced search for article contents? grep maybe?
 
 FRONTEND:
+
+- fix concurrency issue when submitting new article and redirecting quickly via Link
 
 - login!!
     - sign up
