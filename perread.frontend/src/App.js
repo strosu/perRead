@@ -8,6 +8,7 @@ import {SignUp} from './components/signup'
 import {Authors} from './components/authors'
 import {Articles} from './components/articles'
 import {NewArticle} from './components/newArticle'
+import {Article} from './components/article'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/authors' component={Authors} />
         <Route path='/articles' component={Articles} />
         <Route path='/article/new' component={NewArticle} />
+        <Route path="/article/:id" component={Article}/>
         {/* <Route path='/articles' component={SignUp} /> */}
       </Switch>
     </Router>

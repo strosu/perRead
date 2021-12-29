@@ -47,6 +47,7 @@ namespace PerRead.Backend.Repositories
                 Title = article.Title,
                 Author = await _context.Authors.FirstAsync(),
                 Price = article.Price,
+                Content = article.Content,
             };
 
             _context.Articles.Add(newArticle);
@@ -58,7 +59,10 @@ namespace PerRead.Backend.Repositories
             //_context.Articles.Update(createdArticle);
 
             newArticle.Tags = tagMap.ToList();
+            
+            // Edit for simplicity - TODO, remove this at some point
             newArticle.Title += newArticle.ArticleId;
+            newArticle.Content += newArticle.ArticleId;
 
             await _context.SaveChangesAsync();
 

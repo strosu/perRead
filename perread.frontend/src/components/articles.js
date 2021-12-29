@@ -1,16 +1,16 @@
 import { Component } from "react";
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, NavLink  } from 'reactstrap';
+import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row, NavLink } from 'reactstrap';
 
 export class Articles extends Component {
-    
+
     // routeChange=()=> {
     //     let path = `newPath`;
     //     let history = useHistory();
     //     history.push(path);
     // }
-      
+
     constructor(props) {
         super(props);
         this.state = { isLoading: true, articles: [] };
@@ -56,7 +56,11 @@ export class Articles extends Component {
                                 <td>{article.price}</td>
                                 {/* <td>{article.summary}</td> */}
                                 <td>
-                                    <Button onClick={() => this.click(article.articleId)} className="domain-button" type='primary'>Delete</Button>
+                                    <Link to={`article/${article.articleId}`}>Read</Link>
+                                    {/* <Button onClick={() => this.clickRead(article.articleId)} className="domain-button" type='primary'>Read</Button> */}
+                                </td>
+                                <td>
+                                    <Button onClick={() => this.clickDelete(article.articleId)} className="domain-button" type='primary'>Delete</Button>
                                 </td>
                             </tr>
                         )}
@@ -77,15 +81,20 @@ export class Articles extends Component {
         this.setState({ articles: data, isLoading: false });
     }
 
-    async click(articleId) {
+    async clickDelete(articleId) {
         const requestOptions = {
             method: 'DELETE',
         };
 
         await fetch(`https://localhost:7176/article/${articleId}`, requestOptions);
-            // .then(response => response.json())
-            // .then(data => this.setState({ newArticle: data }));
+        // .then(response => response.json())
+        // .then(data => this.setState({ newArticle: data }));
+
+        await this.refreshData();
+    }
+
+    async clickRead(articleId) {
         
-        await this.refreshData(); 
+        this.setState({ redirect: `/articles/${articleId}` });
     }
 }
