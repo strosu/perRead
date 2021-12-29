@@ -1,5 +1,6 @@
 import { Component } from "react";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 export class NewArticle extends Component {
     constructor(props) {
@@ -19,18 +20,22 @@ export class NewArticle extends Component {
             .then(response => response.json())
             .then(data => this.setState({ newArticle: data }));
 
-        console.log(this.state.newArticle)
+        console.log(this.state.newArticle);
+
+        this.setState({ redirect: "/articles" });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
         return (
             <div>
                 <h1>Test</h1>
-                <Link to="/articles">
-                    <button onClick={this.submitNewArticle}>
-                        Submit new article
-                    </button>
-                </Link>
+                <button onClick={this.submitNewArticle}>
+                    Submit new article
+                </button>
                 {/* <Link to="/articles" className="btn btn-primary">Submit</Link> */}
             </div>
         );
