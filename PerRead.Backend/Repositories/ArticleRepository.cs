@@ -79,60 +79,52 @@ namespace PerRead.Backend.Repositories
 
         public async Task<Article?> Get(int id)
         {
-            return await _context.Articles.SingleOrDefaultAsync(x => x.ArticleId == id);
+            return await _context.Articles
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.ArticleId == id);
         }
 
         public async Task<IEnumerable<Article>> GetAll()
         {
-            if (!(await _context.Authors.AnyAsync()))
-            {
-                var author = new Author
-                {
-                    Name = "Author1",
-                    AuthorId = 1,
-                    PopularityRank = 1
-                };
-
-                _context.Authors.Add(author);
-                await _context.SaveChangesAsync();
-            }
+            await EnsureSeeded();
 
             var articles = _context.Articles;
             return await articles
+                .AsNoTracking()
                 .Include(x => x.Author)
                 .Include(x => x.Tags)
                 //.ThenInclude(x => x.Tag)
                 .ToListAsync();
+        }
 
-            //if (await articles.AnyAsync())
-            //{
+        private async Task EnsureSeeded()
+        {
+            if (await _context.Articles.AnyAsync())
+            {
+                return;
+            }
 
-            //}
+            var author = new Author
+            {
+                Name = "Author1",
+                AuthorId = 1,
+                PopularityRank = 1
+            };
 
-            //var author = new Author 
-            //{ 
-            //    Name = "Author1",
-            //    AuthorId = 1,
-            //    PopularityRank = 1
-            //};
+            _context.Authors.Add(author);
 
-            //var tag = new Tag {TagId = 1, TagName = "politics" };
+            var article = new Article
+            {
+                ArticleId = 1,
+                Author = author,
+                Content = "seeded content",
+                Price = 1,
+                Title = "seeded title"
+            };
 
-            //_context.Tags.Add(tag);
+            _context.Articles.Add(article);
 
-            //_context.Articles.Add(
-            //    new Article 
-            //    { 
-            //        ArticleId = 1,
-            //        Author = author,
-            //        Price = 11,
-            //        Title = "First Article",
-            //        Tags = new List<ArticleTag>() { new ArticleTag { TagId = 1, ArticleId = 1 } }
-            //    });
-
-            //await _context.SaveChangesAsync();
-
-            //return _context.Articles;
+            await _context.SaveChangesAsync();
         }
     }
 
