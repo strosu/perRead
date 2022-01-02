@@ -35,14 +35,14 @@ namespace PerRead.Backend.Models.FrontendModels
     {
         public string Name { get; set; }
 
-        public string TagUrl { get; set; }
+        public string TagId { get; set; }
     }
 
     public class FEAuthorDescription
     {
         public string Name { get; set; }
 
-        public string ProfileUrl { get; set; }
+        public string AuthorId { get; set; }
     }
 }
 

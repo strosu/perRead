@@ -51,7 +51,7 @@ export class Articles extends Component {
                         {this.state.articles.map(article =>
                             <tr key={article.articleId}>
                                 <td>{article.title}</td>
-                                <td>{article.author.name}</td>
+                                <td>{this.formatAuthors(article.authors)}</td>
                                 <td>{article.tags[0]?.tagName}</td>
                                 <td>{article.price}</td>
                                 {/* <td>{article.summary}</td> */}
@@ -72,6 +72,22 @@ export class Articles extends Component {
                     Login
                 </Button> */}
             </div>
+        );
+    }
+
+    formatAuthors(authorInfos) {
+        return(
+            <table>
+                <tbody>
+                    <tr>
+                    {authorInfos.map(authorInfo =>
+                        <td>
+                            {/* <Link to={`article/${article.articleId}`}>Read</Link> */}
+                            <Link to={`author/${authorInfo.authorId}`}>{authorInfo.name} </Link>
+                        </td>)}
+                    </tr>
+                </tbody>
+            </table>
         );
     }
 

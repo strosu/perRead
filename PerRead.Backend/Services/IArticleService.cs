@@ -66,12 +66,12 @@ namespace PerRead.Backend.Services
                 Tags = x.Tags.Select(t => new FETagDescription
                 {
                     Name = t.TagName,
-                    TagUrl = t.TagId.ToString()
+                    TagId = t.TagId.ToString()
                 }),
                 Authors = x.ArticleAuthors.Select(a => new FEAuthorDescription
                 {
                     Name = a.Author.Name,
-                    ProfileUrl = a.AuthorId.ToString()
+                    AuthorId = a.AuthorId.ToString()
                 })
             }).ToListAsync();
         }
