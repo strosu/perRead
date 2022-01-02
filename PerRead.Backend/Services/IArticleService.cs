@@ -32,9 +32,9 @@ namespace PerRead.Backend.Services
                 throw new ArgumentNullException(nameof(article));
             }
 
-            if (article.Author == null)
+            if (article.Authors == null || !article.Authors.Any())
             {
-                throw new ArgumentNullException(nameof(article.Author));
+                throw new ArgumentNullException(nameof(article.Authors));
             }
 
             if (article.Content == null)

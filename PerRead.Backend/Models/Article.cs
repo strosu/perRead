@@ -4,7 +4,7 @@
     {
         public int ArticleId { get; set; }
 
-        public Author Author { get; set; }
+        public ICollection<ArticleAuthor> ArticleAuthors { get; set; }
 
         public string Title { get; set; }
 
@@ -13,5 +13,18 @@
         public uint Price { get; set; }
 
         public string Content { get; set; }
+    }
+
+    public class ArticleAuthor
+    {
+        public Article Article { get; set; }
+
+        public int ArticleId { get; set; }
+
+        public Author Author { get; set; }
+
+        public int AuthorId { get; set; }
+
+        public int Order { get; set; }
     }
 }

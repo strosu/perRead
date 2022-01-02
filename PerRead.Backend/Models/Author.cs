@@ -8,6 +8,6 @@
 
         public int PopularityRank { get; set; }
 
-        public IEnumerable<Article> Articles { get; set; }
+        public IEnumerable<ArticleAuthor> Articles { get; set; }
     }
 }

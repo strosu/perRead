@@ -4,7 +4,7 @@
     {
         public string Title { get; set; }
 
-        public string Author { get; set; }
+        public IEnumerable<string> Authors { get; set; }
 
         public uint Price { get; set; }
 

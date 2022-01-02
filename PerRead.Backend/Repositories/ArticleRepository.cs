@@ -18,11 +18,6 @@ namespace PerRead.Backend.Repositories
             // Make sure the tags exist
             var tagMap = new List<Tag>();
 
-            //using (var transaction = _context.Database.BeginTransaction())
-            //{
-
-            //}
-
             foreach (var tag in article.Tags)
             {
                 var foundTag = (await _context.Tags.FirstOrDefaultAsync(x => x.TagName == tag));
@@ -41,14 +36,24 @@ namespace PerRead.Backend.Repositories
 
             await _context.SaveChangesAsync();
 
+
+            // Get the authors
+            var authors = await _context.Authors.Where(x => article.Authors.Contains(x.Name)).ToListAsync();
+
             // Add the article
             var newArticle = new Article
             {
                 Title = article.Title,
-                Author = await _context.Authors.FirstAsync(),
                 Price = article.Price,
                 Content = article.Content,
             };
+
+            newArticle.ArticleAuthors = authors.Select(x => new ArticleAuthor
+            {
+                Article = newArticle,
+                Author = x,
+                Order = 1
+            }).ToList();
 
             _context.Articles.Add(newArticle);
             await _context.SaveChangesAsync();
@@ -59,7 +64,7 @@ namespace PerRead.Backend.Repositories
             //_context.Articles.Update(createdArticle);
 
             newArticle.Tags = tagMap.ToList();
-            
+
             // Edit for simplicity - TODO, remove this at some point
             newArticle.Title += newArticle.ArticleId;
             newArticle.Content += newArticle.ArticleId;
@@ -91,7 +96,8 @@ namespace PerRead.Backend.Repositories
             var articles = _context.Articles;
             return await articles
                 .AsNoTracking()
-                .Include(x => x.Author)
+                .Include(x => x.ArticleAuthors)
+                    .ThenInclude(al => al.Author)
                 .Include(x => x.Tags)
                 //.ThenInclude(x => x.Tag)
                 .ToListAsync();
@@ -106,7 +112,7 @@ namespace PerRead.Backend.Repositories
 
             var author = new Author
             {
-                Name = "Author1",
+                Name = "gogu1",
                 AuthorId = 1,
                 PopularityRank = 1
             };
@@ -116,13 +122,20 @@ namespace PerRead.Backend.Repositories
             var article = new Article
             {
                 ArticleId = 1,
-                Author = author,
                 Content = "seeded content",
                 Price = 1,
                 Title = "seeded title"
             };
 
+            article.ArticleAuthors = new List<ArticleAuthor>() { new ArticleAuthor
+            {
+                Article = article,
+                Author = author,
+                Order = 1
+            } };
+
             _context.Articles.Add(article);
+
 
             await _context.SaveChangesAsync();
         }

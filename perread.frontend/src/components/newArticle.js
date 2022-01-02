@@ -13,7 +13,7 @@ export class NewArticle extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example', author: 'gogu', price: 22, content: 'first article content yay', tags: ['vvvv3'] })
+            body: JSON.stringify({ title: 'React POST Request Example', authors: ['gogu1', 'gogu2'], price: 22, content: 'first article content yay', tags: ['vvvv3'] })
         };
 
         await fetch('https://localhost:7176/article', requestOptions)

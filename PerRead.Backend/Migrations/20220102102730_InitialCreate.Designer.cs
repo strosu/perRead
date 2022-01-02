@@ -10,8 +10,8 @@ using PerRead.Backend.Repositories;
 namespace PerRead.Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211220111144_InitialSchema")]
-    partial class InitialSchema
+    [Migration("20220102102730_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,7 @@ namespace PerRead.Backend.Migrations
 
                     b.HasIndex("TagsTagId");
 
-                    b.ToTable("ArticleTag");
+                    b.ToTable("ArticleTag", (string)null);
                 });
 
             modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
@@ -39,8 +39,9 @@ namespace PerRead.Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<uint>("Price")
                         .HasColumnType("INTEGER");
@@ -51,9 +52,25 @@ namespace PerRead.Backend.Migrations
 
                     b.HasKey("ArticleId");
 
+                    b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("PerRead.Backend.Models.ArticleAuthor", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ArticleId", "AuthorId");
+
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("ArticleAuthor");
                 });
 
             modelBuilder.Entity("PerRead.Backend.Models.Author", b =>
@@ -104,15 +121,28 @@ namespace PerRead.Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
+            modelBuilder.Entity("PerRead.Backend.Models.ArticleAuthor", b =>
                 {
+                    b.HasOne("PerRead.Backend.Models.Article", "Article")
+                        .WithMany("ArticleAuthors")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PerRead.Backend.Models.Author", "Author")
                         .WithMany("Articles")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Article");
+
                     b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("PerRead.Backend.Models.Article", b =>
+                {
+                    b.Navigation("ArticleAuthors");
                 });
 
             modelBuilder.Entity("PerRead.Backend.Models.Author", b =>

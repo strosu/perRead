@@ -4,10 +4,25 @@
 
 namespace PerRead.Backend.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<uint>(type: "INTEGER", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Authors",
                 columns: table => new
@@ -36,20 +51,24 @@ namespace PerRead.Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Articles",
+                name: "ArticleAuthor",
                 columns: table => new
                 {
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
                     AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Price = table.Column<uint>(type: "INTEGER", nullable: false)
+                    Order = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
+                    table.PrimaryKey("PK_ArticleAuthor", x => new { x.ArticleId, x.AuthorId });
                     table.ForeignKey(
-                        name: "FK_Articles_Authors_AuthorId",
+                        name: "FK_ArticleAuthor_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "ArticleId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleAuthor_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
                         principalColumn: "AuthorId",
@@ -81,8 +100,8 @@ namespace PerRead.Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_AuthorId",
-                table: "Articles",
+                name: "IX_ArticleAuthor_AuthorId",
+                table: "ArticleAuthor",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
@@ -94,16 +113,19 @@ namespace PerRead.Backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ArticleAuthor");
+
+            migrationBuilder.DropTable(
                 name: "ArticleTag");
+
+            migrationBuilder.DropTable(
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Articles");
 
             migrationBuilder.DropTable(
                 name: "Tags");
-
-            migrationBuilder.DropTable(
-                name: "Authors");
         }
     }
 }
