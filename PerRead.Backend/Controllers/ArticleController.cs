@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Models.FrontendModels;
 using PerRead.Backend.Services;
 
 namespace PerRead.Controllers
@@ -18,7 +19,7 @@ namespace PerRead.Controllers
 
         [HttpGet("")]
         //[Route("")]
-        public async Task<IEnumerable<Article>> Get()
+        public async Task<IEnumerable<FEArticleDescription>> Get()
         {
             return await _articleService.GetAll();
         }

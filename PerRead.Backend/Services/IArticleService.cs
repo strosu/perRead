@@ -1,12 +1,14 @@
-﻿using PerRead.Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Models.FrontendModels;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
 {
     public interface IArticleService
     {
-        Task<IEnumerable<Article>> GetAll();
+        Task<IEnumerable<FEArticleDescription>> GetAll();
 
         Task<Article?> Get(int id);
 
@@ -50,9 +52,28 @@ namespace PerRead.Backend.Services
             return await _articleRepository.Create(article);
         }
 
-        public async Task<IEnumerable<Article>> GetAll()
+        public async Task<IEnumerable<FEArticleDescription>> GetAll()
         {
-            return await _articleRepository.GetAll();
+            await _articleRepository.EnsureSeeded();
+
+            var articles = _articleRepository.GetAll();
+
+            return await articles.Select(x => new FEArticleDescription
+            {
+                ArticleId = x.ArticleId,
+                Title = x.Title,
+                Price = x.Price,
+                Tags = x.Tags.Select(t => new FETagDescription
+                {
+                    Name = t.TagName,
+                    TagUrl = t.TagId.ToString()
+                }),
+                Authors = x.ArticleAuthors.Select(a => new FEAuthorDescription
+                {
+                    Name = a.Author.Name,
+                    ProfileUrl = a.AuthorId.ToString()
+                })
+            }).ToListAsync();
         }
 
         public async Task<Article?> Get(int id)

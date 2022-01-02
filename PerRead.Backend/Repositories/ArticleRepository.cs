@@ -89,21 +89,16 @@ namespace PerRead.Backend.Repositories
                 .SingleOrDefaultAsync(x => x.ArticleId == id);
         }
 
-        public async Task<IEnumerable<Article>> GetAll()
+        public IQueryable<Article> GetAll()
         {
-            await EnsureSeeded();
-
-            var articles = _context.Articles;
-            return await articles
+            return _context.Articles
                 .AsNoTracking()
                 .Include(x => x.ArticleAuthors)
                     .ThenInclude(al => al.Author)
-                .Include(x => x.Tags)
-                //.ThenInclude(x => x.Tag)
-                .ToListAsync();
+                .Include(x => x.Tags);
         }
 
-        private async Task EnsureSeeded()
+        public async Task EnsureSeeded()
         {
             if (await _context.Articles.AnyAsync())
             {
@@ -145,10 +140,12 @@ namespace PerRead.Backend.Repositories
     {
         Task<Article?> Create(ArticleCommand article);
 
-        Task<IEnumerable<Article>> GetAll();
+        IQueryable<Article> GetAll();
 
         Task<Article?> Get(int id);
 
         Task Delete(Article article);
+
+        Task EnsureSeeded();
     }
 }
