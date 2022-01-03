@@ -1,6 +1,7 @@
 using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
 using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,9 @@ builder.Services.AddCors(
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson(
-    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+builder.Services.AddControllers(
+    options => options.Filters.Add<LogAsyncResourceFilter>()) // Add a global filter to all controllers
+    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

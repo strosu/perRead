@@ -18,8 +18,10 @@
 
   <ItemGroup>
     <None Remove="Models\FrontendModels\" />
+    <None Remove="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\FrontendModels\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
 </Project>

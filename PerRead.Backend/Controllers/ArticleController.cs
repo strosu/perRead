@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PerRead.Backend.Filters;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontendModels;
@@ -18,6 +20,8 @@ namespace PerRead.Controllers
         }
 
         [HttpGet("")]
+        [ResponseHeader("Filter-Header", "Filter Value")]
+        [AllowAnonymous]
         //[Route("")]
         public async Task<IEnumerable<FEArticleDescription>> Get()
         {
