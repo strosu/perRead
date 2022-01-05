@@ -2,6 +2,8 @@ using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Filters;
+using Microsoft.AspNetCore.Identity;
+using PerRead.Backend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -50,4 +53,8 @@ static void AddServices(WebApplicationBuilder builder)
 
     builder.Services.AddScoped<IArticleService, ArticleService>();
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+
+
+    builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+        .AddEntityFrameworkStores<AppDbContext>();
 }

@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models;
 
 namespace PerRead.Backend.Repositories
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityUserContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -17,6 +18,8 @@ namespace PerRead.Backend.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder
                 .Entity<Article>()
                 .HasMany(p => p.Tags)
