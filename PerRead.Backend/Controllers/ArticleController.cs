@@ -9,6 +9,7 @@ using PerRead.Backend.Services;
 namespace PerRead.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
@@ -23,7 +24,7 @@ namespace PerRead.Controllers
         [ResponseHeader("Filter-Header", "Filter Value")]
         [AllowAnonymous]
         //[Route("")]
-        public async Task<IEnumerable<FEArticleDescription>> Get()
+        public async Task<IEnumerable<FEArticleDescription>> GetAll()
         {
             return await _articleService.GetAll();
         }

@@ -7,6 +7,7 @@ using PerRead.Backend.Services;
 namespace PerRead.Backend.Controllers
 {
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -34,6 +35,13 @@ namespace PerRead.Backend.Controllers
             await _userService.Login(user, loginCommand.UserName, loginCommand.PassWord);
 
             return Redirect(returnUrl);
+        }
+
+        [HttpPost("/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _userService.Logout();
+            return Redirect("");
         }
     }
 }

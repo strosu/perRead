@@ -10,12 +10,12 @@ export class SignUp extends Component{
       <div
         style={{
           display: 'flex',
-          justifyContent: 'Right',
-          alignItems: 'Right',
+          justifyContent: 'Left',
+          alignItems: 'Left',
           height: '100vh'
         }}
       >
-        <h1>Sign Up</h1>
+        <h1>Sign Up Form HEREEE</h1>
       </div>
     );
   }

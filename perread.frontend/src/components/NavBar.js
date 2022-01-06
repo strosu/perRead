@@ -7,7 +7,7 @@ import {
   NavBtn,
   NavBtnLink,
 } from './NavbarElements';
-import {Sign} from './sign'
+import {SignIn} from './signIn'
   
 export class NavBar extends Component {
   constructor(props) {
@@ -35,9 +35,10 @@ export class NavBar extends Component {
               Articles
             </NavLink>            
             {/* Second Nav */}
-            {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
+            <NavLink to='/signin'>Sign In</NavLink>
+            <NavLink to='/signup'>Register</NavLink>
           </NavMenu>
-          <Sign/>
+          {/* <SignIn/> */}
         </Nav>
       </>
     );

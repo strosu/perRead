@@ -5,6 +5,7 @@ import {Home} from './components/Home'
 import {NavBar} from './components/NavBar'
 import {About} from './components/about'
 import {SignUp} from './components/signup'
+import {SignIn} from './components/signIn'
 import {Authors} from './components/authors'
 import {Articles} from './components/articles'
 import {NewArticle} from './components/newArticle'
@@ -17,7 +18,8 @@ function App() {
       <Switch>
         <Route path='/' exact component={Home} />
         <Route path='/about' component={About} />
-        <Route path='/sign-up' component={SignUp} />
+        <Route path='/signup' component={SignUp} />
+        <Route path='/signIn' component={SignIn} />
         <Route path='/authors' component={Authors} />
         <Route path='/articles' component={Articles} />
         <Route path='/article/new' component={NewArticle} />
