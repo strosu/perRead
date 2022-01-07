@@ -35,11 +35,13 @@ namespace PerRead.Backend.Services
             {
                 throw new ArgumentException("user not found");
             }
+
             var userSigninResult = await _userManager.CheckPasswordAsync(userFromDb, password);
 
-            var loginResult = await _signInManager.PasswordSignInAsync(username, password, true, true);
+            // This should be used for cookie only, lol
+            //var loginResult = await _signInManager.PasswordSignInAsync(username, password, true, true);
 
-            if (!loginResult.Succeeded)
+            if (!userSigninResult)
             {
                 throw new ArgumentException("Could not log it");
             }
@@ -72,9 +74,14 @@ namespace PerRead.Backend.Services
 
             if (!registrationResult.Succeeded)
             {
-                throw new ArgumentException("could not register");
+                throw new ArgumentException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
             }
 
+        }
+
+        private string BuildRegisterError(IdentityResult badResult)
+        {
+            return string.Join(",", badResult.Errors.Select(x => x.Code).ToList());
         }
 
         private string GenerateJwt(ApplicationUser user, IEnumerable<string> roles)

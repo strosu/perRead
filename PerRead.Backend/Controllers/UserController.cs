@@ -23,18 +23,25 @@ namespace PerRead.Backend.Controllers
         {
             await _userService.Register(registerCommand.UserName, registerCommand.Password, registerCommand.Email);
 
-            return Redirect("");
+            return Redirect("/");
         }
 
         [HttpPost("/login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginUserCommand loginCommand, string returnUrl)
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand loginCommand)
         {
             var user = HttpContext.User;
 
-            await _userService.Login(user, loginCommand.UserName, loginCommand.PassWord);
+            try
+            {
+                var token = await _userService.Login(user, loginCommand.UserName, loginCommand.PassWord);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return Forbid(ex.Message);
+            }
 
-            return Redirect(returnUrl);
         }
 
         [HttpPost("/logout")]

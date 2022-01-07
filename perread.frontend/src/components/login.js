@@ -1,68 +1,58 @@
-import React, { Component } from 'react';
+import React, { useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import "./Login.css";
 
-export class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.handleLoginClick = this.handleLoginClick.bind(this);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
-        this.state = { isLoggedIn: false };
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  function validateForm() {
+    return username.length > 0 && password.length > 0;
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, password: password})
+    };
+  
+    await fetch('https://localhost:7176/login', requestOptions)
+        .then(response => response.json());
+        alert("Logged in");
+    } catch (e) {
+      alert(e.message);
     }
+  }
 
-    handleLoginClick() {
-        this.setState({ isLoggedIn: true });
-    }
-
-    handleLogoutClick() {
-        this.setState({ isLoggedIn: false });
-    }
-
-    render() {
-        let button;
-        if (this.state.isLoggedIn) {
-            button = <LogoutButton onClick={this.handleLogoutClick} />;
-        }
-        else {
-            button = <LoginButton onClick={this.handleLoginClick} />;
-        }
-
-        return (
-            <div>
-                <Greeting isLoggedIn={this.state.isLoggedIn}/>
-                {button}
-            </div>
-        );
-    }
-}
-
-function LoginButton(props) {
-    return (
-        <button onClick={props.onClick}>
-            Login
-        </button>
-    );
-}
-
-function LogoutButton(props) {
-    return (
-        <button onClick={props.onClick}>
-            Logout
-        </button>
-    );
-}
-
-function Greeting(props) {
-    const isLoggedIn = props.isLoggedIn;
-    if (isLoggedIn) {
-        return <UserGreeting />;
-    }
-
-    return <GuestGreeting />;
-}
-
-function UserGreeting(props) {
-    return <h1>Welcome back!</h1>;
-}
-
-function GuestGreeting(props) {
-    return <h1>Please sign up.</h1>;
+  return (
+    <div className="Login">
+      <Form onSubmit={handleSubmit}>
+        <Form.Group size="lg" controlId="username">
+          <Form.Label>UserName</Form.Label>
+          <Form.Control
+            autoFocus
+            // type="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group size="lg" controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Button block size="lg" type="submit" disabled={!validateForm()}>
+          Login
+        </Button>
+      </Form>
+    </div>
+  );
 }

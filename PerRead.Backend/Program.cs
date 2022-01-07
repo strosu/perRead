@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Extensions;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,33 @@ builder.Services.AddControllers(
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    options =>
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Description = "JWT containing userid claim",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+        }); var security =
+             new OpenApiSecurityRequirement
+             {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                },
+                UnresolvedReference = true
+            },
+            new List<string>()
+        }
+             };
+        options.AddSecurityRequirement(security);
+    });
 
 AddServices(builder);
 
@@ -47,8 +75,7 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuth();
 
 app.MapControllers();
 
@@ -61,11 +88,14 @@ static void AddServices(WebApplicationBuilder builder)
 
     builder.Services.AddScoped<IArticleService, ArticleService>();
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+    builder.Services.AddScoped<IUserService, UserService>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
     builder.Services.AddIdentityCore<ApplicationUser>()
         .AddEntityFrameworkStores<AppDbContext>();
+
+    AddExtraIdentityStuff(builder);
 
     var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 
@@ -74,44 +104,21 @@ static void AddServices(WebApplicationBuilder builder)
     //ConfigureAuth(builder);
 }
 
-static void ConfigureJwt(WebApplicationBuilder builder)
+static void AddExtraIdentityStuff(WebApplicationBuilder builder)
 {
-}
-
-static void ConfigureAuth(WebApplicationBuilder builder)
-{
-    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-            options =>
-            {
-                //options.LoginPath = new PathString("/user/login");
-                //options.AccessDeniedPath = new PathString("/auth/denied");
-            });
-
-    builder.Services.AddAuthorization(options =>
-    {
-        options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-
-        // Register other policies here
-    });
-
-    // ===== Configure Identity =======
-    builder.Services.ConfigureApplicationCookie(options =>
-    {
-        options.Cookie.Name = "auth_cookie";
-        options.Cookie.SameSite = SameSiteMode.None;
-        options.LoginPath = new PathString("/api/contests");
-        options.AccessDeniedPath = new PathString("/api/contests");
-
-        // Not creating a new object since ASP.NET Identity has created
-        // one already and hooked to the OnValidatePrincipal event.
-        // See https://github.com/aspnet/AspNetCore/blob/5a64688d8e192cacffda9440e8725c1ed41a30cf/src/Identity/src/Identity/IdentityServiceCollectionExtensions.cs#L56
-        options.Events.OnRedirectToLogin = context =>
-        {
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            return Task.CompletedTask;
-        };
-    });
+    builder.Services.AddHttpContextAccessor();
+    // Identity services
+    builder.Services.TryAddScoped<IUserValidator<ApplicationUser>, UserValidator<ApplicationUser>>();
+    builder.Services.TryAddScoped<IPasswordValidator<ApplicationUser>, PasswordValidator<ApplicationUser>>();
+    builder.Services.TryAddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+    builder.Services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+    //builder.Services.TryAddScoped<IRoleValidator<TRole>, RoleValidator<TRole>>();
+    // No interface for the error describer so we can add errors without rev'ing the interface
+    builder.Services.TryAddScoped<IdentityErrorDescriber>();
+    builder.Services.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<ApplicationUser>>();
+    builder.Services.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<ApplicationUser>>();
+    //builder.Services.TryAddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, TRole>>();
+    builder.Services.TryAddScoped<UserManager<ApplicationUser>>();
+    builder.Services.TryAddScoped<SignInManager<ApplicationUser>>();
+    //builder.Services.TryAddScoped<RoleManager<TRole>>();
 }
