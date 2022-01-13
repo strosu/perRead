@@ -16,7 +16,7 @@ async function useFetchWrapper() {
     };
 
     function request(method) {
-        return (url, body) => {
+        return async (url, body) => {
             const requestOptions = {
                 method,
                 headers: authHeader(url)
@@ -25,7 +25,10 @@ async function useFetchWrapper() {
                 requestOptions.headers['Content-Type'] = 'application/json';
                 requestOptions.body = JSON.stringify(body);
             }
-            return fetch(url, requestOptions).then(handleResponse);
+            
+            var result = await fetch(url, requestOptions).then(handleResponse);
+
+            return result;
         }
     }
     
