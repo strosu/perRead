@@ -1,0 +1,20 @@
+<!-- <h2>{{articleProperty.title | uppercase}}</h2> -->
+
+<!-- <div>
+        <input id="name" [(ngModel)]="articleProperty.title" placeholder="name">
+  </div> -->
+
+<!-- <div><span>id: </span>{{articleProperty.id}}</div>
+<div><span>author: </span>{{articleProperty.author}}</div>
+<div><span>content: </span>{{articleProperty.content}}</div> -->
+
+<h2>Available articles</h2>
+<ul class="articles">
+    <li *ngFor="let article of articles" 
+    [class.selected]="article === selectedArticle"
+    (click)="onSelect(article)">
+        <span class="badge">{{article.title}}</span> {{article.content}}
+    </li>
+</ul>
+
+<app-article-detail [article]="selectedArticle"></app-article-detail>

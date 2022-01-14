@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+perread.frontend/package-lock 13.29.44.json
