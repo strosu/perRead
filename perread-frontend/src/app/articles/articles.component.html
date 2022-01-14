@@ -10,11 +10,11 @@
 
 <h2>Available articles</h2>
 <ul class="articles">
-    <li *ngFor="let article of articles" 
-    [class.selected]="article === selectedArticle"
-    (click)="onSelect(article)">
-        <span class="badge">{{article.title}}</span> {{article.content}}
+    <li *ngFor="let article of articles">
+        <a routerLink="/article/{{article.articleId}}">
+            <span class="badge">{{article.title}}</span> {{article.content}}
+        </a>
+        <!-- <a routerLink="/article/{{article.id}}">{{article.content}}
+        </a> -->
     </li>
 </ul>
-
-<app-article-detail [article]="selectedArticle"></app-article-detail>

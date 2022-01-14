@@ -20,7 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(
     options => options.AddDefaultPolicy(
         builder => builder
-        .WithOrigins("http://localhost:3000")
+        // .WithOrigins("http://localhost:4200")
+        .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader()));
 
