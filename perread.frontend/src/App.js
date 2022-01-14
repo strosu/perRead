@@ -5,11 +5,11 @@ import {Home} from './components/Home'
 import {NavBar} from './components/NavBar'
 import {About} from './components/about'
 import {SignUp} from './components/signup'
-import Login from './components/login'
+import {Login} from './components/login'
 import {Authors} from './components/authors'
 import {Articles} from './components/articles'
 import {NewArticle} from './components/newArticle'
-import {Article} from './components/article'
+import {useRenderArticle} from './components/article'
 
 function App() {
   return (
@@ -23,11 +23,11 @@ function App() {
         <Route path='/authors' component={Authors} />
         <Route path='/articles' component={Articles} />
         <Route path='/article/new' component={NewArticle} />
-        <Route path="/article/:id" component={Article}/>
+        <Route path="/article/:id" component={useRenderArticle}/>
         {/* <Route path='/articles' component={SignUp} /> */}
       </Switch>
     </Router>
   );
 }
-  
+
 export default App;
