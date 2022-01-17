@@ -22,9 +22,8 @@ export class ArticlesComponent implements OnInit {
     this.loadArticles();
   }
 
-  loadArticles(): void {
-     this.articleService.getArticles()
-     .subscribe(articles => this.articles = articles);
+  async loadArticles(): Promise<void> {
+    this.articles = await this.articleService.getArticles();
   }
 
   onSelect(article: Article) {

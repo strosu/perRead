@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../message.service';
 import { ArticleService } from '../article.service';
 import {Location} from '@angular/common';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-article-detail',
@@ -26,10 +27,12 @@ export class ArticleDetailComponent implements OnInit {
     this.loadArticle();
   }
 
-  loadArticle() {
+  async loadArticle() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.articleService.getArticle(id)
-      .subscribe(article => this.article = article);
+
+    this.messageService.add(`Loading article number ${id}`);
+
+    this.article = await this.articleService.getArticle(id);
   }
 
   goBack() {

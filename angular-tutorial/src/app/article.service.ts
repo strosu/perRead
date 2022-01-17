@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Article } from './article';
 import { MOCKARTICLES } from './mock-articles';
-import { Observable, of } from 'rxjs';
+import { lastValueFrom, Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -15,19 +15,25 @@ export class ArticleService {
     private messageService: MessageService,
     private httpClient: HttpClient) { }
 
-  getArticles(): Observable<Article[]> {
+  async getArticles(): Promise<Article[]> {
     // const articles = of(MOCKARTICLES);
 
     const articles = this.httpClient.get<Article[]>('https://localhost:7176/Article');
 
+    let result = await lastValueFrom(articles);
+
     this.messageService.add('Fetched the articles from the server');
-    return articles;
+
+    return result;
   }
 
-  getArticle(id: number): Observable<Article> {
-    const article = MOCKARTICLES.find(x => x.articleId === id)!;
+  async getArticle(id: number): Promise<Article> {
+
+    let articleObservable = this.httpClient.get<Article>(`https://localhost:7176/article/${id}`);
+    
+    const article = await lastValueFrom(articleObservable);
     this.messageService.add(`Loaded article ${article?.articleId}`);
 
-    return of(article);
+    return article;
   }
 }

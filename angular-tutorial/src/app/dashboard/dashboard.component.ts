@@ -16,9 +16,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getArticles();
   }
-  getArticles() {
-    this.articleService.getArticles()
-    .subscribe(articles => this.articles = articles.slice(1, 5));
+  async getArticles() {
+    this.articles = (await this.articleService.getArticles()).slice(1, 5);
   }
 
 }
