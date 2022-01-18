@@ -14,14 +14,34 @@
         </div>
   
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="content">Content</label>
           <input
             class="form-control"
-            id="description"
+            id="content"
             required
             [(ngModel)]="article.content"
-            name="description"
+            name="content"
           />
+
+          <div class="form-group">
+            <label for="tags">Tags (comma separated)</label>
+            <input
+              class="form-control"
+              id="tags"
+              required
+              [(ngModel)]="tags"
+              name="tags"
+            />
+
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input
+                class="form-control"
+                id="price"
+                required
+                [(ngModel)]="article.price"
+                name="price"
+              />
         </div>
   
         <button (click)="saveArticle()" class="btn btn-success">Submit</button>

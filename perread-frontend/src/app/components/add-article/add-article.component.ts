@@ -10,6 +10,8 @@ import { ArticlesService } from 'src/app/services/articles.service';
 
 export class AddArticleComponent implements OnInit {
 
+  tags?: string;
+
   article: Article = {
     title: '',
     content: 'type your content here',
@@ -28,7 +30,8 @@ export class AddArticleComponent implements OnInit {
       title: this.article.title,
       content: this.article.content,
       price: this.article.price,
-      author: 1
+      author: "author", // replace with current logged in used somehow
+      tags: this.tags?.split(",")
     };
 
     this.articleService.create(data)
