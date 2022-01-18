@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
+using PerRead.Backend.Models.FrontendModels;
 
 namespace PerRead.Backend.Services
 {
@@ -27,7 +28,7 @@ namespace PerRead.Backend.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<string> Login(ClaimsPrincipal user, string username, string password)
+        public async Task<JWTModel> Login(ClaimsPrincipal user, string username, string password)
         {
             var userFromDb = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == username);
 
@@ -46,7 +47,11 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Could not log it");
             }
 
-            return GenerateJwt(userFromDb, Enumerable.Empty<string>());
+            var token = GenerateJwt(userFromDb, Enumerable.Empty<string>());
+            return new JWTModel
+            {
+                Token = token
+            };
 
             //if (!loginResult.Succeeded)
             //{
@@ -91,8 +96,9 @@ namespace PerRead.Backend.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("userName", user.UserName)
+        };
 
             var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
             claims.AddRange(roleClaims);
@@ -117,7 +123,7 @@ namespace PerRead.Backend.Services
     {
         Task Register(string username, string password, string email);
 
-        Task<string> Login(ClaimsPrincipal user, string username, string password);
+        Task<JWTModel> Login(ClaimsPrincipal user, string username, string password);
 
         Task Logout();
     }

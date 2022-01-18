@@ -10,12 +10,19 @@ import { AddArticleComponent } from './components/add-article/add-article.compon
 import { ArticleDetailsComponent } from './components/article-details/article-details.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
 
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+
+import { authInterceptorProviders } from './helpers/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
     AddArticleComponent,
     ArticleDetailsComponent,
-    ArticleListComponent
+    ArticleListComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +30,7 @@ import { ArticleListComponent } from './components/article-list/article-list.com
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

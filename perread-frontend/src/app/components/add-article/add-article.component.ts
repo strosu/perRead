@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Article } from 'src/app/models/article.model';
 import { ArticlesService } from 'src/app/services/articles.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-add-article',
@@ -20,17 +21,20 @@ export class AddArticleComponent implements OnInit {
 
   submitted = false;
 
-  constructor(private articleService: ArticlesService) { }
+  constructor(private articleService: ArticlesService, private tokenService: TokenStorageService) { }
 
   ngOnInit(): void {
   }
 
   saveArticle() : void {
+
+    const currentUser = this.tokenService.getUser().userName;
+
     const data = {
       title: this.article.title,
       content: this.article.content,
       price: this.article.price,
-      author: "author", // replace with current logged in used somehow
+      authors: [currentUser],
       tags: this.tags?.split(",")
     };
 
