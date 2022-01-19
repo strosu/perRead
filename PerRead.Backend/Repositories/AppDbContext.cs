@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models;
+using PerRead.Backend.Models.BackEnd;
 
 namespace PerRead.Backend.Repositories
 {
@@ -8,11 +9,11 @@ namespace PerRead.Backend.Repositories
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Article> Articles { get; set; }
+        public DbSet<ArticleModel> Articles { get; set; }
 
-        public DbSet<Author> Authors { get; set; }
+        public DbSet<AuthorModel> Authors { get; set; }
 
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<TagModel> Tags { get; set; }
 
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
@@ -21,7 +22,7 @@ namespace PerRead.Backend.Repositories
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
-                .Entity<Article>()
+                .Entity<ArticleModel>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
                 .UsingEntity(j => j.ToTable("ArticleTag"));

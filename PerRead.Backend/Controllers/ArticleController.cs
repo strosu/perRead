@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Filters;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
-using PerRead.Backend.Models.FrontendModels;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
 
 namespace PerRead.Controllers
@@ -24,7 +24,7 @@ namespace PerRead.Controllers
         [ResponseHeader("Filter-Header", "Filter Value")]
         [AllowAnonymous]
         //[Route("")]
-        public async Task<IEnumerable<FEArticleDescription>> GetAll()
+        public async Task<IEnumerable<ArticlePreview>> GetAll()
         {
             return await _articleService.GetAll();
         }

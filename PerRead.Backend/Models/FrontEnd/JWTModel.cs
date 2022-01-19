@@ -1,5 +1,5 @@
 ﻿using System;
-namespace PerRead.Backend.Models.FrontendModels
+namespace PerRead.Backend.Models.FrontEnd
 {
     public class JWTModel
     {

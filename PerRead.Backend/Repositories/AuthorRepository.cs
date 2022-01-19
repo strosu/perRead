@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models.BackEnd;
 
 namespace PerRead.Backend.Repositories
 {
@@ -16,7 +14,7 @@ namespace PerRead.Backend.Repositories
 
         public async Task CreateAsync(AuthorCommand command)
         {
-            var newAuthor = new Author
+            var newAuthor = new AuthorModel
             {
                 AuthorId = command.Id,
                 Name = command.Name
@@ -26,7 +24,7 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Author> GetAuthorAsync(string id)
+        public IQueryable<AuthorModel> GetAuthorAsync(string id)
         {
             if (id == null)
             {
@@ -37,17 +35,18 @@ namespace PerRead.Backend.Repositories
                 .Where(x => x.AuthorId == id);
         }
 
-        public async Task<Author> GetAuthorByNameAsync(string name)
+        public IQueryable<AuthorModel> GetAuthorByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException(nameof(name));
             }
 
-            return await _context.Authors.FirstOrDefaultAsync(x => x.Name == name);
+            return _context.Authors.AsNoTracking()
+                .Where(x => x.Name == name);
         }
 
-        public IQueryable<Author> GetAuthors()
+        public IQueryable<AuthorModel> GetAuthors()
         {
             return _context.Authors.AsNoTracking()
                 .Include(x => x.Articles)
@@ -60,11 +59,11 @@ namespace PerRead.Backend.Repositories
     {
         Task CreateAsync(AuthorCommand command);
 
-        IQueryable<Author> GetAuthorAsync(string id);
+        IQueryable<AuthorModel> GetAuthorAsync(string id);
 
-        Task<Author> GetAuthorByNameAsync(string name);
+        IQueryable<AuthorModel> GetAuthorByNameAsync(string name);
 
-        IQueryable<Author> GetAuthors();
+        IQueryable<AuthorModel> GetAuthors();
     }
 
     public class AuthorCommand

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 
 namespace PerRead.Backend.Repositories
@@ -13,10 +14,10 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(string author, ArticleCommand article)
+        public async Task<ArticleModel> Create(string author, ArticleCommand article)
         {
             // Make sure the tags exist
-            var tagMap = new List<Tag>();
+            var tagMap = new List<TagModel>();
 
             foreach (var tag in article.Tags)
             {
@@ -28,7 +29,7 @@ namespace PerRead.Backend.Repositories
                 }
                 else
                 {
-                    var newTag = new Tag { TagName = tag };
+                    var newTag = new TagModel { TagName = tag };
                     _context.Tags.Add(newTag);
                     tagMap.Add(newTag);
                 }
@@ -48,7 +49,7 @@ namespace PerRead.Backend.Repositories
             }
 
             // Add the article
-            var newArticle = new Article
+            var newArticle = new ArticleModel
             {
                 Title = article.Title,
                 Price = article.Price,
@@ -86,20 +87,20 @@ namespace PerRead.Backend.Repositories
             return newArticle;
         }
 
-        public async Task Delete(Article article)
+        public async Task Delete(ArticleModel article)
         {
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Article?> Get(int id)
+        public async Task<ArticleModel> Get(int id)
         {
             return await _context.Articles
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.ArticleId == id);
         }
 
-        public IQueryable<Article> GetAll()
+        public IQueryable<ArticleModel> GetAll()
         {
             return _context.Articles
                 .AsNoTracking()
@@ -107,54 +108,16 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(al => al.Author)
                 .Include(x => x.Tags);
         }
-
-        //public async Task EnsureSeeded()
-        //{
-        //    if (await _context.Articles.AnyAsync())
-        //    {
-        //        return;
-        //    }
-
-        //    var author = new Author
-        //    {
-        //        Name = "gogu1",
-        //        AuthorId = 1,
-        //        PopularityRank = 1
-        //    };
-
-        //    _context.Authors.Add(author);
-
-        //    var article = new Article
-        //    {
-        //        ArticleId = 1,
-        //        Content = "seeded content",
-        //        Price = 1,
-        //        Title = "seeded title"
-        //    };
-
-        //    article.ArticleAuthors = new List<ArticleAuthor>() { new ArticleAuthor
-        //    {
-        //        Article = article,
-        //        Author = author,
-        //        Order = 1
-        //    } };
-
-        //    _context.Articles.Add(article);
-
-
-        //    await _context.SaveChangesAsync();
     }
 }
 
 public interface IArticleRepository
 {
-    Task<Article?> Create(string author, ArticleCommand article);
+    Task<ArticleModel> Create(string author, ArticleCommand article);
 
-    IQueryable<Article> GetAll();
+    IQueryable<ArticleModel> GetAll();
 
-    Task<Article?> Get(int id);
+    Task<ArticleModel> Get(int id);
 
-    Task Delete(Article article);
-
-    //Task EnsureSeeded();
+    Task Delete(ArticleModel article);
 }

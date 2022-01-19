@@ -27,7 +27,6 @@
     <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\FrontendModels\" />
     <Folder Include="Filters\" />
     <Folder Include="Models\Auth\" />
     <Folder Include="Extensions\" />

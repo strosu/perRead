@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
-using PerRead.Backend.Models.FrontendModels;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services

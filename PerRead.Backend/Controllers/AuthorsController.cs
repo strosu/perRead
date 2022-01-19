@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PerRead.Backend.Models.FrontendModels;
 using PerRead.Backend.Services;
 
 namespace PerRead.Backend.Controllers

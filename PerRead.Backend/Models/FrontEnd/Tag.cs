@@ -1,4 +1,4 @@
-﻿namespace PerRead.Backend.Models
+﻿namespace PerRead.Backend.Models.FrontEnd
 {
     public class Tag
     {
@@ -6,6 +6,6 @@
 
         public string TagName { get; set; }
 
-        public IEnumerable<Article> Articles { get; set; }
+        public IEnumerable<ArticlePreview> ArticlePreviews { get; set; }
     }
 }

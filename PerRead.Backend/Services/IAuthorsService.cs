@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models;
-using PerRead.Backend.Models.FrontendModels;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -15,75 +15,34 @@ namespace PerRead.Backend.Services
             _authorRepository = authorRepository;
         }
 
-        public async Task<FEAuthor> GetAuthorAsync(string id)
+        public async Task<Author> GetAuthorAsync(string id)
         {
             var author = _authorRepository.GetAuthorAsync(id);
 
-            return await author.Select(a => new FEAuthor
-            {
-                Name = a.Name,
-                Articles = a.Articles.Select(x => new FEArticleDescription
-                {
-                    ArticleId = x.ArticleId,
-                    Price = x.Article.Price,
-                    Title = x.Article.Title,
-                    Tags = x.Article.Tags.Select(tag => new FETagDescription
-                    {
-                        Name = tag.TagName,
-                        TagId = tag.TagId
-                    })
-                })
-            }).FirstOrDefaultAsync();
+            return await author?.Select(x => x.ToAuthor())?.FirstOrDefaultAsync();
         }
 
-        public async Task<FEAuthor> GetAuthorByNameAsync(string name)
+        public async Task<Author> GetAuthorByNameAsync(string name)
         {
-            var author = await _authorRepository.GetAuthorByNameAsync(name);
-            return new FEAuthor
-            {
-                Name = author.Name,
-                Articles = author.Articles.Select(art => new FEArticleDescription
-                {
-                    ArticleId = art.ArticleId,
-                    Price = art.Article.Price,
-                    Title = art.Article.Title,
-                    Tags = art.Article.Tags.Select(tag => new FETagDescription
-                    {
-                        TagId = tag.TagId,
-                        Name = tag.TagName
-                    })
-                })
-            };
+            var author = _authorRepository.GetAuthorByNameAsync(name);
+            return await author?.Select(x => x.ToAuthor()).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<FEAuthor>> GetAuthorsAsync()
+        public async Task<IEnumerable<AuthorPreview>> GetAuthorsAsync()
         {
             var authors = _authorRepository.GetAuthors();
 
-            return await authors.Select(x => new FEAuthor
-            {
-                Articles = x.Articles.Select(article => new FEArticleDescription
-                {
-                    ArticleId = article.ArticleId,
-                    Price = article.Article.Price,
-                    Title = article.Article.Title,
-                    Tags = article.Article.Tags.Select(tag => new FETagDescription
-                    {
-                        Name = tag.TagName,
-                        TagId = tag.TagId
-                    })
-                })
-            }).ToListAsync();
+            return await authors.Select(x => x.ToAuthorPreivew()).ToListAsync();
         }
     }
 
     public interface IAuthorsService
     {
-        Task<FEAuthor> GetAuthorAsync(string id);
+        Task<Author> GetAuthorAsync(string id);
 
-        Task<FEAuthor> GetAuthorByNameAsync(string name);
+        Task<Author> GetAuthorByNameAsync(string name);
 
-        Task<IEnumerable<FEAuthor>> GetAuthorsAsync();
+        Task<IEnumerable<AuthorPreview>> GetAuthorsAsync();
     }
 }
 

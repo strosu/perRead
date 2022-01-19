@@ -1,6 +1,9 @@
-﻿namespace PerRead.Backend.Models
+﻿namespace PerRead.Backend.Models.BackEnd
 {
-    public class Author
+    /// <summary>
+    /// Authors, as loaded from the DB
+    /// </summary>
+    public class AuthorModel
     {
         public string AuthorId { get; set; }
 
