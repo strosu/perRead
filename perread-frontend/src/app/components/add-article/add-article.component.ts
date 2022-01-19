@@ -27,14 +27,10 @@ export class AddArticleComponent implements OnInit {
   }
 
   saveArticle() : void {
-
-    const currentUser = this.tokenService.getUser().userName;
-
     const data = {
       title: this.article.title,
       content: this.article.content,
       price: this.article.price,
-      authors: [currentUser],
       tags: this.tags?.split(",")
     };
 

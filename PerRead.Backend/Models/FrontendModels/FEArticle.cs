@@ -42,7 +42,14 @@ namespace PerRead.Backend.Models.FrontendModels
     {
         public string Name { get; set; }
 
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
+    }
+
+    public class FEAuthor
+    {
+        public string Name { get; set; }
+
+        public IEnumerable<FEArticleDescription> Articles { get; set; }
     }
 }
 

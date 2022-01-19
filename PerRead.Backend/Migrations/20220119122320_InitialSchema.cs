@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PerRead.Backend.Migrations
 {
-    public partial class AddIdentitySchema : Migration
+    public partial class InitialSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,8 +53,7 @@ namespace PerRead.Backend.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    AuthorId = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     PopularityRank = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -142,7 +141,7 @@ namespace PerRead.Backend.Migrations
                 columns: table => new
                 {
                     ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AuthorId = table.Column<string>(type: "TEXT", nullable: false),
                     Order = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>

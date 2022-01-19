@@ -90,6 +90,8 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IArticleService, ArticleService>();
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+    builder.Services.AddScoped<IAuthorsService, AuthorsService>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 

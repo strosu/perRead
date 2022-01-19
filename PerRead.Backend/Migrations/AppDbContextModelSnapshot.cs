@@ -187,8 +187,8 @@ namespace PerRead.Backend.Migrations
                     b.Property<int>("ArticleId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Order")
                         .HasColumnType("INTEGER");
@@ -202,9 +202,8 @@ namespace PerRead.Backend.Migrations
 
             modelBuilder.Entity("PerRead.Backend.Models.Author", b =>
                 {
-                    b.Property<int>("AuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()

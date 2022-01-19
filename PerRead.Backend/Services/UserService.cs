@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Models.FrontendModels;
+using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
 {
@@ -16,15 +17,18 @@ namespace PerRead.Backend.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAuthorRepository _authorRepository;
         private readonly JwtSettings _jwtSettings;
 
         public UserService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptionsSnapshot<JwtSettings> jwtSettings)
+            IOptionsSnapshot<JwtSettings> jwtSettings,
+            IAuthorRepository authorRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _authorRepository = authorRepository;
             _jwtSettings = jwtSettings.Value;
         }
 
@@ -81,6 +85,12 @@ namespace PerRead.Backend.Services
             {
                 throw new ArgumentException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
             }
+
+            await _authorRepository.CreateAsync(new AuthorCommand
+            {
+                Id = user.Id,
+                Name = user.UserName
+            });
 
         }
 

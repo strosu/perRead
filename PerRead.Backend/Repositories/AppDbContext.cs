@@ -31,4 +31,13 @@ namespace PerRead.Backend.Repositories
 
         }
     }
+
+    //public class ArticleAuthor
+    //{
+    //    public int ArticleId { get; set; }
+    //    public Article Article { get; set; }
+
+    //    public string AuthorId { get; set; }
+    //    public Author Author { get; set; }
+    //}
 }

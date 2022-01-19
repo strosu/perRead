@@ -13,7 +13,7 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(ArticleCommand article)
+        public async Task<Article> Create(string author, ArticleCommand article)
         {
             // Make sure the tags exist
             var tagMap = new List<Tag>();
@@ -38,7 +38,14 @@ namespace PerRead.Backend.Repositories
 
 
             // Get the authors
-            var authors = await _context.Authors.Where(x => article.Authors.Contains(x.Name)).ToListAsync();
+            //var authors = await _context.Authors.Where(x => article.Authors.Contains(x.Name)).ToListAsync();
+
+            var dbAuthor = await _context.Authors.FirstOrDefaultAsync(x => x.Name == author);
+
+            if (dbAuthor == null)
+            {
+                throw new ArgumentNullException("Author not found lol");
+            }
 
             // Add the article
             var newArticle = new Article
@@ -48,12 +55,15 @@ namespace PerRead.Backend.Repositories
                 Content = article.Content,
             };
 
-            newArticle.ArticleAuthors = authors.Select(x => new ArticleAuthor
+            newArticle.ArticleAuthors = new List<ArticleAuthor>
+            {
+                new ArticleAuthor
             {
                 Article = newArticle,
-                Author = x,
+                Author = dbAuthor,
                 Order = 1
-            }).ToList();
+            }
+            };
 
             _context.Articles.Add(newArticle);
             await _context.SaveChangesAsync();
@@ -98,54 +108,53 @@ namespace PerRead.Backend.Repositories
                 .Include(x => x.Tags);
         }
 
-        public async Task EnsureSeeded()
-        {
-            if (await _context.Articles.AnyAsync())
-            {
-                return;
-            }
+        //public async Task EnsureSeeded()
+        //{
+        //    if (await _context.Articles.AnyAsync())
+        //    {
+        //        return;
+        //    }
 
-            var author = new Author
-            {
-                Name = "gogu1",
-                AuthorId = 1,
-                PopularityRank = 1
-            };
+        //    var author = new Author
+        //    {
+        //        Name = "gogu1",
+        //        AuthorId = 1,
+        //        PopularityRank = 1
+        //    };
 
-            _context.Authors.Add(author);
+        //    _context.Authors.Add(author);
 
-            var article = new Article
-            {
-                ArticleId = 1,
-                Content = "seeded content",
-                Price = 1,
-                Title = "seeded title"
-            };
+        //    var article = new Article
+        //    {
+        //        ArticleId = 1,
+        //        Content = "seeded content",
+        //        Price = 1,
+        //        Title = "seeded title"
+        //    };
 
-            article.ArticleAuthors = new List<ArticleAuthor>() { new ArticleAuthor
-            {
-                Article = article,
-                Author = author,
-                Order = 1
-            } };
+        //    article.ArticleAuthors = new List<ArticleAuthor>() { new ArticleAuthor
+        //    {
+        //        Article = article,
+        //        Author = author,
+        //        Order = 1
+        //    } };
 
-            _context.Articles.Add(article);
+        //    _context.Articles.Add(article);
 
 
-            await _context.SaveChangesAsync();
-        }
+        //    await _context.SaveChangesAsync();
     }
+}
 
-    public interface IArticleRepository
-    {
-        Task<Article?> Create(ArticleCommand article);
+public interface IArticleRepository
+{
+    Task<Article?> Create(string author, ArticleCommand article);
 
-        IQueryable<Article> GetAll();
+    IQueryable<Article> GetAll();
 
-        Task<Article?> Get(int id);
+    Task<Article?> Get(int id);
 
-        Task Delete(Article article);
+    Task Delete(Article article);
 
-        Task EnsureSeeded();
-    }
+    //Task EnsureSeeded();
 }

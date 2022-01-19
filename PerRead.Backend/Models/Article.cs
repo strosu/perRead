@@ -23,7 +23,7 @@
 
         public Author Author { get; set; }
 
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
 
         public int Order { get; set; }
     }

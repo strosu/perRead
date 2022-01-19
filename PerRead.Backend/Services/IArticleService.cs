@@ -10,9 +10,9 @@ namespace PerRead.Backend.Services
     {
         Task<IEnumerable<FEArticleDescription>> GetAll();
 
-        Task<Article?> Get(int id);
+        Task<FEArticle?> Get(int id);
 
-        Task<Article?> Create(ArticleCommand article);
+        Task<Article?> Create(string author, ArticleCommand article);
 
         Task Delete(int id);
     }
@@ -26,7 +26,7 @@ namespace PerRead.Backend.Services
             _articleRepository = articleRepository;
         }
 
-        public async Task<Article?> Create(ArticleCommand article)
+        public async Task<Article?> Create(string author, ArticleCommand article)
         {
             // Business logic
             if (article == null)
@@ -34,9 +34,9 @@ namespace PerRead.Backend.Services
                 throw new ArgumentNullException(nameof(article));
             }
 
-            if (article.Authors == null || !article.Authors.Any())
+            if (author == null)
             {
-                throw new ArgumentNullException(nameof(article.Authors));
+                throw new ArgumentNullException(nameof(author));
             }
 
             if (article.Content == null)
@@ -49,12 +49,12 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Each article requires at least one tag");
             }
 
-            return await _articleRepository.Create(article);
+            return await _articleRepository.Create(author, article);
         }
 
         public async Task<IEnumerable<FEArticleDescription>> GetAll()
         {
-            await _articleRepository.EnsureSeeded();
+            //await _articleRepository.EnsureSeeded();
 
             var articles = _articleRepository.GetAll();
 
@@ -76,9 +76,24 @@ namespace PerRead.Backend.Services
             }).ToListAsync();
         }
 
-        public async Task<Article?> Get(int id)
+        public async Task<FEArticle?> Get(int id)
         {
-            return await _articleRepository.Get(id);
+            var article = await _articleRepository.Get(id);
+            return new FEArticle()
+            {
+                Title = article.Title,
+                Content = article.Content,
+                Tags = article.Tags.Select(x => new FETagDescription
+                {
+                    Name = x.TagName,
+                    TagId = x.TagId
+                }),
+                Authors = article.ArticleAuthors.Select(x => new FEAuthorDescription
+                {
+                    AuthorId = x.AuthorId,
+                    Name = x.Author.Name
+                })
+            };
 
         }
 

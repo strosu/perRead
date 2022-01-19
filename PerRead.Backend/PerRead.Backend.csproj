@@ -22,7 +22,6 @@
     <None Remove="Models\FrontendModels\" />
     <None Remove="Filters\" />
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-    <None Remove="Migrations\" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Models\Auth\" />
     <None Remove="Extensions\" />
@@ -30,7 +29,6 @@
   <ItemGroup>
     <Folder Include="Models\FrontendModels\" />
     <Folder Include="Filters\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Models\Auth\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
