@@ -1,0 +1,22 @@
+<div>
+  <h4>Article details</h4>
+  <div>
+    <label><strong>Title:</strong></label> {{articlePreview?.articleTitle}}
+  </div>
+  <div>
+    <label><strong>Authors:</strong></label>
+    <div>
+      <div *ngFor="let author of articlePreview.authorPreviews">
+        <app-author-preview [authorPreview]="author"></app-author-preview>
+      </div>
+    </div>
+  </div>
+  <div>
+    <label><strong>Price:</strong></label>
+    {{articlePreview?.articlePrice}}
+  </div>
+
+  <a class="badge badge-warning" routerLink="/article/{{ articlePreview?.articleId }}">
+    Read
+  </a>
+</div>

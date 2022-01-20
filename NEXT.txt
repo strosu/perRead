@@ -19,18 +19,25 @@ BACKEND:
 
 - revisit tags, safety around parallel requests
 
+
+- stop returning redirects to stuff that doesn't exist lol (register, login)
+
+
 - do some basic search for titles
     - do more advanced search for article contents? grep maybe?
 
 FRONTEND:
 
-- fix concurrency issue when submitting new article and redirecting quickly via Link
+- fix concurrency issue when submitting new article and redirecting quickly via Link - see if Angular has the same problem
 
 - login!!
-    - sign up - needs redirecting 
-    - sign in - needs redirecting
+    - sign up - needs redirecting to login page
+    - sign in - needs redirecting to last visited page
+    - make intercepter look at 401s all the time and redirect to login with current page as an argument
 
 - input form for creating new article
+    - add rest of fields
+    - redirect to list of articles; alternatively, redirect to list of articles for current user (might be better)
 - rework article presentation "page"
 - unlock article UI
 

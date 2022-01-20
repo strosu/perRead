@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddArticleComponent } from './components/add-article/add-article.component';
 import { ArticleDetailsComponent } from './components/article-details/article-details.component';
 import { ArticleListComponent } from './components/article-list/article-list.component';
+import { AuthorDetailsComponent } from './components/author-details/author-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { TagDetailsComponent } from './components/tag-details/tag-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'articles', pathMatch: 'full' },
@@ -12,7 +14,9 @@ const routes: Routes = [
   { path: 'article/:id', component: ArticleDetailsComponent},
   { path: 'articles/new', component: AddArticleComponent},
   { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: 'authors/:id', component: AuthorDetailsComponent},
+  { path: 'tag/:id', component: TagDetailsComponent},
 ];
 
 @NgModule({

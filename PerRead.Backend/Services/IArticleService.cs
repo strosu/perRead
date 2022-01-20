@@ -10,7 +10,7 @@ namespace PerRead.Backend.Services
     {
         Task<IEnumerable<FEArticlePreview>> GetAll();
 
-        Task<FEArticle> Get(int id);
+        Task<FEArticle?> Get(int id);
 
         Task<FEArticle> Create(string author, ArticleCommand article);
 
@@ -50,19 +50,19 @@ namespace PerRead.Backend.Services
             }
 
             var articleModel = await _articleRepository.Create(author, article);
-            return articleModel.ToArticle();
+            return articleModel.ToFEArticle();
         }
 
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
             var articles = _articleRepository.GetAll();
-            return await articles.Select(article => article.ToArticlePreview()).ToListAsync();
+            return await articles.Select(article => article.ToFEArticlePreview()).ToListAsync();
         }
 
-        public async Task<FEArticle> Get(int id)
+        public async Task<FEArticle?> Get(int id)
         {
             var article = await _articleRepository.Get(id);
-            return article.ToArticle();
+            return article?.ToFEArticle();
         }
 
         public async Task Delete(int id)

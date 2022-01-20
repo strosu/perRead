@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticlePreview } from 'src/app/models/article-preview.model';
-import { Article } from 'src/app/models/article.model';
 import { ArticlesService } from 'src/app/services/articles.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { ArticlesService } from 'src/app/services/articles.service';
 export class ArticleListComponent implements OnInit {
 
   articleDescriptions?: ArticlePreview[];
-  selectedArticle? : ArticlePreview = <ArticlePreview>{};
+  selectedArticle : ArticlePreview = <ArticlePreview>{};
   currentIndex = -1;
   titleToSearch = '';
 

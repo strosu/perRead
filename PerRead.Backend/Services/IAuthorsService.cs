@@ -19,20 +19,20 @@ namespace PerRead.Backend.Services
         {
             var author = _authorRepository.GetAuthorAsync(id);
 
-            return await author?.Select(x => x.ToAuthor())?.FirstOrDefaultAsync();
+            return await author?.Select(x => x.ToFEAuthor())?.FirstOrDefaultAsync();
         }
 
         public async Task<FEAuthor> GetAuthorByNameAsync(string name)
         {
             var author = _authorRepository.GetAuthorByNameAsync(name);
-            return await author?.Select(x => x.ToAuthor()).FirstOrDefaultAsync();
+            return await author?.Select(x => x.ToFEAuthor()).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<FEAuthorPreview>> GetAuthorsAsync()
         {
             var authors = _authorRepository.GetAuthors();
 
-            return await authors.Select(x => x.ToAuthorPreivew()).ToListAsync();
+            return await authors.Select(x => x.ToFEAuthorPreview()).ToListAsync();
         }
     }
 

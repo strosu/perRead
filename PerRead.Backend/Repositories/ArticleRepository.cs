@@ -96,11 +96,15 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Article> Get(int id)
+        public async Task<Article?> Get(int id)
         {
             return await _context.Articles
                 .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.ArticleId == id);
+                .Where(x => x.ArticleId == id)
+                .Include(article => article.ArticleAuthors)
+                    .ThenInclude(articleAuthor => articleAuthor.Author)
+                .Include(a => a.Tags)
+                .SingleOrDefaultAsync();
         }
 
         public IQueryable<Article> GetAll()
@@ -120,7 +124,7 @@ public interface IArticleRepository
 
     IQueryable<Article> GetAll();
 
-    Task<Article> Get(int id);
+    Task<Article?> Get(int id);
 
     Task Delete(Article article);
 }

@@ -32,7 +32,10 @@ namespace PerRead.Backend.Repositories
             }
 
             return _context.Authors.AsNoTracking()
-                .Where(x => x.AuthorId == id);
+                .Where(x => x.AuthorId == id)
+                .Include(author => author.Articles)
+                    .ThenInclude(articleAuthor => articleAuthor.Article)
+                    .ThenInclude(article => article.Tags);
         }
 
         public IQueryable<Author> GetAuthorByNameAsync(string name)
