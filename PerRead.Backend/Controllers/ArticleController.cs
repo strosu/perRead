@@ -24,7 +24,7 @@ namespace PerRead.Controllers
         [ResponseHeader("Filter-Header", "Filter Value")]
         [AllowAnonymous]
         //[Route("")]
-        public async Task<IEnumerable<ArticlePreview>> GetAll()
+        public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
             return await _articleService.GetAll();
         }

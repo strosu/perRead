@@ -14,10 +14,12 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<ArticleModel> Create(string author, ArticleCommand article)
+        public async Task<Article> Create(string author, ArticleCommand article)
         {
+            var now = DateTime.Now;
+
             // Make sure the tags exist
-            var tagMap = new List<TagModel>();
+            var tagMap = new List<Tag>();
 
             foreach (var tag in article.Tags)
             {
@@ -29,7 +31,7 @@ namespace PerRead.Backend.Repositories
                 }
                 else
                 {
-                    var newTag = new TagModel { TagName = tag };
+                    var newTag = new Tag { TagName = tag, FirstUsage = now };
                     _context.Tags.Add(newTag);
                     tagMap.Add(newTag);
                 }
@@ -49,11 +51,12 @@ namespace PerRead.Backend.Repositories
             }
 
             // Add the article
-            var newArticle = new ArticleModel
+            var newArticle = new Article
             {
                 Title = article.Title,
                 Price = article.Price,
                 Content = article.Content,
+                CreatedAt = now,
             };
 
             newArticle.ArticleAuthors = new List<ArticleAuthor>
@@ -87,20 +90,20 @@ namespace PerRead.Backend.Repositories
             return newArticle;
         }
 
-        public async Task Delete(ArticleModel article)
+        public async Task Delete(Article article)
         {
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ArticleModel> Get(int id)
+        public async Task<Article> Get(int id)
         {
             return await _context.Articles
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.ArticleId == id);
         }
 
-        public IQueryable<ArticleModel> GetAll()
+        public IQueryable<Article> GetAll()
         {
             return _context.Articles
                 .AsNoTracking()
@@ -113,11 +116,11 @@ namespace PerRead.Backend.Repositories
 
 public interface IArticleRepository
 {
-    Task<ArticleModel> Create(string author, ArticleCommand article);
+    Task<Article> Create(string author, ArticleCommand article);
 
-    IQueryable<ArticleModel> GetAll();
+    IQueryable<Article> GetAll();
 
-    Task<ArticleModel> Get(int id);
+    Task<Article> Get(int id);
 
-    Task Delete(ArticleModel article);
+    Task Delete(Article article);
 }

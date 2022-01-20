@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ArticleDescription } from '../models/article-description.model';
+import { ArticlePreview } from '../models/article-preview.model';
 import { Article } from '../models/article.model';
 
 const baseUrl = 'https://localhost:7176';
@@ -13,8 +13,8 @@ export class ArticlesService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAll() : Observable<ArticleDescription[]> {
-    return this.httpClient.get<ArticleDescription[]>(`${baseUrl}/article`);
+  getAll() : Observable<ArticlePreview[]> {
+    return this.httpClient.get<ArticlePreview[]>(`${baseUrl}/article`);
   }
 
   get(id: any) : Observable<Article> {
@@ -29,7 +29,7 @@ export class ArticlesService {
     return this.httpClient.delete(`${baseUrl}/article/${id}`);
   }
 
-  findByTitle(title: any) : Observable<ArticleDescription[]> {
-    return this.httpClient.get<ArticleDescription[]>(`${baseUrl}/article?title=${title}`);
+  findByTitle(title: any) : Observable<ArticlePreview[]> {
+    return this.httpClient.get<ArticlePreview[]>(`${baseUrl}/article?title=${title}`);
   }
 }

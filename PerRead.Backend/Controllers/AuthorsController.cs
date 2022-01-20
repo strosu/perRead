@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
 
 namespace PerRead.Backend.Controllers
@@ -33,6 +34,12 @@ namespace PerRead.Backend.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet("")]
+        public async Task<IEnumerable<FEAuthorPreview>> GetAll()
+        {
+            return await _authorsService.GetAuthorsAsync();
         }
     }
 }

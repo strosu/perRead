@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ArticleDescription } from 'src/app/models/article-description.model';
+import { ArticlePreview } from 'src/app/models/article-preview.model';
 import { Article } from 'src/app/models/article.model';
 import { ArticlesService } from 'src/app/services/articles.service';
 
@@ -10,8 +10,8 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class ArticleListComponent implements OnInit {
 
-  articleDescriptions?: ArticleDescription[];
-  selectedArticle? : ArticleDescription = <ArticleDescription>{};
+  articleDescriptions?: ArticlePreview[];
+  selectedArticle? : ArticlePreview = <ArticlePreview>{};
   currentIndex = -1;
   titleToSearch = '';
 
@@ -35,18 +35,18 @@ export class ArticleListComponent implements OnInit {
 
   refreshList() : void {
     this.getArticles();
-    this.selectedArticle = <ArticleDescription>{};
+    this.selectedArticle = <ArticlePreview>{};
     this.currentIndex = -1;
   }
 
-  setActiveArticle(article: ArticleDescription, currentIndex: number) : void {
+  setActiveArticle(article: ArticlePreview, currentIndex: number) : void {
     this.selectedArticle = article;
     this.currentIndex = currentIndex;
   }
 
   searchTitle() : void {
     this.currentIndex = -1;
-    this.selectedArticle = <ArticleDescription>{};
+    this.selectedArticle = <ArticlePreview>{};
     this.articleSerivice.findByTitle(this.titleToSearch).subscribe(
       {
         next: data => {

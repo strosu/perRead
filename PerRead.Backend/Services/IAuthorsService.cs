@@ -15,20 +15,20 @@ namespace PerRead.Backend.Services
             _authorRepository = authorRepository;
         }
 
-        public async Task<Author> GetAuthorAsync(string id)
+        public async Task<FEAuthor> GetAuthorAsync(string id)
         {
             var author = _authorRepository.GetAuthorAsync(id);
 
             return await author?.Select(x => x.ToAuthor())?.FirstOrDefaultAsync();
         }
 
-        public async Task<Author> GetAuthorByNameAsync(string name)
+        public async Task<FEAuthor> GetAuthorByNameAsync(string name)
         {
             var author = _authorRepository.GetAuthorByNameAsync(name);
             return await author?.Select(x => x.ToAuthor()).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<AuthorPreview>> GetAuthorsAsync()
+        public async Task<IEnumerable<FEAuthorPreview>> GetAuthorsAsync()
         {
             var authors = _authorRepository.GetAuthors();
 
@@ -38,11 +38,11 @@ namespace PerRead.Backend.Services
 
     public interface IAuthorsService
     {
-        Task<Author> GetAuthorAsync(string id);
+        Task<FEAuthor> GetAuthorAsync(string id);
 
-        Task<Author> GetAuthorByNameAsync(string name);
+        Task<FEAuthor> GetAuthorByNameAsync(string name);
 
-        Task<IEnumerable<AuthorPreview>> GetAuthorsAsync();
+        Task<IEnumerable<FEAuthorPreview>> GetAuthorsAsync();
     }
 }
 

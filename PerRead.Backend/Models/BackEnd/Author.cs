@@ -3,7 +3,7 @@
     /// <summary>
     /// Authors, as loaded from the DB
     /// </summary>
-    public class AuthorModel
+    public class Author
     {
         public string AuthorId { get; set; }
 

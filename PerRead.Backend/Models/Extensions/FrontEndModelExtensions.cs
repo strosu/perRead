@@ -4,9 +4,9 @@ namespace PerRead.Backend.Models.FrontEnd
 {
     public static class FrontEndModelExtensions
     {
-        public static Article ToArticle(this ArticleModel articleModel)
+        public static FEArticle ToArticle(this Article articleModel)
         {
-            return new Article 
+            return new FEArticle 
             {
                 Id = articleModel.ArticleId,
                 Title = articleModel.Title,
@@ -16,38 +16,40 @@ namespace PerRead.Backend.Models.FrontEnd
             };
         }
 
-        public static ArticlePreview ToArticlePreview(this ArticleModel articleModel)
+        public static FEArticlePreview ToArticlePreview(this Article articleModel)
         {
-            return new ArticlePreview
+            return new FEArticlePreview
             {
-                Id = articleModel.ArticleId,
-                Title = articleModel.Title,
+                ArticleId = articleModel.ArticleId,
+                ArticleTitle = articleModel.Title,
+                ArticleCreatedAt = articleModel.CreatedAt,
                 //Preview = articleModel.Preview;
             };
         }
 
-        public static Tag ToTag(this TagModel tagModel) 
+        public static FETag ToTag(this Tag tagModel) 
         {
-            return new Tag
+            return new FETag
             {
-                TagId = tagModel.TagId,
-                TagName = tagModel.TagName,
-                ArticlePreviews = tagModel.Articles.Select(ToArticlePreview)
+                Id = tagModel.TagId,
+                Name = tagModel.TagName,
+                ArticlePreviews = tagModel.Articles.Select(ToArticlePreview),
+                FirstUsage = tagModel.FirstUsage,
             };
         }
 
-        public static TagPreview ToTagPreview(this TagModel tagModel)
+        public static FETagPreview ToTagPreview(this Tag tagModel)
         {
-            return new TagPreview
+            return new FETagPreview
             {
                 TagId = tagModel.TagId,
                 TagName = tagModel.TagName
             };
         }
 
-        public static Author ToAuthor(this AuthorModel authorModel)
+        public static FEAuthor ToAuthor(this Author authorModel)
         {
-            return new Author
+            return new FEAuthor
             {
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
@@ -55,12 +57,12 @@ namespace PerRead.Backend.Models.FrontEnd
             };
         }
 
-        public static AuthorPreview ToAuthorPreivew(this AuthorModel authorModel)
+        public static FEAuthorPreview ToAuthorPreivew(this Author authorModel)
         {
-            return new AuthorPreview
+            return new FEAuthorPreview
             {
-                Id = authorModel.AuthorId,
-                Name = authorModel.Name
+                AuthorId = authorModel.AuthorId,
+                AuthorName = authorModel.Name
             };
         }
     }

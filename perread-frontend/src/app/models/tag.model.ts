@@ -1,4 +1,8 @@
+import { ArticlePreview } from "./article-preview.model";
+
 export class Tag {
-    tagId: number = 0;
-    name: string = '';
+    id?: number;
+    name?: string;
+    firstUsage?: Date;
+    articlePreviews?: ArticlePreview[];
 }

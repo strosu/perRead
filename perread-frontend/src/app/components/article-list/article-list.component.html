@@ -26,7 +26,7 @@
           [class.active]="i == currentIndex"
           (click)="setActiveArticle(article, i)"
         >
-          {{ article.title }}
+          {{article.articleTitle}}
         </li>
       </ul>
 <!--   
@@ -38,15 +38,15 @@
       <div *ngIf="selectedArticle?.articleId">
         <h4>Tutorial</h4>
         <div>
-          <label><strong>Title:</strong></label> {{ selectedArticle?.title }}
+          <label><strong>Title:</strong></label> {{selectedArticle?.articleTitle}}
         </div>
         <div>
           <label><strong>Authors:</strong></label>
-          {{ selectedArticle?.authors }}
+          {{selectedArticle?.authorPreviews}}
         </div>
         <div>
           <label><strong>Price:</strong></label>
-          {{ selectedArticle?.price }}
+          {{selectedArticle?.articlePrice}}
         </div>
   
         <a class="badge badge-warning" routerLink="/article/{{ selectedArticle?.articleId }}">

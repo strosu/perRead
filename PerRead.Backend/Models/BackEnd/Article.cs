@@ -3,7 +3,7 @@
     /// <summary>
     /// Article as loaded from the Database
     /// </summary>
-    public class ArticleModel
+    public class Article
     {
         public int ArticleId { get; set; }
 
@@ -11,11 +11,13 @@
 
         public string Title { get; set; }
 
-        public ICollection<TagModel> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; }
 
         public uint Price { get; set; }
 
         public string Content { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 
     /// <summary>
@@ -23,11 +25,11 @@
     /// </summary>
     public class ArticleAuthor
     {
-        public ArticleModel Article { get; set; }
+        public Article Article { get; set; }
 
         public int ArticleId { get; set; }
 
-        public AuthorModel Author { get; set; }
+        public Author Author { get; set; }
 
         public string AuthorId { get; set; }
 

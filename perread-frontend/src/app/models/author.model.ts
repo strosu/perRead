@@ -1,4 +1,7 @@
+import { ArticlePreview } from "./article-preview.model";
+
 export class Author {
-    authorId: number = 0;
-    name: string = '';
+    id?: number;
+    name?: string;
+    articlePreviews?: ArticlePreview[];
 }

@@ -3,12 +3,14 @@
     /// <summary>
     /// Tag, as loaded from the DB
     /// </summary>
-    public class TagModel
+    public class Tag
     {
         public int TagId { get; set; }
 
         public string TagName { get; set; }
 
-        public IEnumerable<ArticleModel> Articles { get; set; }
+        public IEnumerable<Article> Articles { get; set; }
+
+        public DateTime FirstUsage { get; set; }
     }
 }

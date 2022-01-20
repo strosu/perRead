@@ -14,7 +14,7 @@ namespace PerRead.Backend.Repositories
 
         public async Task CreateAsync(AuthorCommand command)
         {
-            var newAuthor = new AuthorModel
+            var newAuthor = new Author
             {
                 AuthorId = command.Id,
                 Name = command.Name
@@ -24,7 +24,7 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<AuthorModel> GetAuthorAsync(string id)
+        public IQueryable<Author> GetAuthorAsync(string id)
         {
             if (id == null)
             {
@@ -35,7 +35,7 @@ namespace PerRead.Backend.Repositories
                 .Where(x => x.AuthorId == id);
         }
 
-        public IQueryable<AuthorModel> GetAuthorByNameAsync(string name)
+        public IQueryable<Author> GetAuthorByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -46,7 +46,7 @@ namespace PerRead.Backend.Repositories
                 .Where(x => x.Name == name);
         }
 
-        public IQueryable<AuthorModel> GetAuthors()
+        public IQueryable<Author> GetAuthors()
         {
             return _context.Authors.AsNoTracking()
                 .Include(x => x.Articles)
@@ -59,11 +59,11 @@ namespace PerRead.Backend.Repositories
     {
         Task CreateAsync(AuthorCommand command);
 
-        IQueryable<AuthorModel> GetAuthorAsync(string id);
+        IQueryable<Author> GetAuthorAsync(string id);
 
-        IQueryable<AuthorModel> GetAuthorByNameAsync(string name);
+        IQueryable<Author> GetAuthorByNameAsync(string name);
 
-        IQueryable<AuthorModel> GetAuthors();
+        IQueryable<Author> GetAuthors();
     }
 
     public class AuthorCommand

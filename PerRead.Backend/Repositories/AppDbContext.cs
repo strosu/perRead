@@ -9,11 +9,11 @@ namespace PerRead.Backend.Repositories
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<ArticleModel> Articles { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
-        public DbSet<AuthorModel> Authors { get; set; }
+        public DbSet<Author> Authors { get; set; }
 
-        public DbSet<TagModel> Tags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
@@ -22,7 +22,7 @@ namespace PerRead.Backend.Repositories
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
-                .Entity<ArticleModel>()
+                .Entity<Article>()
                 .HasMany(p => p.Tags)
                 .WithMany(p => p.Articles)
                 .UsingEntity(j => j.ToTable("ArticleTag"));

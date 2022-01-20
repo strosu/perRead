@@ -1,10 +1,12 @@
-import { Author } from "./author.model";
+import { AuthorPreview } from "./author-preview.model";
+import { TagPreview } from "./tag-preview.model";
 
 export class Article {
-    articleId? : any;
+    id? : any;
     title?: string;
     content? : string;
     price? : number;
-    published?: boolean;
-    authors?: Author[];
+    createdAt?: boolean;
+    authorPreviews?: AuthorPreview[];
+    tagPreviews?: TagPreview[];
 }
