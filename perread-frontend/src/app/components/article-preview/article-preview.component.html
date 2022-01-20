@@ -3,17 +3,22 @@
   <div>
     <label><strong>Title:</strong></label> {{articlePreview?.articleTitle}}
   </div>
-  <div>
-    <label><strong>Authors:</strong></label>
-    <div>
-      <div *ngFor="let author of articlePreview.authorPreviews">
-        <app-author-preview [authorPreview]="author"></app-author-preview>
-      </div>
+  <div id="block_container">
+    <label><strong>Authors: </strong></label>
+    <div *ngFor="let author of articlePreview.authorPreviews">
+      <app-author-preview [authorPreview]="author"></app-author-preview>
     </div>
   </div>
   <div>
     <label><strong>Price:</strong></label>
     {{articlePreview?.articlePrice}}
+  </div>
+
+  <div id="block_container">
+    <label>Tags: </label>
+    <div *ngFor="let tag of articlePreview.tagPreviews">
+      <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+    </div>
   </div>
 
   <a class="badge badge-warning" routerLink="/article/{{ articlePreview?.articleId }}">

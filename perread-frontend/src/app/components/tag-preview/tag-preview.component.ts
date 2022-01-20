@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TagPreview } from 'src/app/models/tag-preview.model';
 
 @Component({
   selector: 'app-tag-preview',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TagPreviewComponent implements OnInit {
 
+  @Input()
+  tagPreview?: TagPreview;
+
   constructor() { }
 
   ngOnInit(): void {
+    console.log(`got intialized with ${this.tagPreview}`);
   }
 
 }
