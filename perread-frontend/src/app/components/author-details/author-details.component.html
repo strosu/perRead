@@ -1,6 +1,4 @@
 <h1>{{author?.name}}</h1>
 
 <h2>Articles:</h2>
-<div *ngFor="let article of author?.articlePreviews">
-    <app-article-preview></app-article-preview>
-</div>
+<app-article-list [articleDescriptions]="author?.articlePreviews"></app-article-list>

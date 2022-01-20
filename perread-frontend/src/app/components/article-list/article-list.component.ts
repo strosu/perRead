@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ArticlePreview } from 'src/app/models/article-preview.model';
-import { ArticlesService } from 'src/app/services/articles.service';
 
 @Component({
   selector: 'app-article-list',
@@ -9,51 +8,47 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class ArticleListComponent implements OnInit {
 
+  @Input()
   articleDescriptions?: ArticlePreview[];
+  
   selectedArticle : ArticlePreview = <ArticlePreview>{};
   currentIndex = -1;
-  titleToSearch = '';
+  // titleToSearch = '';
 
-  constructor(private articleSerivice: ArticlesService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.getArticles();
+    // this.getArticles();
   }
 
-  getArticles() : void {
-    this.articleSerivice.getAll().subscribe(
-      {
-        next: data => {
-          console.log(data);
-          this.articleDescriptions = data;
-        },
-        error: err => console.log(err)
-      }
-    );
-  }
-
-  refreshList() : void {
-    this.getArticles();
-    this.selectedArticle = <ArticlePreview>{};
-    this.currentIndex = -1;
-  }
+  // getArticles() : void {
+  //   this.articleSerivice.getAll().subscribe(
+  //     {
+  //       next: data => {
+  //         console.log(data);
+  //         this.articleDescriptions = data;
+  //       },
+  //       error: err => console.log(err)
+  //     }
+  //   );
+  // }
 
   setActiveArticle(article: ArticlePreview, currentIndex: number) : void {
     this.selectedArticle = article;
     this.currentIndex = currentIndex;
   }
 
-  searchTitle() : void {
-    this.currentIndex = -1;
-    this.selectedArticle = <ArticlePreview>{};
-    this.articleSerivice.findByTitle(this.titleToSearch).subscribe(
-      {
-        next: data => {
-          console.log(data);
-          this.articleDescriptions = data;
-        },
-        error: err => console.log(err)
-      }
-    );
-  }
+  // searchTitle() : void {
+  //   this.currentIndex = -1;
+  //   this.selectedArticle = <ArticlePreview>{};
+  //   this.articleSerivice.findByTitle(this.titleToSearch).subscribe(
+  //     {
+  //       next: data => {
+  //         console.log(data);
+  //         this.articleDescriptions = data;
+  //       },
+  //       error: err => console.log(err)
+  //     }
+  //   );
+  // }
 }

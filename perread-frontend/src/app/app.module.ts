@@ -19,7 +19,7 @@ import { AuthorPreviewComponent } from './components/author-preview/author-previ
 import { TagPreviewComponent } from './components/tag-preview/tag-preview.component';
 import { AuthorDetailsComponent } from './components/author-details/author-details.component';
 import { TagDetailsComponent } from './components/tag-details/tag-details.component';
-import { AllArticlesComponentComponent } from './components/all-articles-component/all-articles-component.component';
+import { AllArticlesComponent } from './components/all-articles/all-articles.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { AllArticlesComponentComponent } from './components/all-articles-compone
     TagPreviewComponent,
     AuthorDetailsComponent,
     TagDetailsComponent,
-    AllArticlesComponentComponent
+    AllArticlesComponent
   ],
   imports: [
     BrowserModule,

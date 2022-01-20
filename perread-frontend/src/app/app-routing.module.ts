@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddArticleComponent } from './components/add-article/add-article.component';
+import { AllArticlesComponent } from './components/all-articles/all-articles.component';
 import { ArticleDetailsComponent } from './components/article-details/article-details.component';
-import { ArticleListComponent } from './components/article-list/article-list.component';
 import { AuthorDetailsComponent } from './components/author-details/author-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -10,7 +10,7 @@ import { TagDetailsComponent } from './components/tag-details/tag-details.compon
 
 const routes: Routes = [
   { path: '', redirectTo: 'articles', pathMatch: 'full' },
-  { path: 'articles', component: ArticleListComponent },
+  { path: 'articles', component: AllArticlesComponent },
   { path: 'article/:id', component: ArticleDetailsComponent},
   { path: 'articles/new', component: AddArticleComponent},
   { path: 'login', component: LoginComponent},
