@@ -22,8 +22,7 @@ namespace PerRead.Backend.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserComand registerCommand)
         {
             await _userService.Register(registerCommand.UserName, registerCommand.Password, registerCommand.Email);
-
-            return Redirect("/");
+            return Ok();
         }
 
         [HttpPost("/login")]
@@ -41,14 +40,13 @@ namespace PerRead.Backend.Controllers
             {
                 return Forbid(ex.Message);
             }
-
         }
 
         [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
             await _userService.Logout();
-            return Redirect("");
+            return Ok();
         }
     }
 }

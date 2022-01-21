@@ -1,8 +1,25 @@
-<h2>{{article?.title}}</h2>>
+<h2>{{article?.title}}</h2>
 
 <div id="block_container">
-    <label><strong>Authors: </strong></label>
-    <div *ngFor="let author of article?.authorPreviews">
-      <app-author-preview [authorPreview]="author"></app-author-preview>
-    </div>
+  <strong>Authors: </strong>
+  <div *ngFor="let author of article?.authorPreviews">
+    <app-author-preview [authorPreview]="author"></app-author-preview>
   </div>
+</div>
+
+<div id="block_container">
+  Tags:
+  <div *ngFor="let tag of article?.tagPreviews">
+    <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+  </div>
+</div>
+
+<div id="block_container">
+  <label>
+    <strong>Price: </strong>
+    {{article?.price}}
+  </label>
+</div>
+
+<br>
+<p>{{article?.content}}</p>

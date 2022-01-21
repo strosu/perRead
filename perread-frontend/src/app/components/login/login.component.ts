@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { LoginService } from 'src/app/services/login.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -23,10 +24,10 @@ export class LoginComponent implements OnInit {
   returnUrl: string = '';
 
   constructor(
-    private authService: AuthService, 
     private tokenService: TokenStorageService,
-    private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private loginService: LoginService,
+    private router: Router) { }
 
   ngOnInit(): void {
     
@@ -40,28 +41,14 @@ export class LoginComponent implements OnInit {
       this.roles = userJson.roles;
 
       this.username = userJson.userName;
+
+      // this.router.navigate([this.returnUrl]);
     }
   }
 
   onSubmit() {
     const {username, password } = this.form;
-    this.authService.login(username, password).subscribe(
-      data => {
-          this.tokenService.saveToken(data);
-          this.tokenService.saveUser(data);
-
-          this.isLoggedIn = true;
-          this.isLoginFailed = false;
-
-          this.roles = this.tokenService.getRoles();
-        
-          this.router.navigate([this.returnUrl]);
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
-      }
-    );
+    this.loginService.signIn(username, password, this.returnUrl);
   }
 
 }
