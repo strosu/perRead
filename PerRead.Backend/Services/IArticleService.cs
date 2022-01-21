@@ -12,7 +12,7 @@ namespace PerRead.Backend.Services
 
         Task<FEArticle?> Get(int id);
 
-        Task<FEArticle> Create(string author, ArticleCommand article);
+        Task<FEArticle> Create(ArticleCommand article);
 
         Task Delete(int id);
     }
@@ -20,14 +20,18 @@ namespace PerRead.Backend.Services
     public class ArticleService : IArticleService
     {
         private readonly IArticleRepository _articleRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ArticleService(IArticleRepository articleRepository)
+        public ArticleService(IArticleRepository articleRepository, IHttpContextAccessor httpContextAccessor)
         {
             _articleRepository = articleRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<FEArticle> Create(string author, ArticleCommand article)
+        public async Task<FEArticle> Create(ArticleCommand article)
         {
+            var author = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+
             // Business logic
             if (article == null)
             {

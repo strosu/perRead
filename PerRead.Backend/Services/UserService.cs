@@ -56,13 +56,6 @@ namespace PerRead.Backend.Services
             {
                 Token = token
             };
-
-            //if (!loginResult.Succeeded)
-            //{
-            //    throw new ArgumentException("Could not log it");
-            //}
-
-            //var roles = await _userManager.GetRolesAsync()
         }
 
         public async Task Logout()

@@ -49,15 +49,7 @@ namespace PerRead.Controllers
         {
             try
             {
-                var user = HttpContext.User?.Identity?.Name;
-
-                if (user == null)
-                {
-                    // This shold never be the case, Identity should protect the endpoint and get us the Identity object automatically
-                    return Forbid();
-                }
-
-                var article = await _articleService.Create(user.ToString(), articleCommand);
+                var article = await _articleService.Create(articleCommand);
                 return Ok(article);
             }
             catch (Exception ex)
