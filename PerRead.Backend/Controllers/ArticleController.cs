@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Filters;
-using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;

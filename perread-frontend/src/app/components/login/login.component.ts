@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -19,12 +20,18 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   username: string = '';
+  returnUrl: string = '';
 
   constructor(
     private authService: AuthService, 
-    private tokenService: TokenStorageService) { }
+    private tokenService: TokenStorageService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    
+    this.returnUrl = String(this.route.snapshot.queryParams['returnUrl']);
+
     if (this.tokenService.getToken()) {
       this.isLoggedIn = true;
       
@@ -48,7 +55,7 @@ export class LoginComponent implements OnInit {
 
           this.roles = this.tokenService.getRoles();
         
-          window.location.reload();
+          this.router.navigate([this.returnUrl]);
       },
       err => {
         this.errorMessage = err.error.message;
