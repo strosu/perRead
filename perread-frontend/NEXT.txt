@@ -1,0 +1,50 @@
+BACKEND:
+
+TODO:
+- add reading tokens to the current user (requires signing in)
+- REFRESH TOKEN mechanism
+- Add User managemenent
+    - new table for user history, preferences etc
+    - add reading tokens (under Account)
+    - show unlocked articles; for privacy reasons, maybe don't store the list? need an alrorithm that would hash and see if an article is already unlocked (similar to password checking)
+        - alternatively, keep true to the name and don't store anything. Ask for tokens on every single read, since the probability of rereading an article is small.
+        - offer both versions when the user registers? easier to not store anything at start, since storing them securely is more work (TBD)
+        - offer 2 buttons near the article: Read vs Read and Remember(?)
+            - for read, deduct the token and add to author
+            - for read and remember, same as above, but 
+- revisit tags, safety around parallel requests;
+- do some basic search for titles
+    - do more advanced search for article contents? grep maybe (if storing them as files)?
+
+- PERF: get tag with top 50 articles, instead of all; same applies to author with articles
+- PERT: consider singleQuery when getting tags -> articles -> authors
+
+DONE:
+- proper implementation for many to many - DONE
+- stop returning redirects to stuff that doesn't exist lol (register, login) - DONE
+- create new user - DONE
+- authenticate as user - DONE
+- restrict access; play with roles, i.e. don't allow any user to create new articles - DONE
+- add tags controller, operations on it (atm only getOne)
+
+FRONTEND:
+
+TODO:
+- input form for creating new article
+    - add rest of fields
+    - redirect to list of articles; alternatively, redirect to list of articles for current user (might be better)
+- rework article presentation "page"
+- unlock article UI
+- rework article presentation "page"
+- unlock article UI
+- present all articles nicely
+- present all authors nicely
+- user page
+- REFRESH TOKENS, integrate into interceptor
+
+DONE:
+- fix concurrency issue when submitting new article and redirecting quickly via Link - see if Angular has the same problem (prob not, wait for request to finish)
+- sign up - needs redirecting to login page - DONE (redirects to main page, might as well login the user if they gave us the credentials. Nicer UX since they don't need to confirm anything)
+- sign in - needs redirecting to last visited page - DONE
+- make intercepter look at 401s all the time and redirect to login with current page as an argument - DONE
+

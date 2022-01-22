@@ -14,41 +14,9 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(string author, ArticleCommand article)
+        public async Task<Article> Create(Author author, IEnumerable<Tag> tags, ArticleCommand article)
         {
-            var now = DateTime.Now;
-
-            // Make sure the tags exist
-            var tagMap = new List<Tag>();
-
-            foreach (var tag in article.Tags)
-            {
-                var foundTag = (await _context.Tags.FirstOrDefaultAsync(x => x.TagName == tag));
-
-                if (foundTag != null)
-                {
-                    tagMap.Add(foundTag);
-                }
-                else
-                {
-                    var newTag = new Tag { TagName = tag, FirstUsage = now };
-                    _context.Tags.Add(newTag);
-                    tagMap.Add(newTag);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-
-            // Get the authors
-            //var authors = await _context.Authors.Where(x => article.Authors.Contains(x.Name)).ToListAsync();
-
-            var dbAuthor = await _context.Authors.FirstOrDefaultAsync(x => x.Name == author);
-
-            if (dbAuthor == null)
-            {
-                throw new ArgumentNullException("Author not found lol");
-            }
+            var now = DateTime.UtcNow;
 
             // Add the article
             var newArticle = new Article
@@ -64,7 +32,7 @@ namespace PerRead.Backend.Repositories
                 new ArticleAuthor
             {
                 Article = newArticle,
-                Author = dbAuthor,
+                Author = author,
                 Order = 1
             }
             };
@@ -72,26 +40,28 @@ namespace PerRead.Backend.Repositories
             _context.Articles.Add(newArticle);
             await _context.SaveChangesAsync();
 
-            //transaction.Commit();
-
-            //var createdArticle = await _context.Articles.FindAsync(newArticle.ArticleId);
-            //_context.Articles.Update(createdArticle);
-
-            newArticle.Tags = tagMap.ToList();
+            newArticle.Tags = tags.ToList();
 
             // Edit for simplicity - TODO, remove this at some point
             newArticle.Title += newArticle.ArticleId;
             newArticle.Content += newArticle.ArticleId;
 
             await _context.SaveChangesAsync();
-
-            //transaction.Commit();
-
             return newArticle;
         }
 
-        public async Task Delete(Article article)
+        public async Task Delete(int id)
         {
+            var article = await _context.Articles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ArticleId == id);
+            
+            if (article == null)
+            {
+                // No article found, nothing to delete
+                return;
+            }
+
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
         }
@@ -120,11 +90,11 @@ namespace PerRead.Backend.Repositories
 
 public interface IArticleRepository
 {
-    Task<Article> Create(string author, ArticleCommand article);
+    Task<Article> Create(Author author, IEnumerable<Tag> tags, ArticleCommand article);
 
     IQueryable<Article> GetAll();
 
     Task<Article?> Get(int id);
 
-    Task Delete(Article article);
+    Task Delete(int id);
 }

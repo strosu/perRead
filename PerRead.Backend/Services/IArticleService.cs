@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Models;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
+
 
 namespace PerRead.Backend.Services
 {
@@ -20,40 +20,38 @@ namespace PerRead.Backend.Services
     public class ArticleService : IArticleService
     {
         private readonly IArticleRepository _articleRepository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly ITagRepository _tagRespository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ArticleService(IArticleRepository articleRepository, IHttpContextAccessor httpContextAccessor)
+        public ArticleService(
+            IArticleRepository articleRepository, 
+            IAuthorRepository authorRepository,
+            ITagRepository tagRespository,
+            IHttpContextAccessor httpContextAccessor)
         {
             _articleRepository = articleRepository;
+            _authorRepository = authorRepository;
+            _tagRespository = tagRespository;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<FEArticle> Create(ArticleCommand article)
         {
-            var author = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+            article.CheckValid();
 
-            // Business logic
-            if (article == null)
-            {
-                throw new ArgumentNullException(nameof(article));
-            }
+            var authorName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+            var author = await _authorRepository.GetAuthorAsync(authorName).FirstOrDefaultAsync();
 
             if (author == null)
             {
-                throw new ArgumentNullException(nameof(author));
+                throw new ArgumentException("Only existing users are allowed to create articles");
             }
 
-            if (article.Content == null)
-            {
-                throw new ArgumentNullException(nameof(article.Content));
-            }
+            var tagTasks = article.Tags.Select(tag => _tagRespository.GetOrCreate(tag)).ToList();
+            await Task.WhenAll(tagTasks);
 
-            if (article.Tags == null || !article.Tags.Any())
-            {
-                throw new ArgumentException("Each article requires at least one tag");
-            }
-
-            var articleModel = await _articleRepository.Create(author, article);
+            var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), article);
             return articleModel.ToFEArticle();
         }
 
@@ -78,7 +76,7 @@ namespace PerRead.Backend.Services
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
 
-            await _articleRepository.Delete(article);
+            await _articleRepository.Delete(id);
         }
     }
 }

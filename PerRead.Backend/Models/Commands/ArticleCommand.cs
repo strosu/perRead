@@ -1,4 +1,6 @@
-﻿namespace PerRead.Backend.Models.Commands
+﻿using PerRead.Backend.Constants;
+
+namespace PerRead.Backend.Models.Commands
 {
     public class ArticleCommand
     {
@@ -11,5 +13,41 @@
         public string Content { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
+
+
+    }
+
+    internal static class ArticleCommandExtensions
+    {
+        public static void CheckValid(this ArticleCommand article)
+        {
+            if (article == null)
+            {
+                throw new ArgumentNullException(nameof(article));
+            }
+
+            // Business logic
+            if (article.Title == null)
+            {
+                throw new ArgumentNullException(nameof(article.Title));
+            }
+
+            // Allow 0 cost articles as free
+
+            //if (Price == 0)
+            //{
+            //    throw new ArgumentNullException(nameof(Price));
+            //}
+
+            if (article.Tags == null || !article.Tags.Any())
+            {
+                throw new ArgumentException("Each article requires at least one tag");
+            }
+
+            if (article.Content == null || article.Content.Length < BusinessContants.MinimumArticleContentLength)
+            {
+                throw new ArgumentException($"Content must be at least {BusinessContants.MinimumArticleContentLength}");
+            }
+        }
     }
 }
