@@ -24,7 +24,7 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Author> GetAuthorAsNoTracking(string id)
+        public IQueryable<Author> GetAuthor(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -32,13 +32,12 @@ namespace PerRead.Backend.Repositories
             }
 
             return _context.Authors
-                .AsNoTracking()
                 .Where(author => author.AuthorId == id);
         }
 
         public IQueryable<Author> GetAuthorWithArticlesAsync(string id)
         {
-            return GetAuthorAsNoTracking(id)
+            return GetAuthor(id)
                 .Include(author => author.Articles)
                     .ThenInclude(articleAuthor => articleAuthor.Article)
                     .ThenInclude(article => article.Tags);
@@ -70,7 +69,7 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Author> GetAuthorWithArticlesAsync(string id);
 
-        IQueryable<Author> GetAuthorAsNoTracking(string id);
+        IQueryable<Author> GetAuthor(string id);
 
         IQueryable<Author> GetAuthorByNameAsync(string name);
 

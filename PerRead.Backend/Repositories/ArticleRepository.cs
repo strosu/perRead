@@ -30,24 +30,19 @@ namespace PerRead.Backend.Repositories
             newArticle.ArticleAuthors = new List<ArticleAuthor>
             {
                 new ArticleAuthor
-            {
-                Article = newArticle,
-                Author = author,
-                Order = 1
+                {
+                    Article = newArticle,
+                    Author = author,
+                    Order = 1
             }
             };
 
-            _context.Articles.Add(newArticle);
-            _context.Entry(author).State = EntityState.Unchanged;
-            await _context.SaveChangesAsync();
-
             newArticle.Tags = tags.ToList();
 
-            // Edit for simplicity - TODO, remove this at some point
-            newArticle.Title += newArticle.ArticleId;
-            newArticle.Content += newArticle.ArticleId;
-
+            _context.Articles.Add(newArticle);
+            //_context.Entry(author).State = EntityState.Unchanged;
             await _context.SaveChangesAsync();
+
             return newArticle;
         }
 
@@ -56,7 +51,7 @@ namespace PerRead.Backend.Repositories
             var article = await _context.Articles
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ArticleId == id);
-            
+
             if (article == null)
             {
                 // No article found, nothing to delete

@@ -43,7 +43,7 @@ namespace PerRead.Backend.Services
 
             var authorId = _httpContextAccessor.GetUserId();
 
-            var author = await _authorRepository.GetAuthorWithArticlesAsync(authorId).FirstOrDefaultAsync();
+            var author = await _authorRepository.GetAuthor(authorId).FirstOrDefaultAsync();
 
             if (author == null)
             {
