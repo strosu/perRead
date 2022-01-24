@@ -16,8 +16,11 @@ TODO:
 - do some basic search for titles
     - do more advanced search for article contents? grep maybe (if storing them as files)?
 
+- return proper exception when login failed
+
 - PERF: get tag with top 50 articles, instead of all; same applies to author with articles
-- PERT: consider singleQuery when getting tags -> articles -> authors
+- PERF: consider singleQuery when getting tags -> articles -> authors
+
 
 DONE:
 - proper implementation for many to many - DONE
@@ -40,6 +43,7 @@ TODO:
 - present all articles nicely
 - present all authors nicely
 - user page
+- display the login error properly
 - REFRESH TOKENS, integrate into interceptor
 
 DONE:

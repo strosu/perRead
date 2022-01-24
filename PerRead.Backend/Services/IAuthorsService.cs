@@ -17,7 +17,7 @@ namespace PerRead.Backend.Services
 
         public async Task<FEAuthor> GetAuthorAsync(string id)
         {
-            var author = _authorRepository.GetAuthorAsync(id);
+            var author = _authorRepository.GetAuthorWithArticlesAsync(id);
 
             return await author?.Select(x => x.ToFEAuthor())?.FirstOrDefaultAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Extensions;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
@@ -40,8 +41,9 @@ namespace PerRead.Backend.Services
         {
             article.CheckValid();
 
-            var authorName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
-            var author = await _authorRepository.GetAuthorAsync(authorName).FirstOrDefaultAsync();
+            var authorId = _httpContextAccessor.GetUserId();
+
+            var author = await _authorRepository.GetAuthorWithArticlesAsync(authorId).FirstOrDefaultAsync();
 
             if (author == null)
             {

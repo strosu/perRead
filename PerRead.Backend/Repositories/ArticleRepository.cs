@@ -38,6 +38,7 @@ namespace PerRead.Backend.Repositories
             };
 
             _context.Articles.Add(newArticle);
+            _context.Entry(author).State = EntityState.Unchanged;
             await _context.SaveChangesAsync();
 
             newArticle.Tags = tags.ToList();
