@@ -1,10 +1,22 @@
 /* @import "../node_modules/bootstrap/dist/css/bootstrap.css"; */
 
+
 /* You can add global styles to this file, and also import other style files */
+
 #block_container {
     text-align: left;
 }
-#block_container > div {
+
+#block_container>div {
     display: inline-block;
     vertical-align: middle;
+}
+
+a {
+    text-decoration: none;
+}
+
+.text-dark {
+    color: #262626 !important;
+    text-decoration: none;
 }

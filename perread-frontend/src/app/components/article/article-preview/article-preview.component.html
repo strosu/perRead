@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h4>Article details</h4>
   <div>
     <label><strong>Title:</strong></label> {{articlePreview?.articleTitle}}
@@ -24,4 +24,18 @@
   <a class="badge bg-secondary" routerLink="/article/{{ articlePreview?.articleId }}">
     Read
   </a>
-</div>
+</div> -->
+<a routerLink="/article/{{articlePreview.articleId}}" class="text-dark">
+    <div class="row mb-4 border-bottom pb-2">
+        <div class="col-3">
+            <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="img-fluid shadow-1-strong rounded" alt="">
+        </div>
+
+        <div class="col-9">
+            <p class="mb-2"><strong>{{articlePreview.articleTitle}}</strong></p>
+            <p>
+                <u>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y, h:mm:ss a'}}</u>
+            </p>
+        </div>
+    </div>
+</a>

@@ -7,7 +7,7 @@ export class ArticlePreview {
     tagPreviews?: TagPreview[];
 
     articleTitle: string = '';
-    articleCreatedAt?: Date;
+    articleCreatedAt: Date = new Date();
     articlePreview?: string;
     articlePrice: number = 0;
 }

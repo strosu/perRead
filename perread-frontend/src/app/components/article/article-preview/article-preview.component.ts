@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ArticlePreview } from 'src/app/models/article-preview.model';
 
@@ -11,9 +12,11 @@ export class ArticlePreviewComponent implements OnInit {
   @Input()
   articlePreview: ArticlePreview = <ArticlePreview>{};
 
+  createdAt: string = '';
+
   constructor() { }
 
   ngOnInit(): void {
+    this.createdAt = formatDate(this.articlePreview.articleCreatedAt,'yyyy-MM-dd', 'en');
   }
-
 }
