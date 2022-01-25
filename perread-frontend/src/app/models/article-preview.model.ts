@@ -3,7 +3,7 @@ import { TagPreview } from "./tag-preview.model";
 
 export class ArticlePreview {
     articleId: number = 0;
-    authorPreviews?: AuthorPreview[];
+    authorPreviews: AuthorPreview[] = [];
     tagPreviews?: TagPreview[];
 
     articleTitle: string = '';

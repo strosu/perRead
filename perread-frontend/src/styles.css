@@ -16,7 +16,21 @@ a {
     text-decoration: none;
 }
 
+.text-dark-small {
+    color: #262626 !important;
+    text-decoration: none;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
 .text-dark {
     color: #262626 !important;
     text-decoration: none;
+}
+
+.post-medatada {
+    font-size: 14px;
+    color: #999;
+    margin: 10px 0;
+    letter-spacing: .2px;
 }

@@ -28,14 +28,23 @@
 <a routerLink="/article/{{articlePreview.articleId}}" class="text-dark">
     <div class="row mb-4 border-bottom pb-2">
         <div class="col-3">
-            <img src="https://mdbootstrap.com/img/new/standard/city/041.jpg" class="img-fluid shadow-1-strong rounded" alt="">
+            <img src="https://localhost:7176/m7kgwe2gnrd81.jpg" class="img-fluid shadow-1-strong rounded" alt="">
         </div>
 
         <div class="col-9">
             <p class="mb-2"><strong>{{articlePreview.articleTitle}}</strong></p>
-            <p>
-                <u>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y, h:mm:ss a'}}</u>
-            </p>
+            <div id="block_container">
+                <app-author-preview [authorPreview]="articlePreview.authorPreviews[0]"></app-author-preview>
+                <div>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y'}}</div>
+            </div>
+
+            <div id="block_container">
+                <div class="text-dark-small"><strong>Tags: </strong></div>
+                <div *ngFor="let tag of articlePreview.tagPreviews">
+                    <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+                </div>
+            </div>
+            <p>{{articlePreview.articlePreview}}</p>
         </div>
     </div>
 </a>

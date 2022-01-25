@@ -9,7 +9,7 @@ import { TagPreview } from 'src/app/models/tag-preview.model';
 export class TagListComponent implements OnInit {
 
   @Input()
-  tagList: TagPreview[] = [];
+  tagList?: TagPreview[] = [];
   
   selectedTag: TagPreview = {};
   currentIndex = -1;
