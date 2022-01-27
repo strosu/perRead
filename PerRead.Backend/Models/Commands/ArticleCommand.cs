@@ -14,7 +14,7 @@ namespace PerRead.Backend.Models.Commands
 
         public IEnumerable<string> Tags { get; set; }
 
-
+        public IFormFile Image { get; set; }
     }
 
     internal static class ArticleCommandExtensions

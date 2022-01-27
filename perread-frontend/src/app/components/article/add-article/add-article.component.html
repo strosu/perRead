@@ -1,55 +1,49 @@
 <div>
-    <div class="submit-form">
-      <div *ngIf="!submitted">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            required
-            [(ngModel)]="article.title"
-            name="title"
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="content">Content</label>
-          <input
-            class="form-control"
-            id="content"
-            required
-            [(ngModel)]="article.content"
-            name="content"
-          />
-
-          <div class="form-group">
-            <label for="tags">Tags (comma separated)</label>
-            <input
-              class="form-control"
-              id="tags"
-              required
-              [(ngModel)]="tags"
-              name="tags"
-            />
-
-            <div class="form-group">
-              <label for="price">Price</label>
-              <input
-                class="form-control"
-                id="price"
-                required
-                [(ngModel)]="article.price"
-                name="price"
-              />
-        </div>
-  
-        <button (click)="saveArticle()" class="btn btn-success">Submit</button>
-      </div>
-  
-      <div *ngIf="submitted">
-        <h4>Tutorial was submitted successfully!</h4>
-        <button class="btn btn-success" (click)="newArticle()">Add</button>
-      </div>
+  <div class="submit-form">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" required [(ngModel)]="this.articleCommand.title"
+        name="title" />
     </div>
+
+    <div class="form-group">
+      <label for="content">Content</label>
+      <input class="form-control" id="content" required [(ngModel)]="this.articleCommand.content" name="content" />
+    </div>
+
+    <div class="form-group">
+      <label for="tags">Tags (comma separated)</label>
+      <input class="form-control" id="tags" required [(ngModel)]="this.articleCommand.tags" name="tags" />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input class="form-control" id="price" required [(ngModel)]="this.articleCommand.price" name="price" />
+    </div>
+    
+    <fieldset class="form-group">
+
+      <label>Article image</label>
+      <div class="custom-file fileInputProfileWrap">
+        <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+        <div class="img-space">
+
+          <ng-container *ngIf="isImageSaved; else elseTemplate">
+            <img [src]="articleCommand.cardImageBase64" />
+          </ng-container>
+          <ng-template #elseTemplate>
+
+            <img src="./../../assets/placeholder.png" class="img-responsive">
+          </ng-template>
+
+        </div>
+
+      </div>
+    </fieldset>
+
+    <button (click)="saveArticle()" class="btn btn-success">Submit</button>
+
+    <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+
   </div>
+</div>

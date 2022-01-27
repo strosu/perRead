@@ -9,4 +9,5 @@ export class Article {
     createdAt?: boolean;
     authorPreviews?: AuthorPreview[];
     tagPreviews?: TagPreview[];
+    articleImageUrl?: string;
 }

@@ -46,13 +46,20 @@ TODO:
 - unlock article UI
 - rework article presentation "page"
 - unlock article UI
-- present all articles nicely
+
+
 - present all authors nicely
 - user page
 - display the login error properly
 - REFRESH TOKENS, integrate into interceptor
 
+Image upload for new articles:
+- restrict max image size when uploading
+- restrict button to the right on the new article form
+- extract image upload form to separate component, need to use it for authors as well
+
 DONE:
+- present all articles nicely - SOMEWHAT
 - fix concurrency issue when submitting new article and redirecting quickly via Link - see if Angular has the same problem (prob not, wait for request to finish)
 - sign up - needs redirecting to login page - DONE (redirects to main page, might as well login the user if they gave us the credentials. Nicer UX since they don't need to confirm anything)
 - sign in - needs redirecting to last visited page - DONE

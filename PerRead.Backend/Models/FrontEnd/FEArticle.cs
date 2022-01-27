@@ -16,5 +16,6 @@
 
         public IEnumerable<FETagPreview> TagPreviews { get; set; }
 
+        public string ArticleImageUrl { get; set; }
     }
 }

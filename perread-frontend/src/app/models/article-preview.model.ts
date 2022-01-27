@@ -10,4 +10,5 @@ export class ArticlePreview {
     articleCreatedAt: Date = new Date();
     articlePreview?: string;
     articlePrice: number = 0;
+    articleImageUrl: string = '';
 }

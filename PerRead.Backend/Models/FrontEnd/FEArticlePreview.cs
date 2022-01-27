@@ -19,5 +19,7 @@
         public string ArticlePreview { get; set; }
 
         public uint ArticlePrice { get; set; }
+
+        public string ArticleImageUrl { get; set; }
     }
 }
