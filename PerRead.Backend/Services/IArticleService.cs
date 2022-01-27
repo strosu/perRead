@@ -23,17 +23,20 @@ namespace PerRead.Backend.Services
         private readonly IArticleRepository _articleRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly ITagRepository _tagRespository;
+        private readonly IImageService _imageService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ArticleService(
             IArticleRepository articleRepository, 
             IAuthorRepository authorRepository,
             ITagRepository tagRespository,
+            IImageService imageService,
             IHttpContextAccessor httpContextAccessor)
         {
             _articleRepository = articleRepository;
             _authorRepository = authorRepository;
             _tagRespository = tagRespository;
+            _imageService = imageService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -50,13 +53,18 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Only existing users are allowed to create articles");
             }
 
+            // Ensure the tags are created
             var tagTasks = article.Tags.Select(tag => _tagRespository.GetOrCreate(tag)).ToList();
             await Task.WhenAll(tagTasks);
 
-            var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), article);
+            // Save the image somewhere usefull and get its path
+            var path = await _imageService.Save(author.AuthorId, article.ArticleImage);
+
+            // Create the article itself
+            var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), path, article);
             return articleModel.ToFEArticle();
         }
-
+         
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
             var articles = _articleRepository.GetAll();

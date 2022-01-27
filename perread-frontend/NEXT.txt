@@ -25,6 +25,7 @@ TODO:
 - PERF: get tag with top 50 articles, instead of all; same applies to author with articles
 - PERF: consider singleQuery when getting tags -> articles -> authors
 
+- make image an optional part of the request; if not sent, use the author's profile pic 
 
 DONE:
 - proper implementation for many to many - DONE

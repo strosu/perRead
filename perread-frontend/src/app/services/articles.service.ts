@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Constants } from '../constants';
 import { ArticlePreview } from '../models/article-preview.model';
 import { Article } from '../models/article.model';
+import { ArticleCommand } from '../models/article/article-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ArticlesService {
     return this.httpClient.get<Article>(`${Constants.BACKENDURL}/article/${id}`);
   }
 
-  create(data: any): Observable<Article> {
+  create(data: ArticleCommand): Observable<Article> {
     return this.httpClient.post<Article>(`${Constants.BACKENDURL}/article`, data);
   }
 
@@ -28,7 +29,7 @@ export class ArticlesService {
     return this.httpClient.delete(`${Constants.BACKENDURL}/article/${id}`);
   }
 
-  findByTitle(title: any) : Observable<ArticlePreview[]> {
+  findByTitle(title: string) : Observable<ArticlePreview[]> {
     return this.httpClient.get<ArticlePreview[]>(`${Constants.BACKENDURL}/article?title=${title}`);
   }
 }

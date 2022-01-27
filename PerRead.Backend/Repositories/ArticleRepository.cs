@@ -14,7 +14,7 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(Author author, IEnumerable<Tag> tags, ArticleCommand article)
+        public async Task<Article> Create(Author author, IEnumerable<Tag> tags, string articleImagePath, ArticleCommand article)
         {
             var now = DateTime.UtcNow;
 
@@ -25,6 +25,7 @@ namespace PerRead.Backend.Repositories
                 Price = article.Price,
                 Content = article.Content,
                 CreatedAt = now,
+                ImageUrl = articleImagePath
             };
 
             newArticle.ArticleAuthors = new List<ArticleAuthor>
@@ -86,7 +87,8 @@ namespace PerRead.Backend.Repositories
 
 public interface IArticleRepository
 {
-    Task<Article> Create(Author author, IEnumerable<Tag> tags, ArticleCommand article);
+    // TODO - extract parameters to something else
+    Task<Article> Create(Author author, IEnumerable<Tag> tags, string articleImagePath, ArticleCommand article);
 
     IQueryable<Article> GetAll();
 

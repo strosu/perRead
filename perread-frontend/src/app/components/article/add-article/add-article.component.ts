@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ArticleCommand } from 'src/app/models/article/article-command.model';
+import { ArticleCommand, ArticleImage } from 'src/app/models/article/article-command.model';
 import { ArticlesService } from 'src/app/services/articles.service';
 
 @Component({
@@ -12,30 +12,35 @@ import { ArticlesService } from 'src/app/services/articles.service';
 export class AddArticleComponent implements OnInit {
 
   imageError?: string;
-  isImageSaved?: boolean;
+  
+  get isImageSaved(): boolean {
+    return this.articleCommand.articleImage.base64Encoded != '';
+  };
+
+  tags: string = '';
 
   articleCommand: ArticleCommand = new ArticleCommand();
-
-  submitted = false;
 
   constructor(private articleService: ArticlesService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  saveArticle() : void {
-    const data = {
-      title: this.articleCommand.title,
-      content: this.articleCommand.content,
-      price: this.articleCommand.price,
-      tags: this.articleCommand.tags?.split(",")
-    };
+  saveArticle(): void {
+    this.articleCommand.tags = this.tags?.split(",");
+    
+    // const data = {
+    //   title: this.articleCommand.title,
+    //   content: this.articleCommand.content,
+    //   price: this.articleCommand.price,
+    //   tags: this.articleCommand.tags?.split(","),
+    //   articleImageBase64: this.articleCommand.articleImageBase64
+    // };
 
-    this.articleService.create(data)
+    this.articleService.create(this.articleCommand)
       .subscribe(
         response => {
           console.log(response);
-          this.submitted = true;
           this.router.navigate(['/articles']);
         }
       );
@@ -45,62 +50,65 @@ export class AddArticleComponent implements OnInit {
     this.imageError = '';
 
     if (fileInput.target.files && fileInput.target.files[0]) {
-        
+
+      var file = fileInput.target.files[0];
+
       // Size Filter Bytes
-        const max_size = 20971520;
-        const allowed_types = ['image/png', 'image/jpeg'];
-        const max_height = 15200;
-        const max_width = 25600;
+      const max_size = 20971520;
+      const allowed_types = ['image/png', 'image/jpeg'];
+      const max_height = 15200;
+      const max_width = 25600;
 
-        if (fileInput.target.files[0].size > max_size) {
+      if (file > max_size) {
+        this.imageError =
+          'Maximum size allowed is ' + max_size / 1000 + 'Mb';
+
+        return false;
+      }
+
+      if (!allowed_types.includes(file.type)) {
+        this.imageError = 'Only Images are allowed ( JPG | PNG )';
+        return false;
+      }
+
+      this.articleCommand.articleImage.fileName = file.name;
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = rs => {
+          // TODO - figure out this stuff for proper error handling
+          // var im = rs.currentTarget as Image;
+          const img_height = 1; // rs.currentTarget['height'];
+          const img_width = 1; //rs.currentTarget['width'];
+
+          console.log(img_height, img_width);
+
+          if (img_height > max_height && img_width > max_width) {
             this.imageError =
-                'Maximum size allowed is ' + max_size / 1000 + 'Mb';
-
+              'Maximum dimentions allowed ' +
+              max_height +
+              '*' +
+              max_width +
+              'px';
             return false;
-        }
-
-        if (!allowed_types.includes(fileInput.target.files[0].type)) {
-            this.imageError = 'Only Images are allowed ( JPG | PNG )';
-            return false;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-            const image = new Image();
-            image.src = e.target.result;
-            image.onload = rs => {
-              // TODO - figure out this stuff for proper error handling
-                // var im = rs.currentTarget as Image;
-                const img_height = 1; // rs.currentTarget['height'];
-                const img_width = 1; //rs.currentTarget['width'];
-
-                console.log(img_height, img_width);
-
-                if (img_height > max_height && img_width > max_width) {
-                    this.imageError =
-                        'Maximum dimentions allowed ' +
-                        max_height +
-                        '*' +
-                        max_width +
-                        'px';
-                    return false;
-                } else {
-                    const imgBase64Path = e.target.result;
-                    this.articleCommand.cardImageBase64 = imgBase64Path;
-                    this.isImageSaved = true;
-                    // this.previewImagePath = imgBase64Path;
-                    return true;
-                }
-            };
+          } else {
+            this.articleCommand.articleImage.base64Encoded = e.target.result;
+            // this.isImageSaved = true;
+            // this.previewImagePath = imgBase64Path;
+            return true;
+          }
         };
+      };
 
-        reader.readAsDataURL(fileInput.target.files[0]);
+      reader.readAsDataURL(fileInput.target.files[0]);
     }
-}
+  }
 
-removeImage() {
-    this.articleCommand.cardImageBase64 = '';
-    this.isImageSaved = false;
-}
+  removeImage() {
+    this.articleCommand.articleImage = new ArticleImage();
+    // this.isImageSaved = false;
+  }
 
 }

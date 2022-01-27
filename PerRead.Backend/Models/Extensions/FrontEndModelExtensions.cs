@@ -28,8 +28,9 @@ namespace PerRead.Backend.Models.FrontEnd
                 ArticlePreview = "TODO - Add previews",
                 ArticlePrice = articleModel.Price,
                 AuthorPreviews = articleModel.ArticleAuthors?.Select(author => author.Author.ToFEAuthorPreview()),
-                TagPreviews = articleModel.Tags?.Select(tag => tag.ToFETagPreview())
-        };
+                TagPreviews = articleModel.Tags?.Select(tag => tag.ToFETagPreview()),
+                ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl
+            };
         }
 
         public static FETag ToFETag(this Tag tagModel) 

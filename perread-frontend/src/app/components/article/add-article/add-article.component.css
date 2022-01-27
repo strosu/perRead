@@ -1,6 +1,10 @@
 .submit-form {
     max-width: 400px;
-    margin: auto;
+    margin: 10px;
+  }
+
+  .element-spacing {
+      margin-top: 10px;;
   }
 
   .image-wrap {
@@ -30,6 +34,7 @@
 .fileInputProfileWrap {
     width: 100%;
     height: auto;
+    overflow: hidden;
 }
 
 .fileInputProfile {
