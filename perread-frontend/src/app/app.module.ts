@@ -22,6 +22,7 @@ import { TagDetailsComponent } from './components/tags/tag-details/tag-details.c
 import { AllArticlesComponent } from './components/article/all-articles/all-articles.component';
 import { TagListComponent } from './components/tags/tag-list/tag-list.component';
 import { PopularTagsComponent } from './components/tags/popular-tags/popular-tags.component';
+import { UserNavMenuComponent } from './components/user/user-nav-menu/user-nav-menu.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PopularTagsComponent } from './components/tags/popular-tags/popular-tag
     TagDetailsComponent,
     AllArticlesComponent,
     TagListComponent,
-    PopularTagsComponent
+    PopularTagsComponent,
+    UserNavMenuComponent
   ],
   imports: [
     BrowserModule,
