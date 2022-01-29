@@ -1,23 +1,3 @@
-<!-- <div class="list row">
-    
-    <div class="col-md-6">
-        <h4>Article List</h4>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let article of articleDescriptions; let i = index" [class.active]="i == currentIndex" (click)="setActiveArticle(article, i)">
-                {{article.articleTitle}}
-            </li>
-        </ul>
-    </div>
-    <div class="col-md-6 width:800px">
-        <div *ngIf="selectedArticle?.articleId">
-            <app-article-preview [articlePreview]="selectedArticle"></app-article-preview>
-            <div *ngIf="!selectedArticle">
-                <br />
-                <p>Please click on an article...</p>
-            </div>
-        </div>
-    </div> -->
-
 <h4>Article List</h4>
 <div class="row">
     <div class="col-md-3" style="min-width: 87px;" *ngFor="let article of articleDescriptions">

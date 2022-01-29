@@ -19,7 +19,7 @@ export class LoginService {
       next: data => {
         this.tokenService.saveToken(data);
         this.tokenService.saveUser(data);
-        this.router.navigate([navigateTo]);
+          this.router.navigate([navigateTo], {replaceUrl: true});
        },
        error: err => console.log(err.error.message)
     });

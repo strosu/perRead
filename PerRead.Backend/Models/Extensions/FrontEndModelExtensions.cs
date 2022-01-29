@@ -15,6 +15,7 @@ namespace PerRead.Backend.Models.FrontEnd
                 TagPreviews = articleModel.Tags?.Select(ToFETagPreview),
                 CreatedAt = articleModel.CreatedAt,
                 Price = articleModel.Price,
+                ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl
             };
         }
 

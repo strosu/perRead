@@ -5,6 +5,9 @@
     /// </summary>
     public class Author
     {
+        /// <summary>
+        /// This is the same as the userId from the Users table
+        /// </summary>
         public string AuthorId { get; set; }
 
         public string Name { get; set; }

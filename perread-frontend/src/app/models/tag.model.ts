@@ -1,4 +1,4 @@
-import { ArticlePreview } from "./article-preview.model";
+import { ArticlePreview } from "./article/article-preview.model";
 
 export class Tag {
     id?: number;

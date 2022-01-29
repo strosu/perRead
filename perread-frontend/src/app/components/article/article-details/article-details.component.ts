@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Article } from 'src/app/models/article.model';
+import { Article } from 'src/app/models/article/article.model';
 import { ArticlesService } from 'src/app/services/articles.service';
+import { UriService } from 'src/app/services/uri.service';
 
 @Component({
   selector: 'app-article-details',
@@ -11,10 +12,12 @@ import { ArticlesService } from 'src/app/services/articles.service';
 export class ArticleDetailsComponent implements OnInit {
 
   article?: Article;
+  articleImagePath: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private articleService: ArticlesService
+    private articleService: ArticlesService,
+    private uriService: UriService
   ) { }
 
   ngOnInit(): void {
@@ -24,6 +27,8 @@ export class ArticleDetailsComponent implements OnInit {
         next: data => {
           console.log(data);
           this.article = data;
+          this.articleImagePath = this.uriService.getStaticFileUri(this.article.articleImageUrl);
+
         },
         error: err => console.log(err)
       }

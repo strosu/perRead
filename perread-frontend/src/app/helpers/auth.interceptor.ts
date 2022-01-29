@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(error => {
             if (!!error.status && error.status === 401) {
               // window.location.href = '/login';
-              this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.routerState.snapshot.url }})
+              this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.routerState.snapshot.url }, replaceUrl: true})
               // return NEVER;
             }
             

@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
-import { ArticlePreview } from '../models/article-preview.model';
-import { Article } from '../models/article.model';
+import { ArticlePreview } from '../models/article/article-preview.model';
+import { Article } from '../models/article/article.model';
 import { ArticleCommand } from '../models/article/article-command.model';
 
 @Injectable({

@@ -1,5 +1,5 @@
-import { AuthorPreview } from "./author-preview.model";
-import { TagPreview } from "./tag-preview.model";
+import { AuthorPreview } from "../author-preview.model";
+import { TagPreview } from "../tag-preview.model";
 
 export class Article {
     id? : any;
@@ -9,5 +9,5 @@ export class Article {
     createdAt?: boolean;
     authorPreviews?: AuthorPreview[];
     tagPreviews?: TagPreview[];
-    articleImageUrl?: string;
+    articleImageUrl: string = '';
 }

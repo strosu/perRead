@@ -38,6 +38,11 @@ DONE:
 FRONTEND:
 
 TODO:
+
+Bugs:
+- figure out why cliking on a tag in an article preview takes me to the article itself; see http://localhost:4200/tags/14
+- somehow wrap titles with long words in the article preview
+
 - input form for creating new article
     - add rest of fields
     - add image upload for each article

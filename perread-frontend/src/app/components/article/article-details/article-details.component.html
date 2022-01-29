@@ -1,25 +1,29 @@
-<h2>{{article?.title}}</h2>
+<div class="image-header mx-auto">
+  <img src={{articleImagePath}} class="img-fluid shadow-1-strong rounded" alt="">
 
-<div id="block_container">
-  <strong>Authors: </strong>
-  <div *ngFor="let author of article?.authorPreviews">
-    <app-author-preview [authorPreview]="author"></app-author-preview>
+  <h2>{{article?.title}}</h2>
+  
+  <div id="block_container">
+    <strong>Authors: </strong>
+    <div *ngFor="let author of article?.authorPreviews">
+      <app-author-preview [authorPreview]="author"></app-author-preview>
+    </div>
   </div>
-</div>
-
-<div id="block_container">
-  Tags:
-  <div *ngFor="let tag of article?.tagPreviews">
-    <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+  
+  <div id="block_container">
+    Tags:
+    <div *ngFor="let tag of article?.tagPreviews">
+      <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+    </div>
   </div>
+  
+  <div id="block_container">
+    <label>
+      <strong>Price: </strong>
+      {{article?.price}}
+    </label>
+  </div>
+  
+  <br>
+  <p>{{article?.content}}</p>
 </div>
-
-<div id="block_container">
-  <label>
-    <strong>Price: </strong>
-    {{article?.price}}
-  </label>
-</div>
-
-<br>
-<p>{{article?.content}}</p>

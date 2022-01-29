@@ -41,7 +41,7 @@ export class AddArticleComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
-          this.router.navigate(['/articles']);
+          this.router.navigate(['/articles'], { replaceUrl: true });
         }
       );
   }
