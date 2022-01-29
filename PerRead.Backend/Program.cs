@@ -90,7 +90,7 @@ static void AddServices(WebApplicationBuilder builder)
 
     // Services
     builder.Services.AddScoped<IArticleService, ArticleService>();
-    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IAuthorsService, AuthorsService>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IImageService, ImageService>();

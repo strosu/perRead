@@ -4,4 +4,5 @@ export class Author {
     id?: number;
     name?: string;
     articlePreviews?: ArticlePreview[];
+    authorImageUri?: string;
 }

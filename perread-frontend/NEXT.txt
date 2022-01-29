@@ -12,6 +12,10 @@ TODO:
         - offer 2 buttons near the article: Read vs Read and Remember(?)
             - for read, deduct the token and add to author
             - for read and remember, same as above, but also store in the user's history
+
+- include the profile picture in the author preview
+- are authors and users mapped 1 to 1? Does the author table become 
+
 - revisit tags, safety around parallel requests;
 - do some basic search for titles
     - do more advanced search for article contents? grep maybe (if storing them as files)?

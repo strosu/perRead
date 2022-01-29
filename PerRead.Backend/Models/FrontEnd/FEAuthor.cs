@@ -7,5 +7,7 @@
         public string Name { get; set; }
 
         public IEnumerable<FEArticlePreview> ArticlePreviews { get; set; }
+
+        public string AuthorImageUri { get; set; }
     }
 }

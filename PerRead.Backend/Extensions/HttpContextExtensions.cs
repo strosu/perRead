@@ -6,7 +6,17 @@ namespace PerRead.Backend.Extensions
     {
         public static string GetUserId(this IHttpContextAccessor accessor)
         {
-            var claim = accessor?.HttpContext?.User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            return accessor.GetClaimValue(ClaimTypes.NameIdentifier);
+        }
+
+        public static string GetUserName(this IHttpContextAccessor accessor)
+        {
+            return accessor.GetClaimValue(ClaimTypes.Name);
+        }
+
+        public static string GetClaimValue(this IHttpContextAccessor accessor, string key)
+        {
+            var claim = accessor?.HttpContext?.User?.Claims.FirstOrDefault(x => x.Type == key);
 
             if (claim == null)
             {

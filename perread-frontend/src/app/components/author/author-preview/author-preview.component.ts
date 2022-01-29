@@ -14,7 +14,7 @@ export class AuthorPreviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(`got a new instance ${this.authorPreview.authorName}`);
+    // console.log(`got a new instance ${this.authorPreview.authorName}`);
   }
 
 }

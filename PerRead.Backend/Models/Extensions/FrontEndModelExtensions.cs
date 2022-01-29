@@ -4,6 +4,17 @@ namespace PerRead.Backend.Models.FrontEnd
 {
     public static class FrontEndModelExtensions
     {
+        public static FEUserPreview ToUserPreview(this UserPreferences userPreferences)
+        {
+            // Check how we can load only part of the row when needed. No point getting all the data if we do a small transform on it
+            return new FEUserPreview
+            {
+                UserId = userPreferences.UserId,
+                UserName = userPreferences.UserName,
+                ProfileImageUri = string.IsNullOrEmpty(userPreferences.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : userPreferences.ProfileImageUri
+            };
+        }
+
         public static FEArticle ToFEArticle(this Article articleModel)
         {
             return new FEArticle 
@@ -60,7 +71,8 @@ namespace PerRead.Backend.Models.FrontEnd
             {
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
-                ArticlePreviews = authorModel.Articles?.Select(x => x.Article.ToFEArticlePreview())
+                ArticlePreviews = authorModel.Articles?.Select(x => x.Article.ToFEArticlePreview()),
+                AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri
             };
         }
 
@@ -75,7 +87,8 @@ namespace PerRead.Backend.Models.FrontEnd
             return new FEAuthorPreview
             {
                 AuthorId = authorModel.AuthorId,
-                AuthorName = authorModel.Name
+                AuthorName = authorModel.Name,
+                AuthorImageUri = string.IsNullOrEmpty(authorModel?.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri
             };
         }
 

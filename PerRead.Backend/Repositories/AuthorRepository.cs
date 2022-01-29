@@ -35,7 +35,7 @@ namespace PerRead.Backend.Repositories
                 .Where(author => author.AuthorId == id);
         }
 
-        public IQueryable<Author> GetAuthorWithArticlesAsync(string id)
+        public IQueryable<Author> GetAuthorWithArticles(string id)
         {
             return GetAuthor(id)
                 .Include(author => author.Articles)
@@ -43,7 +43,7 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(article => article.Tags);
         }
 
-        public IQueryable<Author> GetAuthorByNameAsync(string name)
+        public IQueryable<Author> GetAuthorByName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -67,11 +67,11 @@ namespace PerRead.Backend.Repositories
     {
         Task CreateAsync(AuthorCommand command);
 
-        IQueryable<Author> GetAuthorWithArticlesAsync(string id);
+        IQueryable<Author> GetAuthorWithArticles(string id);
 
         IQueryable<Author> GetAuthor(string id);
 
-        IQueryable<Author> GetAuthorByNameAsync(string name);
+        IQueryable<Author> GetAuthorByName(string name);
 
         IQueryable<Author> GetAuthors();
     }

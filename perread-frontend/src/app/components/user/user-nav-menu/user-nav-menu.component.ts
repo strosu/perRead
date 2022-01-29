@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Author } from 'src/app/models/author.model';
 
 @Component({
   selector: 'app-user-nav-menu',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserNavMenuComponent implements OnInit {
 
+  @Input()
+  get author(): Author {return this._author}
+  set author(author:Author) {
+    this._author = author;
+  }
+  // author: Author = {};
+  
+  private _author={};
+
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

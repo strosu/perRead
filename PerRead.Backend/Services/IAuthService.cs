@@ -13,14 +13,14 @@ using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthorRepository _authorRepository;
         private readonly JwtSettings _jwtSettings;
 
-        public UserService(
+        public AuthService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptionsSnapshot<JwtSettings> jwtSettings,
@@ -30,6 +30,11 @@ namespace PerRead.Backend.Services
             _signInManager = signInManager;
             _authorRepository = authorRepository;
             _jwtSettings = jwtSettings.Value;
+        }
+
+        public Task GetCurrentUser()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<JWTModel> Login(ClaimsPrincipal user, string username, string password)
@@ -122,8 +127,10 @@ namespace PerRead.Backend.Services
         }
     }
 
-    public interface IUserService
+    public interface IAuthService
     {
+        Task GetCurrentUser();
+
         Task Register(string username, string password, string email);
 
         Task<JWTModel> Login(ClaimsPrincipal user, string username, string password);

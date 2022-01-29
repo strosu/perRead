@@ -8,11 +8,11 @@ namespace PerRead.Backend.Controllers
 {
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _userService;
 
-        public UserController(IUserService userService)
+        public AuthController(IAuthService userService)
         {
             _userService = userService;
         }

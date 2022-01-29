@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Author } from './models/author.model';
+import { AuthorsService } from './services/authors.service';
 import { TokenStorageService } from './services/token-storage.service';
 
 @Component({
@@ -9,16 +11,23 @@ import { TokenStorageService } from './services/token-storage.service';
 export class AppComponent implements OnInit {
   title = 'perread-frontend';
   isLoggedIn = false;
-  userName?: string;
+  user: Author = {};
 
-  constructor(private tokenService: TokenStorageService) {  }
+  constructor(private tokenService: TokenStorageService,
+    private authorsService: AuthorsService) {  }
   
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenService.getToken();
 
     if (this.isLoggedIn) {
-      var user = this.tokenService.getUser();
-      this.userName = user.userName;
+      this.authorsService.getCurrentAuthor().subscribe(
+        {
+          next: data => {
+            this.user = data;
+          },
+          error: err => console.log(err)
+        }
+      );
     }
   }
 

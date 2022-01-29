@@ -14,7 +14,7 @@ export class TagPreviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(`got intialized with ${this.tagPreview}`);
+    // console.log(`got intialized with ${this.tagPreview}`);
   }
 
 }

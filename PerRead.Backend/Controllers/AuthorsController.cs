@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
+using System.Security.Claims;
 
 namespace PerRead.Backend.Controllers
 {
@@ -15,6 +16,19 @@ namespace PerRead.Backend.Controllers
         public AuthorsController(IAuthorsService authorsService)
         {
             _authorsService = authorsService;
+        }
+
+        [HttpGet("details")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var result = await _authorsService.GetCurrentAuthor();
+
+            if (result == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
