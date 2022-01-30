@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
 import { LoginService } from 'src/app/services/login.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -31,7 +30,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.returnUrl = String(this.route.snapshot.queryParams['returnUrl']);
+    if (!Boolean(this.route.snapshot.queryParams['returnUrl'])) {
+      this.returnUrl = "/";
+    }
+    else {
+      this.returnUrl = String(this.route.snapshot.queryParams['returnUrl']);
+    }
 
     if (this.tokenService.getToken()) {
       this.isLoggedIn = true;
@@ -46,7 +50,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     const {username, password } = this.form;
+
     this.loginService.signIn(username, password, this.returnUrl);
   }
-
 }

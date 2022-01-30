@@ -30,6 +30,5 @@ export class UserNavMenuComponent implements OnInit {
 
   logout(): void {
     this.tokenService.signout();
-    this.router.navigate(["/"]);
   }
 }

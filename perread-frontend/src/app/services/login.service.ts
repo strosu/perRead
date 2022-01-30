@@ -13,15 +13,15 @@ export class LoginService {
     private tokenService: TokenStorageService,
     private router: Router) { }
 
-  signIn(username: string, password: string, navigateTo: string) : void {
+  signIn(username: string, password: string, navigateTo: string): void {
     // login and get the token
     this.authService.login(username, password).subscribe({
       next: data => {
         this.tokenService.saveToken(data);
         this.tokenService.saveUser(data);
-          this.router.navigate([navigateTo], {replaceUrl: true});
-       },
-       error: err => console.log(err.error.message)
+        this.router.navigate([navigateTo], { replaceUrl: true });
+      },
+      error: err => console.log(err.error.message)
     });
   }
 }
