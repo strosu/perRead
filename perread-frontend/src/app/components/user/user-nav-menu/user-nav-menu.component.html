@@ -1,13 +1,16 @@
-<div class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-      data-bs-toggle="dropdown" aria-expanded="false">
-      {{author.name}}
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-      <li><a routerLink="articles" class="dropdown-item">Show all</a></li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li><a routerLink="articles/new" class="dropdown-item">Add new</a></li>
-    </ul>
-  </div>
+<div class="nav-item dropdown mr-10">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    {{author?.authorName}}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
+    <li>
+      <button class="dropdown-item" (click)="logout()">Logout</button>
+    </li>
+
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li><a routerLink="articles/new" class="dropdown-item">Add new</a></li>
+  </ul>
+</div>

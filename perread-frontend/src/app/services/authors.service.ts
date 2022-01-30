@@ -20,7 +20,7 @@ export class AuthorsService {
     return this.httpClient.get<Author>(`${Constants.BACKENDURL}/authors/${id}`);
   }
 
-  getCurrentAuthor() : Observable<Author> {
-    return this.httpClient.get<Author>(`${Constants.BACKENDURL}/authors/details`);
+  getCurrentAuthor() : Observable<AuthorPreview> {
+    return this.httpClient.get<AuthorPreview>(`${Constants.BACKENDURL}/authors/details`);
   }
 }

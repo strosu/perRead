@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Author } from 'src/app/models/author.model';
+import { Router } from '@angular/router';
+import { AuthorPreview } from 'src/app/models/author-preview.model';
+import { AuthorsService } from 'src/app/services/authors.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-user-nav-menu',
@@ -8,17 +11,25 @@ import { Author } from 'src/app/models/author.model';
 })
 export class UserNavMenuComponent implements OnInit {
 
-  @Input()
-  get author(): Author {return this._author}
-  set author(author:Author) {
-    this._author = author;
-  }
-  // author: Author = {};
+  author?: AuthorPreview;
   
-  private _author={};
-
-  constructor() { }
+  constructor(private tokenService: TokenStorageService,
+    private router: Router,
+    private authorsService: AuthorsService) { }
 
   ngOnInit(): void {
+    this.authorsService.getCurrentAuthor().subscribe(
+      {
+        next: data => {
+          this.author = data;
+        },
+        error: err => console.log(err)
+      }
+    );
+  }
+
+  logout(): void {
+    this.tokenService.signout();
+    this.router.navigate(["/"]);
   }
 }

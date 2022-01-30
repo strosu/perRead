@@ -41,8 +41,6 @@ export class LoginComponent implements OnInit {
       this.roles = userJson.roles;
 
       this.username = userJson.userName;
-
-      // this.router.navigate([this.returnUrl]);
     }
   }
 

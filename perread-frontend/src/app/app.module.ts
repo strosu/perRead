@@ -23,6 +23,7 @@ import { AllArticlesComponent } from './components/article/all-articles/all-arti
 import { TagListComponent } from './components/tags/tag-list/tag-list.component';
 import { PopularTagsComponent } from './components/tags/popular-tags/popular-tags.component';
 import { UserNavMenuComponent } from './components/user/user-nav-menu/user-nav-menu.component';
+import { NavbarComponent } from './components/nav/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { UserNavMenuComponent } from './components/user/user-nav-menu/user-nav-m
     AllArticlesComponent,
     TagListComponent,
     PopularTagsComponent,
-    UserNavMenuComponent
+    UserNavMenuComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
