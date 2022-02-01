@@ -29,15 +29,6 @@ namespace PerRead.Backend.Services
             return await author.Select(x => x.ToFEAuthor()).FirstOrDefaultAsync();
         }
 
-        public async Task<FEAuthorPreview?> GetCurrentAuthor()
-        {
-            var authorId = _accessor.GetUserId();
-
-            var author = _authorRepository.GetAuthor(authorId);
-
-            return await author.Select(x => x.ToFEAuthorPreview()).SingleOrDefaultAsync();
-        }
-
         public async Task<IEnumerable<FEAuthorPreview>> GetAuthorsAsync()
         {
             var authors = _authorRepository.GetAuthors();
@@ -53,8 +44,6 @@ namespace PerRead.Backend.Services
         Task<FEAuthor?> GetAuthorByNameAsync(string name);
 
         Task<IEnumerable<FEAuthorPreview>> GetAuthorsAsync();
-
-        Task<FEAuthorPreview?> GetCurrentAuthor();
     }
 }
 

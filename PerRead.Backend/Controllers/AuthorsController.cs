@@ -18,19 +18,6 @@ namespace PerRead.Backend.Controllers
             _authorsService = authorsService;
         }
 
-        [HttpGet("details")]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var result = await _authorsService.GetCurrentAuthor();
-
-            if (result == null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok(result);
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthorAsync(string id)
         {

@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorPreview } from 'src/app/models/author-preview.model';
+import { UserPreview } from 'src/app/models/user/user-preview.model';
 import { AuthorsService } from 'src/app/services/authors.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-nav-menu',
@@ -11,17 +13,16 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class UserNavMenuComponent implements OnInit {
 
-  author?: AuthorPreview;
+  user?: UserPreview;
   
   constructor(private tokenService: TokenStorageService,
-    private router: Router,
-    private authorsService: AuthorsService) { }
+    private usersService: UserService) { }
 
   ngOnInit(): void {
-    this.authorsService.getCurrentAuthor().subscribe(
+    this.usersService.getCurrentUserPreview().subscribe(
       {
         next: data => {
-          this.author = data;
+          this.user = data;
         },
         error: err => console.log(err)
       }

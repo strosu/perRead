@@ -94,11 +94,13 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IAuthorsService, AuthorsService>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IImageService, ImageService>();
+    builder.Services.AddScoped<IUserService, UserService>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
     builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
     builder.Services.AddScoped<ITagRepository, TagRespository>();
+    builder.Services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
