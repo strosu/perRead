@@ -4,14 +4,15 @@ namespace PerRead.Backend.Models.FrontEnd
 {
     public static class FrontEndModelExtensions
     {
-        public static FEUserPreview ToUserPreview(this UserPreferences userPreferences)
+        public static FEUserPreview ToUserPreview(this Author author)
         {
             // Check how we can load only part of the row when needed. No point getting all the data if we do a small transform on it
             return new FEUserPreview
             {
-                UserId = userPreferences.UserId,
-                UserName = userPreferences.UserName,
-                ProfileImageUri = string.IsNullOrEmpty(userPreferences.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : userPreferences.ProfileImageUri
+                UserId = author.AuthorId,
+                UserName = author.Name,
+                ProfileImageUri = string.IsNullOrEmpty(author.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : author.ProfileImageUri,
+                ReadingTokens = author.ReadingTokens
             };
         }
 
