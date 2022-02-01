@@ -58,6 +58,7 @@ Bugs:
 - rework article presentation "page"
 - unlock article UI
 
+- do not load article if not enough money; show modal with the error in case of bad requests?
 
 - present all authors nicely
 - user page

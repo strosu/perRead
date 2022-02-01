@@ -61,6 +61,31 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(al => al.Article)
                     .ThenInclude(ar => ar.Tags);
         }
+
+        public async Task<long> AddMoreTokensAsync(string userId)
+        {
+            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == userId);
+
+            if (author == null)
+            {
+                throw new ArgumentException(nameof(userId));
+            }
+
+            author.ReadingTokens += 10;
+
+            await _context.SaveChangesAsync();
+
+            return author.ReadingTokens;
+        }
+
+        public async Task AddTokens(string authorId, long amount)
+        {
+            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
+
+            author.ReadingTokens += amount;
+
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface IAuthorRepository
@@ -74,6 +99,10 @@ namespace PerRead.Backend.Repositories
         IQueryable<Author> GetAuthorByName(string name);
 
         IQueryable<Author> GetAuthors();
+
+        Task<long> AddMoreTokensAsync(string usedId);
+
+        Task AddTokens(string authorId, long amount);
     }
 
     public class AuthorCommand

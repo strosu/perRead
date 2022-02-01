@@ -95,6 +95,7 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IPaymentService, PaymentService>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();

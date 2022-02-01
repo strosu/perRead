@@ -16,8 +16,8 @@
 
         public IEnumerable<ArticleAuthor> Articles { get; set; }
 
-        public string ProfileImageUri { get; set; }
+        public string? ProfileImageUri { get; set; }
 
-        public int ReadingTokens { get; set; }
+        public long ReadingTokens { get; set; }
     }
 }

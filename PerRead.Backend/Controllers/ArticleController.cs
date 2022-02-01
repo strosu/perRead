@@ -13,10 +13,12 @@ namespace PerRead.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IPaymentService _paymentService;
 
-        public ArticleController(IArticleService articleService)
+        public ArticleController(IArticleService articleService, IPaymentService paymentService)
         {
             _articleService = articleService;
+            _paymentService = paymentService;
         }
 
         [HttpGet("")]
@@ -39,7 +41,14 @@ namespace PerRead.Controllers
                 return NotFound();
             }
 
-            return Ok(article);
+            var paymentResult = await _paymentService.Settle(article.AuthorPreviews.First().AuthorId, article.Price);
+
+            if (paymentResult.Result == PaymentResultEnum.Success)
+            {
+                return Ok(article);
+            }
+
+            return BadRequest(paymentResult.Reason);
         }
 
         [HttpPost("")]

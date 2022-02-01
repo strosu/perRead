@@ -3,7 +3,10 @@
       {{user?.userName}}
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
-        <li><a routerLink="articles/new" class="dropdown-item">Add more tokens</a></li>
+
+        <li>
+            <button class="dropdown-item" (click)="addTokens()">Add more tokens</button>
+        </li>
 
         <li>
             <hr class="dropdown-divider">

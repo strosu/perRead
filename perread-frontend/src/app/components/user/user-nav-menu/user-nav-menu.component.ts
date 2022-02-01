@@ -22,4 +22,14 @@ export class UserNavMenuComponent implements OnInit {
   logout(): void {
     this.tokenService.signout();
   }
+
+  addTokens(): void {
+    this.usersService.addMoreTokens().subscribe( {
+      next: data => {
+        if (this.user?.readingTokens) {
+          this.user.readingTokens = data;
+        }
+      }
+    });
+  }
 }

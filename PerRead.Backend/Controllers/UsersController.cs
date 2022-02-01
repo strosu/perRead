@@ -27,5 +27,21 @@ namespace PerRead.Backend.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("/user/addTokens")]
+        // TODO - rename this
+        // TODO - need an actual implementation later
+        public async Task<IActionResult> AddMoreTokens()
+        {
+            try
+            {
+                var currentTokenCount = await _userService.AddMoreTokens();
+                return Ok(currentTokenCount);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }
