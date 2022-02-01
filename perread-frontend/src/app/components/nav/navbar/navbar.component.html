@@ -1,64 +1,62 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="container-fluid">
 
-      <a class="navbar-brand" href="#">PerRead</a>
-      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">PerRead</a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button> -->
-      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
 
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Articles
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a routerLink="articles" class="dropdown-item">Show all</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a routerLink="articles/new" class="dropdown-item">Add new</a></li>
-          </ul>
-        </div>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a routerLink="articles" class="dropdown-item">Show all</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a routerLink="articles/new" class="dropdown-item">Add new</a></li>
+                </ul>
+            </div>
 
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Authors
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a routerLink="authors" class="dropdown-item">My authors</a></li>
-            <li><a routerLink="authors" class="dropdown-item">Show all</a></li>
-          </ul>
-        </div>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a routerLink="authors" class="dropdown-item">My authors</a></li>
+                    <li><a routerLink="authors" class="dropdown-item">Show all</a></li>
+                </ul>
+            </div>
 
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Tags
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a routerLink="tags/popular" class="dropdown-item">Most popular</a></li>
-          </ul>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a routerLink="tags/popular" class="dropdown-item">Most popular</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
 
-      <!--Right sided bootstrap shit-->
-      <ul class="navbar-nav ml-auto">
-        <div *ngIf="!isLoggedIn; else elseBlock">
-          <div class="d-flex ms-auto">
-            <button routerLink="login" type="button" class="btn btn-sm btn-outline-secondary me-3">
+        <!--Right sided bootstrap shit-->
+        <ul class="navbar-nav ml-auto">
+            <div *ngIf="!isLoggedIn; else elseBlock">
+                <div class="d-flex ms-auto">
+                    <button routerLink="login" type="button" class="btn btn-sm btn-outline-secondary me-3">
               Login
             </button>
-            <button routerLink="register" type="button" class="btn btn-sm btn-outline-secondary">
+                    <button routerLink="register" type="button" class="btn btn-sm btn-outline-secondary">
               Register
             </button>
-          </div>
-        </div>
-        <ng-template #elseBlock>
-          <!-- <app-user-nav-menu [author]="user"></app-user-nav-menu> -->
-          <app-user-nav-menu></app-user-nav-menu>
-        </ng-template>
-      </ul>
+                </div>
+            </div>
+            <ng-template #elseBlock>
+                <li class="random">{{user?.readingTokens}}</li>
+                <li><img class="center" src='../../../../assets/images/Untitled.jpg' /></li>
+                <app-user-nav-menu [user]="user"></app-user-nav-menu>
+            </ng-template>
+        </ul>
     </div>
-  </nav>
+</nav>

@@ -30,6 +30,7 @@ TODO:
 - PERF: consider singleQuery when getting tags -> articles -> authors
 
 - make image an optional part of the request; if not sent, use the author's profile pic 
+- when filtering by tag, return all tags as part of the articlePreview; this fixes articles with multiple tags
 
 DONE:
 - proper implementation for many to many - DONE
