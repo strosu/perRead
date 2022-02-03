@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserPreview } from 'src/app/models/user/user-preview.model';
+import { ArticlesService } from 'src/app/services/articles.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,12 +15,14 @@ export class NavbarComponent implements OnInit {
   user?: UserPreview;
   
   constructor(private tokenService: TokenStorageService,
-    private usersService: UserService) { }
+    private usersService: UserService,
+    private articleService: ArticlesService) { }
 
   ngOnInit(): void {
     this.computeLoggedIn();
     this.tokenService.onLogin.subscribe(_ => this.onLogIn()); // set it manually, don't wait for the token to be set, as this will happen afterwards
     this.tokenService.onLogout.subscribe(_ => this.isLoggedIn = false);
+    this.articleService.onArticleServed.subscribe(_ => this.getUserPreview());
 
     if (this.isLoggedIn) {
       this.getUserPreview();

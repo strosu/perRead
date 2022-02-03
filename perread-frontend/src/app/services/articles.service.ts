@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
 import { ArticlePreview } from '../models/article/article-preview.model';
@@ -11,6 +11,7 @@ import { ArticleCommand } from '../models/article/article-command.model';
 })
 export class ArticlesService {
 
+  @Output() onArticleServed: EventEmitter<any> = new EventEmitter();
   constructor(private httpClient: HttpClient) { }
 
   getAll() : Observable<ArticlePreview[]> {
@@ -18,7 +19,13 @@ export class ArticlesService {
   }
 
   get(id: any) : Observable<Article> {
-    return this.httpClient.get<Article>(`${Constants.BACKENDURL}/article/${id}`);
+    
+    var articleObservable = this.httpClient.get<Article>(`${Constants.BACKENDURL}/article/${id}`);
+    // articleObservable.subscribe({
+    //   next: _ => this.onArticleServed.emit(null)
+    // });
+
+    return articleObservable;
   }
 
   create(data: ArticleCommand): Observable<Article> {
