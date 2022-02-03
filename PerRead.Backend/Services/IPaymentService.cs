@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
 using PerRead.Backend.Repositories;
 
@@ -10,7 +9,6 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IHttpContextAccessor _accessor;
 
-
         public PaymentService(IAuthorRepository authorRepository, IHttpContextAccessor accessor)
         {
             _authorRepository = authorRepository;
@@ -19,7 +17,16 @@ namespace PerRead.Backend.Services
 
         public async Task<PaymentResult> Settle(string to, long amount)
         {
-            // TODO - this should be done in a single transaction, ovbiously
+            // Short circuit for free articles
+            if (amount == 0)
+            {
+                return new PaymentResult
+                {
+                    Result = PaymentResultEnum.Success
+                };
+            }
+
+            // TODO - this should be done in a single transaction, obviously
             var requester = _accessor.GetUserId();
 
             var fromAuthor = await _authorRepository.GetAuthor(requester).SingleAsync();
