@@ -14,17 +14,17 @@ TODO:
             - for read and remember, same as above, but also store in the user's history
 
 - include the profile picture in the author preview
-- are authors and users mapped 1 to 1? Does the author table become 
+- are authors and users mapped 1 to 1? Does the author table become the users table? For some objects, yes. Where do we store the settings?
 
 - revisit tags, safety around parallel requests;
 - do some basic search for titles
     - do more advanced search for article contents? grep maybe (if storing them as files)?
 
 - return proper exception when login failed
+- add pagination to GetAll methods
 
-- endpoint for uploading images; can the image be combined with the main article post request? Seems so, via form?
-    - decide storage algorithm for files; use userName as root? a deeper tree might be better than a shallower one;
-    - add new controller for getting the images, so they don't live under wwwroot (decouple from the server)
+- decide storage algorithm for files; use userName as root? a deeper tree might be better than a shallower one;
+- add new controller for getting the images, so they don't live under wwwroot (decouple from the server)
 
 - PERF: get tag with top 50 articles, instead of all; same applies to author with articles
 - PERF: consider singleQuery when getting tags -> articles -> authors
@@ -39,6 +39,7 @@ DONE:
 - authenticate as user - DONE
 - restrict access; play with roles, i.e. don't allow any user to create new articles - DONE
 - add tags controller, operations on it (atm only getOne)
+- endpoint for uploading images; can the image be combined with the main article post request? Seems so, via form?
 
 FRONTEND:
 
@@ -55,10 +56,10 @@ Bugs:
     - redirect to list of articles; alternatively, redirect to list of articles for current user (might be better)
 - rework article presentation "page"
 - unlock article UI
-- rework article presentation "page"
-- unlock article UI
 
 - do not load article if not enough money; show modal with the error in case of bad requests?
+
+- add home page
 
 - present all authors nicely
 - user page

@@ -18,9 +18,24 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.computeLoggedIn();
-    this.tokenService.onLogin.subscribe(_ => this.isLoggedIn = true); // set it manually, don't wait for the token to be set, as this will happen afterwards
+    this.tokenService.onLogin.subscribe(_ => this.onLogIn()); // set it manually, don't wait for the token to be set, as this will happen afterwards
     this.tokenService.onLogout.subscribe(_ => this.isLoggedIn = false);
 
+    if (this.isLoggedIn) {
+      this.getUserPreview();
+    }
+  }
+
+  computeLoggedIn() : void {
+    this.isLoggedIn = !!this.tokenService.getToken();
+  }
+
+  onLogIn(): void {
+    this.isLoggedIn = true;
+    this.getUserPreview();
+  }
+
+  getUserPreview(): any {
     this.usersService.getCurrentUserPreview().subscribe(
       {
         next: data => {
@@ -28,10 +43,6 @@ export class NavbarComponent implements OnInit {
         },
         error: err => console.log(err)
       }
-    );
-  }
-
-  computeLoggedIn() : void {
-    this.isLoggedIn = !!this.tokenService.getToken();
+    );  
   }
 }
