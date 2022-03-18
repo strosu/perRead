@@ -46,7 +46,7 @@ FRONTEND:
 TODO:
 
 Bugs:
-- figure out why cliking on a tag in an article preview takes me to the article itself; see http://localhost:4200/tags/14
+- figure out why cliking on a tag in an article preview takes me to the article itself; see http://localhost:4200/tags/14 - bad routing
 - somehow wrap titles with long words in the article preview
 
 - input form for creating new article
@@ -58,6 +58,7 @@ Bugs:
 - unlock article UI
 
 - do not load article if not enough money; show modal with the error in case of bad requests?
+- refactor event bring raised from article-details instead of the service (somehow, maybe via maps. see comments). Alternatively, return a tuple of article, userData, although both messy
 
 - add home page
 

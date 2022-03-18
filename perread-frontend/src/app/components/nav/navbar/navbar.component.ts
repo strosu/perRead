@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthInterceptor } from 'src/app/helpers/auth.interceptor';
 import { UserPreview } from 'src/app/models/user/user-preview.model';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -16,7 +17,8 @@ export class NavbarComponent implements OnInit {
   
   constructor(private tokenService: TokenStorageService,
     private usersService: UserService,
-    private articleService: ArticlesService) { }
+    private articleService: ArticlesService,
+    private httpInj: AuthInterceptor) { }
 
   ngOnInit(): void {
     this.computeLoggedIn();
@@ -27,6 +29,9 @@ export class NavbarComponent implements OnInit {
     if (this.isLoggedIn) {
       this.getUserPreview();
     }
+
+    this.httpInj.onRequest.subscribe(_ => this.getUserPreview());
+
   }
 
   computeLoggedIn() : void {

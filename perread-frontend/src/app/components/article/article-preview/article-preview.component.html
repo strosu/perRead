@@ -1,24 +1,24 @@
 <div class="with-gray-background">
-  <a routerLink="/article/{{articlePreview.articleId}}" class="text-dark">
-    <!-- <img src="https://localhost:7176/m7kgwe2gnrd81.jpg" class="img-fluid shadow-1-strong rounded" alt=""> -->
-    <img src={{articleImagePath}} class="img-fluid shadow-1-strong rounded" alt="">
-  
-    <p class="mb-2"><strong>{{articlePreview.articleTitle}}</strong></p>
-    <div id="block_container">
-        <app-author-preview [authorPreview]="articlePreview.authorPreviews[0]"></app-author-preview>
-        <div>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y'}}</div>
-    </div>
-  
-    <div id="block_container">
-        <div class="text-dark-small"><strong>Tags: </strong></div>
-        <div *ngFor="let tag of articlePreview.tagPreviews">
-            <app-tag-preview [tagPreview]="tag"></app-tag-preview>
-        </div>
-    </div>
-    
-    <p>{{articlePreview.articlePrice}}</p>
+    <a routerLink="/article/{{articlePreview.articleId}}" class="text-dark">
+        <!-- <img src="https://localhost:7176/m7kgwe2gnrd81.jpg" class="img-fluid shadow-1-strong rounded" alt=""> -->
+        <img src={{articleImagePath}} class="img-fluid shadow-1-strong rounded" alt="">
 
-    <p>{{articlePreview.articlePreview}}</p>
-  
-  </a>
+        <p class="mb-2"><strong>{{articlePreview.articleTitle}}</strong></p>
+        <div id="block_container">
+            <app-author-preview [authorPreview]="articlePreview.authorPreviews[0]"></app-author-preview>
+            <div>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y'}}</div>
+        </div>
+
+        <div id="block_container">
+            <div class="text-dark-small"><strong>Tags: </strong></div>
+            <div *ngFor="let tag of articlePreview.tagPreviews">
+                <app-tag-preview [tagPreview]="tag"></app-tag-preview>
+            </div>
+        </div>
+
+        <p>{{articlePreview.articlePrice}}</p>
+
+        <p>{{articlePreview.articlePreview}}</p>
+
+    </a>
 </div>

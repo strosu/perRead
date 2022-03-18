@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'authors/:id', component: AuthorDetailsComponent},
-  { path: 'authors/all', component: AuthorDetailsComponent},
-  { path: 'authors/', component: AuthorDetailsComponent},
+  // { path: 'authors/all', component: AuthorDetailsComponent},
+  // { path: 'authors/', component: AuthorDetailsComponent},
   { path: 'tags/:id', component: TagDetailsComponent},
   { path: 'tags/popular', component: TagDetailsComponent},
 ];

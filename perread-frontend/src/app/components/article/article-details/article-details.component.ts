@@ -28,7 +28,7 @@ export class ArticleDetailsComponent implements OnInit {
           console.log(data);
           this.article = data;
           this.articleImagePath = this.uriService.getStaticFileUri(this.article.articleImageUrl);
-
+          this.articleService.onArticleServed.emit(null);
         },
         error: err => console.log(err)
       }

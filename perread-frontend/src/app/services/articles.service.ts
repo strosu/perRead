@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { concat, Observable, switchMap } from 'rxjs';
 import { Constants } from '../constants';
 import { ArticlePreview } from '../models/article/article-preview.model';
 import { Article } from '../models/article/article.model';
 import { ArticleCommand } from '../models/article/article-command.model';
+import { concatMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,13 @@ export class ArticlesService {
   get(id: any) : Observable<Article> {
     
     var articleObservable = this.httpClient.get<Article>(`${Constants.BACKENDURL}/article/${id}`);
+    var piped = articleObservable.pipe(
+      switchMap((_ => {
+        this.onArticleServed.emit(null);
+        return articleObservable;
+      })
+    ));
+
     // articleObservable.subscribe({
     //   next: _ => this.onArticleServed.emit(null)
     // });

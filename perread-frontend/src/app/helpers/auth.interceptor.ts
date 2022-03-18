@@ -1,6 +1,6 @@
 import { state } from "@angular/animations";
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable, Output } from "@angular/core";
 import { Router } from "@angular/router";
 import { map, catchError, Observable } from "rxjs";
 import { throwError, NEVER } from 'rxjs';
@@ -8,8 +8,13 @@ import { TokenStorageService } from "../services/token-storage.service";
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AuthInterceptor implements HttpInterceptor {
+
+    @Output() onRequest: EventEmitter<any> = new EventEmitter();
 
     constructor(private tokenService: TokenStorageService, private router: Router) {
     }
@@ -18,6 +23,10 @@ export class AuthInterceptor implements HttpInterceptor {
     {
         var request = req;
         var token = this.tokenService.getToken();
+
+        // if (req.url.startsWith('https://localhost:7176/article')) {
+        //   this.onRequest.emit(null);
+        // }
 
         if (token != null) {
             request = req.clone({ headers: req.headers.append(TOKEN_HEADER_KEY, 'Bearer ' + token)});
