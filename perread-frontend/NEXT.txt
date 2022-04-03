@@ -1,3 +1,25 @@
+MVP
+
+P0 scenarios:
+User:
+- register
+- log in
+- browse all articles
+- browse all authors
+- allow subscribing to an author
+- have the feed populated with articles by the subscribed authors
+- articles read are saved in the user profile
+
+Author:
+- Buy credits
+- reading an article transfers the correct amount of credits from the reader to the author
+- withdraw credits
+- create an article including images
+
+P1 scenarios:
+- search by titles
+- search by author
+
 BACKEND:
 
 TODO:
