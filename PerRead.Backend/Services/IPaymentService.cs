@@ -22,24 +22,24 @@ namespace PerRead.Backend.Services
             // Short circuit for free articles
             if (amount == 0)
             {
-                return new PaymentResult
-                {
-                    Result = PaymentResultEnum.Success
-                };
+                return PaymentResult.Success;
             }
 
             // TODO - this should be done in a single transaction, obviously
             var requester = _accessor.GetUserId();
+
+            // If the author is requesting one of his own articles, just allow
+            if (requester == to)
+            {
+                return PaymentResult.Success;
+            }
 
             var fromAuthor = await _authorRepository.GetAuthorWithReadArticles(requester).SingleAsync();
 
             // If the current user has already unlocked the article, just let them read it
             if (fromAuthor.UnlockedArticles.Any(x => x.ArticleId == articleId))
             {
-                return new PaymentResult
-                {
-                    Result = PaymentResultEnum.Success
-                };
+                return PaymentResult.Success;
             }
 
             if (fromAuthor.ReadingTokens < amount)
@@ -73,6 +73,12 @@ namespace PerRead.Backend.Services
 
     public class PaymentResult
     {
+        public static PaymentResult Success { get; set; } = new PaymentResult
+        {
+            Result = PaymentResultEnum.Success
+        };
+
+
         public PaymentResultEnum Result;
 
         public string? Reason;
