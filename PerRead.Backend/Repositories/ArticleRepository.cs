@@ -82,6 +82,11 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(al => al.Author)
                 .Include(x => x.Tags);
         }
+
+        public async Task<Article?> GetSimpleArticle(int id)
+        {
+            return await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
+        }
     }
 }
 
@@ -95,4 +100,6 @@ public interface IArticleRepository
     Task<Article?> Get(int id);
 
     Task Delete(int id);
+
+    Task<Article?> GetSimpleArticle(int id);
 }

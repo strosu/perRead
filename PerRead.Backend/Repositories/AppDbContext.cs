@@ -32,7 +32,7 @@ namespace PerRead.Backend.Repositories
 
             modelBuilder.Entity<Author>()
                 .HasMany(p => p.UnlockedArticles)
-                .WithMany(p => p)
+                .WithMany(p => p.Unlocked)
                 .UsingEntity(j => j.ToTable("UnlockedArticles"));
         }
     }

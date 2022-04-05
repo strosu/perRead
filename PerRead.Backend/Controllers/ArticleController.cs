@@ -41,7 +41,7 @@ namespace PerRead.Controllers
                 return NotFound();
             }
 
-            var paymentResult = await _paymentService.Settle(article.AuthorPreviews.First().AuthorId, article.Price);
+            var paymentResult = await _paymentService.Settle(id, article.AuthorPreviews.First().AuthorId, article.Price);
 
             if (paymentResult.Result == PaymentResultEnum.Success)
             {

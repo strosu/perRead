@@ -20,16 +20,6 @@
 
         public long ReadingTokens { get; set; }
 
-        public IEnumerable<UnlockedArticle> UnlockedArticles { get; set; }
-    }
-
-    public class UnlockedArticle
-    {
-        public int ArticleId { get; set; }
-
-        public Article Article { get; set; }
-
-        public string AuthorId { get; set; }
-
+        public IList<Article> UnlockedArticles { get; set; }
     }
 }

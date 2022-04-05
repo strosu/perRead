@@ -8,14 +8,16 @@ namespace PerRead.Backend.Services
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IHttpContextAccessor _accessor;
+        private readonly IArticleRepository _articleRepository;
 
-        public PaymentService(IAuthorRepository authorRepository, IHttpContextAccessor accessor)
+        public PaymentService(IAuthorRepository authorRepository, IHttpContextAccessor accessor, IArticleRepository articleRepository)
         {
             _authorRepository = authorRepository;
             _accessor = accessor;
+            _articleRepository = articleRepository;
         }
 
-        public async Task<PaymentResult> Settle(string to, long amount)
+        public async Task<PaymentResult> Settle(int articleId, string to, long amount)
         {
             // Short circuit for free articles
             if (amount == 0)
@@ -29,7 +31,16 @@ namespace PerRead.Backend.Services
             // TODO - this should be done in a single transaction, obviously
             var requester = _accessor.GetUserId();
 
-            var fromAuthor = await _authorRepository.GetAuthor(requester).SingleAsync();
+            var fromAuthor = await _authorRepository.GetAuthorWithReadArticles(requester).SingleAsync();
+
+            // If the current user has already unlocked the article, just let them read it
+            if (fromAuthor.UnlockedArticles.Any(x => x.ArticleId == articleId))
+            {
+                return new PaymentResult
+                {
+                    Result = PaymentResultEnum.Success
+                };
+            }
 
             if (fromAuthor.ReadingTokens < amount)
             {
@@ -40,8 +51,11 @@ namespace PerRead.Backend.Services
                 };
             }
 
+            // TODO - this does not belong here
+            var article = await _articleRepository.GetSimpleArticle(articleId);
+
             // This should be atomic
-            await _authorRepository.AddTokens(requester, -amount);
+            await _authorRepository.MarkAsRead(requester, article);
             await _authorRepository.AddTokens(to, amount);
 
             return new PaymentResult
@@ -53,7 +67,8 @@ namespace PerRead.Backend.Services
 
     public interface IPaymentService
     {
-        Task<PaymentResult> Settle(string to, long amount);
+        // TODO - the payments service should not be concerned with articleIds
+        Task<PaymentResult> Settle(int articleId, string to, long amount);
     }
 
     public class PaymentResult
