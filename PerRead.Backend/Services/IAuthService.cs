@@ -18,17 +18,20 @@ namespace PerRead.Backend.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthorRepository _authorRepository;
+        private readonly IFeedRepository _feedRepository;
         private readonly JwtSettings _jwtSettings;
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptionsSnapshot<JwtSettings> jwtSettings,
-            IAuthorRepository authorRepository)
+            IAuthorRepository authorRepository,
+            IFeedRepository feedRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorRepository = authorRepository;
+            _feedRepository = feedRepository;
             _jwtSettings = jwtSettings.Value;
         }
 
@@ -84,11 +87,13 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
             }
 
-            await _authorRepository.CreateAsync(new AuthorCommand
+            var newAuthor = await _authorRepository.CreateAsync(new AuthorCommand
             {
                 Id = user.Id,
                 Name = user.UserName
             });
+
+            await _feedRepository.CreateNewFeed(newAuthor, "defaultFeedNameHere");
 
         }
 

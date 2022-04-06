@@ -12,7 +12,7 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task CreateAsync(AuthorCommand command)
+        public async Task<Author> CreateAsync(AuthorCommand command)
         {
             var newAuthor = new Author
             {
@@ -22,6 +22,8 @@ namespace PerRead.Backend.Repositories
 
             _context.Authors.Add(newAuthor);
             await _context.SaveChangesAsync();
+
+            return newAuthor;
         }
 
         public IQueryable<Author> GetAuthor(string id)
@@ -109,7 +111,7 @@ namespace PerRead.Backend.Repositories
 
     public interface IAuthorRepository
     {
-        Task CreateAsync(AuthorCommand command);
+        Task<Author> CreateAsync(AuthorCommand command);
 
         IQueryable<Author> GetAuthorWithArticles(string id);
 

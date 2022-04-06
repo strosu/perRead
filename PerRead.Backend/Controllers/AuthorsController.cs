@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
-using System.Security.Claims;
 
 namespace PerRead.Backend.Controllers
 {

@@ -15,6 +15,8 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<Feed> Feeds { get; set; }
+
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,15 +36,11 @@ namespace PerRead.Backend.Repositories
                 .HasMany(p => p.UnlockedArticles)
                 .WithMany(p => p.Unlocked)
                 .UsingEntity(j => j.ToTable("UnlockedArticles"));
+
+            modelBuilder.Entity<Feed>()
+                .HasMany(p => p.SubscribedAuthors)
+                .WithMany(p => p.SubscribedFeeds)
+                .UsingEntity(j => j.ToTable("FeedAuthors"));
         }
     }
-
-    //public class ArticleAuthor
-    //{
-    //    public int ArticleId { get; set; }
-    //    public Article Article { get; set; }
-
-    //    public string AuthorId { get; set; }
-    //    public Author Author { get; set; }
-    //}
 }
