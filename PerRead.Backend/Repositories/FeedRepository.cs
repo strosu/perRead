@@ -9,6 +9,10 @@ namespace PerRead.Backend.Repositories
 
         Task AddToFeed(string feedId, Author authorToAdd);
 
+        Task<Feed> GetFeedInfo(string feedId);
+
+        IQueryable<Feed> GetUserFeeds(Author owner);
+
         IQueryable<Author> GetAuthors(string feedId);
     }
 
@@ -27,6 +31,7 @@ namespace PerRead.Backend.Repositories
             {
                 FeedName = name,
                 Owner = owner,
+                FeedId = Guid.NewGuid().ToString()
             };
 
             _context.Feeds.Add(feed);
@@ -36,6 +41,14 @@ namespace PerRead.Backend.Repositories
             return feed;
         }
 
+        public async Task<Feed> GetFeedInfo(string feedId)
+        {
+            return await _context.Feeds
+                .AsNoTracking()
+                .Where(x => x.FeedId == feedId)
+                .Include(x => x.Owner).FirstOrDefaultAsync();
+        }
+
         public async Task AddToFeed(string feedId, Author authorToAdd)
         {
             var feed = await _context.Feeds.FindAsync(feedId);
@@ -43,6 +56,11 @@ namespace PerRead.Backend.Repositories
             if (feed == null)
             {
                 throw new ArgumentException("feed does not exist");
+            }
+
+            if (feed.SubscribedAuthors == null)
+            {
+                feed.SubscribedAuthors = new List<Author>();
             }
 
             feed.SubscribedAuthors.Add(authorToAdd);
@@ -58,6 +76,13 @@ namespace PerRead.Backend.Repositories
                 .ThenInclude(x => x.Articles)
                 .ThenInclude(x => x.Article)
                 .SelectMany(f => f.SubscribedAuthors);
+        }
+
+        public IQueryable<Feed> GetUserFeeds(Author owner)
+        {
+            return _context.Feeds
+                .AsNoTracking()
+                .Where(x => x.Owner == owner);
         }
     }
 }

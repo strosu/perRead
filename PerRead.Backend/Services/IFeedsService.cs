@@ -13,6 +13,8 @@ namespace PerRead.Backend.Services
         Task<IEnumerable<FEArticlePreview>> GetFeedArticles(string feedId);
 
         Task AddAuthorToFeed(string feedId, string authorId);
+
+        Task<IEnumerable<FEFeed>> GetFeeds();
     }
 
     public class FeedsService : IFeedsService
@@ -27,6 +29,31 @@ namespace PerRead.Backend.Services
             _feedsRepository = feedsRepository;
             _authorRepository = authorRepository;
             _accessor = accessor;
+        }
+
+        public async Task<IEnumerable<FEFeed>> GetFeeds()
+        {
+            var currentUser = _accessor.GetUserId();
+            var owner = await _authorRepository.GetAuthor(currentUser).FirstOrDefaultAsync();
+
+            var feeds = await _feedsRepository.GetUserFeeds(owner).ToListAsync();
+
+            if (!feeds.Any())
+            {
+                var defaultFeed = await _feedsRepository.CreateNewFeed(owner, "defaultFEEEDNAME");
+                return new List<FEFeed> { new FEFeed 
+                {
+                    FeedId = defaultFeed.FeedId,
+                    FeedName = defaultFeed.FeedName,
+                } };
+
+            }
+
+            return feeds.Select(x => new FEFeed
+            {
+                FeedId = x.FeedId,
+                FeedName = x.FeedName,
+            });
         }
 
         public async Task<Feed> CreateNewFeed(string feedName)
@@ -46,6 +73,15 @@ namespace PerRead.Backend.Services
 
         public async Task AddAuthorToFeed(string feedId, string authorId)
         {
+            var feed = await _feedsRepository.GetFeedInfo(feedId);
+
+            var requester = _accessor.GetUserId();
+
+            if (feed.Owner.AuthorId != requester)
+            {
+                throw new ArgumentException("cannot add for someone else lol");
+            }
+
             var author = await _authorRepository.GetAuthor(authorId).FirstOrDefaultAsync();
 
             if (author == null)
@@ -67,5 +103,6 @@ namespace PerRead.Backend.Services
 
             return await articlesQuery.ToListAsync();
         }
+
     }
 }

@@ -41,6 +41,9 @@ namespace PerRead.Backend.Repositories
                 .HasMany(p => p.SubscribedAuthors)
                 .WithMany(p => p.SubscribedFeeds)
                 .UsingEntity(j => j.ToTable("FeedAuthors"));
+
+            modelBuilder.Entity<Feed>()
+                .HasOne(p => p.Owner);
         }
     }
 }

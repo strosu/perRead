@@ -30,5 +30,11 @@ namespace PerRead.Backend.Controllers
             await _feedsService.AddAuthorToFeed(feedId, authorId);
             return Ok();
         }
+
+        [HttpGet("/feeds")]
+        public async Task<IEnumerable<FEFeed>> GetFeeds()
+        {
+            return await _feedsService.GetFeeds();
+        }
     }
 }
