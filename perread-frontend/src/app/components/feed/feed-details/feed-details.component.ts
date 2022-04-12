@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ArticlePreview } from 'src/app/models/article/article-preview.model';
+import { FeedPreview } from 'src/app/models/feed/feed-preview.model';
+import { Feed } from 'src/app/models/feed/feed.model';
+import { FeedService } from 'src/app/services/feed.service';
 
 @Component({
   selector: 'app-feed-details',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedDetailsComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  feedPreview: FeedPreview = <FeedPreview>{};
+
+  articles? : ArticlePreview[];
+
+  constructor(private feedService: FeedService) { }
 
   ngOnInit(): void {
+    this.feedService.getFeedDetails(<string>this.feedPreview.feedId).subscribe(
+      {
+        next : data => {
+          console.log(data);
+          this.articles = data.articlePreviews;
+        },
+        error: error => console.log(error)
+      }
+    );
   }
 
 }

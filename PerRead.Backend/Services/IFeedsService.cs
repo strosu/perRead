@@ -8,7 +8,7 @@ namespace PerRead.Backend.Services
 {
     public interface IFeedsService
     {
-        Task<Feed> CreateNewFeed(string feedName);
+        Task<FEFeed> CreateNewFeed(string feedName);
 
         Task<FEFeed> GetFeed(string feedId);
 
@@ -41,22 +41,16 @@ namespace PerRead.Backend.Services
             if (!feeds.Any())
             {
                 var defaultFeed = await _feedsRepository.CreateNewFeed(owner, "defaultFEEEDNAME");
-                return new List<FEFeedPreview> { new FEFeedPreview
-                {
-                    FeedId = defaultFeed.FeedId,
-                    FeedName = defaultFeed.FeedName,
-                } };
+                return new List<FEFeedPreview> { 
+                    defaultFeed.ToFEFeedPreview() 
+                };
 
             }
 
-            return feeds.Select(x => new FEFeedPreview
-            {
-                FeedId = x.FeedId,
-                FeedName = x.FeedName,
-            });
+            return feeds.Select(x => x.ToFEFeedPreview());
         }
 
-        public async Task<Feed> CreateNewFeed(string feedName)
+        public async Task<FEFeed> CreateNewFeed(string feedName)
         {
             var currentUser = _accessor.GetUserId();
             var owner = await _authorRepository.GetAuthor(currentUser).FirstOrDefaultAsync();
@@ -68,7 +62,7 @@ namespace PerRead.Backend.Services
 
             var feed = await _feedsRepository.CreateNewFeed(owner, feedName);
 
-            return feed;
+            return feed.ToFEFeed();
         }
 
         public async Task AddAuthorToFeed(string feedId, string authorId)
@@ -104,12 +98,7 @@ namespace PerRead.Backend.Services
 
             var articles = await articlesQuery.ToListAsync();
 
-            return new FEFeed
-            {
-                FeedId = feedId,
-                ArticlePreviews = articles,
-                FeedName = feed.FeedName
-            };
+            return feed.ToFEFeed(articles);
         }
 
     }

@@ -36,5 +36,13 @@ namespace PerRead.Backend.Controllers
         {
             return await _feedsService.GetFeeds();
         }
+
+        [HttpPost("/feed/add/{feedName}")]
+        public async Task<FEFeed> AddFeed(string feedName)
+        {
+            var feed = await _feedsService.CreateNewFeed(feedName);
+
+            return feed;
+        }
     }
 }

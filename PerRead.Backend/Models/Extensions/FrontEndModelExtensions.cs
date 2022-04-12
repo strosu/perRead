@@ -97,5 +97,25 @@ namespace PerRead.Backend.Models.FrontEnd
         {
             return articleAuthorLink.Author.ToFEAuthorPreview();
         }
+
+        public static FEFeedPreview ToFEFeedPreview(this Feed feed)
+        {
+            return new FEFeedPreview
+            {
+                FeedId = feed.FeedId,
+                FeedName = feed.FeedName,
+            };
+        }
+
+        public static FEFeed ToFEFeed(this Feed feed, IEnumerable<FEArticlePreview> articles = null)
+        {
+            // TODO - mayybe revisit passing null as a default
+            return new FEFeed
+            {
+                FeedId = feed.FeedId,
+                FeedName = feed.FeedName,
+                ArticlePreviews = articles
+            };
+        }
     }
 }

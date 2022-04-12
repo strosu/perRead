@@ -12,6 +12,9 @@ export class HomeComponent implements OnInit {
   constructor(private tokenService: TokenStorageService) { }
 
   ngOnInit(): void {
+    this.computeLoggedIn();
+    this.tokenService.onLogin.subscribe(_ => this.isLoggedIn = true); // set it manually, don't wait for the token to be set, as this will happen afterwards
+    this.tokenService.onLogout.subscribe(_ => this.isLoggedIn = false);
   }
   
   computeLoggedIn() : void {
