@@ -1,0 +1,6 @@
+<div *ngIf="!isLoggedIn; else elseBlock">
+    <app-about></app-about>
+</div>
+<ng-template #elseBlock>
+    <app-feed-list></app-feed-list>
+</ng-template>

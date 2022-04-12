@@ -17,11 +17,11 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpGet("/feed/{feedId}")]
-        public async Task<IEnumerable<FEArticlePreview>> GetFeed(string feedId)
+        public async Task<FEFeed> GetFeed(string feedId)
         {
             // The feed is composed of a list of articles, based on the authors added to it
             // TODO - multiple feeds per user, need to take an argument here
-            return await _feedsService.GetFeedArticles(feedId);
+            return await _feedsService.GetFeed(feedId);
         }
 
         [HttpPost("/feed/{feedId}/add/{authorId}")]
@@ -32,7 +32,7 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpGet("/feeds")]
-        public async Task<IEnumerable<FEFeed>> GetFeeds()
+        public async Task<IEnumerable<FEFeedPreview>> GetFeeds()
         {
             return await _feedsService.GetFeeds();
         }

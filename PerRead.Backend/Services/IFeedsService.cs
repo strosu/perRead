@@ -10,11 +10,11 @@ namespace PerRead.Backend.Services
     {
         Task<Feed> CreateNewFeed(string feedName);
 
-        Task<IEnumerable<FEArticlePreview>> GetFeedArticles(string feedId);
+        Task<FEFeed> GetFeed(string feedId);
 
         Task AddAuthorToFeed(string feedId, string authorId);
 
-        Task<IEnumerable<FEFeed>> GetFeeds();
+        Task<IEnumerable<FEFeedPreview>> GetFeeds();
     }
 
     public class FeedsService : IFeedsService
@@ -31,7 +31,7 @@ namespace PerRead.Backend.Services
             _accessor = accessor;
         }
 
-        public async Task<IEnumerable<FEFeed>> GetFeeds()
+        public async Task<IEnumerable<FEFeedPreview>> GetFeeds()
         {
             var currentUser = _accessor.GetUserId();
             var owner = await _authorRepository.GetAuthor(currentUser).FirstOrDefaultAsync();
@@ -41,7 +41,7 @@ namespace PerRead.Backend.Services
             if (!feeds.Any())
             {
                 var defaultFeed = await _feedsRepository.CreateNewFeed(owner, "defaultFEEEDNAME");
-                return new List<FEFeed> { new FEFeed 
+                return new List<FEFeedPreview> { new FEFeedPreview
                 {
                     FeedId = defaultFeed.FeedId,
                     FeedName = defaultFeed.FeedName,
@@ -49,7 +49,7 @@ namespace PerRead.Backend.Services
 
             }
 
-            return feeds.Select(x => new FEFeed
+            return feeds.Select(x => new FEFeedPreview
             {
                 FeedId = x.FeedId,
                 FeedName = x.FeedName,
@@ -92,8 +92,9 @@ namespace PerRead.Backend.Services
             await _feedsRepository.AddToFeed(feedId, author);
         }
 
-        public async Task<IEnumerable<FEArticlePreview>> GetFeedArticles(string feedId)
+        public async Task<FEFeed> GetFeed(string feedId)
         {
+            var feed = await _feedsRepository.GetFeedInfo(feedId);
             var feedAuthors = _feedsRepository.GetAuthors(feedId);
             var articleAuthors = feedAuthors.Select(x => x.Articles).SelectMany(x => x);
             var articlesQuery = 
@@ -101,7 +102,14 @@ namespace PerRead.Backend.Services
                 .OrderBy(x => x.CreatedAt).Take(20)
                 .Select(x => x.ToFEArticlePreview());
 
-            return await articlesQuery.ToListAsync();
+            var articles = await articlesQuery.ToListAsync();
+
+            return new FEFeed
+            {
+                FeedId = feedId,
+                ArticlePreviews = articles,
+                FeedName = feed.FeedName
+            };
         }
 
     }

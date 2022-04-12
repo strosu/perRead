@@ -24,6 +24,10 @@ import { TagListComponent } from './components/tags/tag-list/tag-list.component'
 import { PopularTagsComponent } from './components/tags/popular-tags/popular-tags.component';
 import { UserNavMenuComponent } from './components/user/user-nav-menu/user-nav-menu.component';
 import { NavbarComponent } from './components/nav/navbar/navbar.component';
+import { FeedListComponent } from './components/feed/feed-list/feed-list.component';
+import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
+import { AboutComponent } from './components/home/about/about.component';
+import { HomeComponent } from './components/home/home/home.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { NavbarComponent } from './components/nav/navbar/navbar.component';
     TagListComponent,
     PopularTagsComponent,
     UserNavMenuComponent,
-    NavbarComponent
+    NavbarComponent,
+    FeedListComponent,
+    FeedDetailsComponent,
+    AboutComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
