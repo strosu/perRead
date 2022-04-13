@@ -8,6 +8,8 @@ import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TagDetailsComponent } from './components/tags/tag-details/tag-details.component';
+import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
+import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'articles', pathMatch: 'full' },
@@ -22,6 +24,8 @@ const routes: Routes = [
   // { path: 'authors/', component: AuthorDetailsComponent},
   { path: 'tags/:id', component: TagDetailsComponent},
   { path: 'tags/popular', component: TagDetailsComponent},
+  { path: 'preferences', component: UserPreferencesComponent},
+  { path: 'unlocked', component: UserUnlockedComponent}
 ];
 
 @NgModule({

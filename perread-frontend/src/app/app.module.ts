@@ -30,6 +30,8 @@ import { AboutComponent } from './components/home/about/about.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
+import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
+import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     FeedListComponent,
     FeedDetailsComponent,
     AboutComponent,
-    HomeComponent
+    HomeComponent,
+    UserUnlockedComponent,
+    UserPreferencesComponent
   ],
   imports: [
     BrowserModule,
