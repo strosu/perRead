@@ -1,7 +1,7 @@
 .with-gray-background {
     background-color: #dbede4;
 }
-
+/* 
 .purchased {
     background-color: #dbede4;
 }
@@ -16,4 +16,39 @@
 
 .unaffordable {
     background-color: #c2020269;
+} */
+
+.overlap{
+    top: -180px;
+position: relative;
+left: 10px;
+}
+
+.read{
+    width:50px;
+    height:30px;
+    background:#2c3891da;
+    pointer-events: none; 
+}
+
+.within-buying-limit{
+    width:50px;
+    height:30px;
+    background:#00ff3480;
+    pointer-events: none; 
+}
+
+.outside-of-limit-but-afforrdable{
+    width:50px;
+    height:30px;
+    background:#fffb0080;
+    pointer-events: none; 
+}
+
+
+.unaffordable{
+    width:50px;
+    height:30px;
+    background:#ff000080;
+    pointer-events: none; 
 }
