@@ -13,6 +13,7 @@ export class FeedDetailsComponent implements OnInit {
 
   @Input()
   feedPreview: FeedPreview = <FeedPreview>{};
+  hasAnyArticles: boolean = false;
 
   articles? : ArticlePreview[];
 
@@ -24,10 +25,10 @@ export class FeedDetailsComponent implements OnInit {
         next : data => {
           console.log(data);
           this.articles = data.articlePreviews;
+          this.hasAnyArticles = this.articles?.length != null && this.articles.length > 0;
         },
         error: error => console.log(error)
       }
     );
   }
-
 }

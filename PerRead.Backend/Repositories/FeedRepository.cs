@@ -75,6 +75,8 @@ namespace PerRead.Backend.Repositories
                 .Include(x => x.SubscribedAuthors)
                 .ThenInclude(x => x.Articles)
                 .ThenInclude(x => x.Article)
+                .ThenInclude(x => x.ArticleAuthors)
+                .ThenInclude(x => x.Author)
                 .SelectMany(f => f.SubscribedAuthors);
         }
 

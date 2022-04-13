@@ -28,6 +28,8 @@ import { FeedListComponent } from './components/feed/feed-list/feed-list.compone
 import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
 import { AboutComponent } from './components/home/about/about.component';
 import { HomeComponent } from './components/home/home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { HomeComponent } from './components/home/home/home.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTabsModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

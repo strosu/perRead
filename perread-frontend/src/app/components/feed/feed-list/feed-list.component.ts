@@ -12,6 +12,7 @@ declare var bootstrap: any;
 export class FeedListComponent implements OnInit {
 
   feeds: FeedPreview[] = [];
+  selectedFeed: number = 0;
   defaultFeed?: FeedPreview;
 
   constructor(private feedService: FeedService) { }
