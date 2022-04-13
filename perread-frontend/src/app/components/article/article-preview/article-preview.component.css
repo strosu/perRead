@@ -1,3 +1,19 @@
 .with-gray-background {
     background-color: #dbede4;
 }
+
+.purchased {
+    background-color: #dbede4;
+}
+
+.within-buying-limit {
+    background-color: #11c20266;
+}
+
+.outside-of-limit-but-afforrdable {
+    background-color: #c2bf0266;
+}
+
+.unaffordable {
+    background-color: #c2020269;
+}

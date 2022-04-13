@@ -7,7 +7,14 @@ namespace PerRead.Backend.Models.Helpers
     {
         public static ReadingState ComputeReadingState(this FEArticlePreview articlePreview, Author requester)
         {
+            // If the user is an author, they get to read them for free
             if (articlePreview.AuthorPreviews.Any(x => x.AuthorId == requester.AuthorId))
+            {
+                return ReadingState.Purchased;
+            }
+
+            // If the user already purchased the article, all is well
+            if (requester.UnlockedArticles.Any(x => x.ArticleId == articlePreview.ArticleId))
             {
                 return ReadingState.Purchased;
             }

@@ -1,8 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { ArticlePreview } from 'src/app/models/article/article-preview.model';
+import { ArticlePreview, ReadingState } from 'src/app/models/article/article-preview.model';
 import { UriService } from 'src/app/services/uri.service';
-
 
 @Component({
   selector: 'app-article-preview',
@@ -17,10 +16,12 @@ export class ArticlePreviewComponent implements OnInit {
   articleImagePath: string = '';
 
   createdAt: string = '';
+  articleState: string = '';
 
   constructor(private uriService: UriService) { }
 
   ngOnInit(): void {
+    this.articleState = this.articlePreview.readingState;
     this.createdAt = formatDate(this.articlePreview.articleCreatedAt,'yyyy-MM-dd', 'en');
     this.articleImagePath = this.uriService.getStaticFileUri(this.articlePreview.articleImageUrl);
   }

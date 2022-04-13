@@ -11,4 +11,12 @@ export class ArticlePreview {
     articlePreview?: string;
     articlePrice: number = 0;
     articleImageUrl: string = '';
+    readingState: string = '';
 }
+
+export enum ReadingState {
+    Purchased, 
+    WithinBuyingLimit, 
+    OutsideOfLimitButAffordable, 
+    Unaffordable
+  }

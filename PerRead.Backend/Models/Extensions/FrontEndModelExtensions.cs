@@ -44,7 +44,7 @@ namespace PerRead.Backend.Models.FrontEnd
                 AuthorPreviews = articleModel.ArticleAuthors?.Select(author => author.Author.ToFEAuthorPreview()),
                 TagPreviews = articleModel.Tags?.Select(tag => tag.ToFETagPreview()),
                 ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl,
-                ReadingState = articleModel.Price == 0 ? ReadingState.Free : ReadingState.Unaffordable
+                ReadingState = articleModel.Price == 0 ? ReadingState.Purchased : ReadingState.Unaffordable
             };
 
             if (requester != null)

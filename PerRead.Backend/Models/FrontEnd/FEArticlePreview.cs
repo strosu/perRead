@@ -32,11 +32,7 @@ namespace PerRead.Backend.Models.FrontEnd
 
     public enum ReadingState
     {
-
-        [EnumMember(Value = "Free")] 
-        Free,
-        
-        [EnumMember(Value = "Purchased")]
+        [EnumMember(Value = nameof(Purchased))]
         Purchased,
 
         [EnumMember(Value = nameof(WithinBuyingLimit))]
