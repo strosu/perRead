@@ -1,4 +1,8 @@
-﻿namespace PerRead.Backend.Models.FrontEnd
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization;
+
+namespace PerRead.Backend.Models.FrontEnd
 {
     /// <summary>
     /// Represents an article "card", sumarizing the article. 
@@ -21,5 +25,27 @@
         public uint ArticlePrice { get; set; }
 
         public string ArticleImageUrl { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ReadingState ReadingState { get; set; }
+    }
+
+    public enum ReadingState
+    {
+
+        [EnumMember(Value = "Free")] 
+        Free,
+        
+        [EnumMember(Value = "Purchased")]
+        Purchased,
+
+        [EnumMember(Value = nameof(WithinBuyingLimit))]
+        WithinBuyingLimit,
+
+        [EnumMember(Value = nameof(OutsideOfLimitButAffordable))]
+        OutsideOfLimitButAffordable,
+
+        [EnumMember(Value = nameof(Unaffordable))]
+        Unaffordable
     }
 }

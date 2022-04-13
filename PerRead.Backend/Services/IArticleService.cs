@@ -68,7 +68,11 @@ namespace PerRead.Backend.Services
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
             var articles = _articleRepository.GetAll();
-            return await articles.Select(article => article.ToFEArticlePreview()).ToListAsync();
+            
+            var authorId = _httpContextAccessor.GetUserId();
+            var requester = await _authorRepository.GetAuthorWithReadArticles(authorId).SingleAsync();
+
+            return await articles.Select(article => article.ToFEArticlePreview(requester)).ToListAsync();
         }
 
         public async Task<FEArticle?> Get(int id)

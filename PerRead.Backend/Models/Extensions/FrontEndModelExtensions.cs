@@ -1,4 +1,5 @@
 ﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.Helpers;
 
 namespace PerRead.Backend.Models.FrontEnd
 {
@@ -31,9 +32,9 @@ namespace PerRead.Backend.Models.FrontEnd
             };
         }
 
-        public static FEArticlePreview ToFEArticlePreview(this Article articleModel)
+        public static FEArticlePreview ToFEArticlePreview(this Article articleModel, Author requester = null)
         {
-            return new FEArticlePreview
+            var articlePreview = new FEArticlePreview
             {
                 ArticleId = articleModel.ArticleId,
                 ArticleTitle = articleModel.Title,
@@ -42,8 +43,16 @@ namespace PerRead.Backend.Models.FrontEnd
                 ArticlePrice = articleModel.Price,
                 AuthorPreviews = articleModel.ArticleAuthors?.Select(author => author.Author.ToFEAuthorPreview()),
                 TagPreviews = articleModel.Tags?.Select(tag => tag.ToFETagPreview()),
-                ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl
+                ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl,
+                ReadingState = articleModel.Price == 0 ? ReadingState.Free : ReadingState.Unaffordable
             };
+
+            if (requester != null)
+            {
+                articlePreview.ReadingState = articlePreview.ComputeReadingState(requester);
+            }
+
+            return articlePreview;
         }
 
         public static FETag ToFETag(this Tag tagModel) 
@@ -52,7 +61,7 @@ namespace PerRead.Backend.Models.FrontEnd
             {
                 Id = tagModel.TagId,
                 Name = tagModel.TagName,
-                ArticlePreviews = tagModel.Articles?.Select(ToFEArticlePreview),
+                ArticlePreviews = tagModel.Articles?.Select(x => x.ToFEArticlePreview()),
                 FirstUsage = tagModel.FirstUsage,
             };
         }

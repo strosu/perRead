@@ -31,5 +31,10 @@
         /// TODO - configure it differently to get rid of this
         /// </summary>
         public IList<Feed> SubscribedFeeds { get; set; }
+
+        /// <summary>
+        /// The price under which articles do not require confirmation
+        /// </summary>
+        public uint RequireConfirmationAbove { get; set; } = 10;
     }
 }

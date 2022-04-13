@@ -91,10 +91,13 @@ namespace PerRead.Backend.Services
             var feed = await _feedsRepository.GetFeedInfo(feedId);
             var feedAuthors = _feedsRepository.GetAuthors(feedId);
             var articleAuthors = feedAuthors.Select(x => x.Articles).SelectMany(x => x);
+
+            var requester = await _authorRepository.GetAuthorWithReadArticles(_accessor.GetUserId()).SingleAsync();
+            
             var articlesQuery = 
                 articleAuthors.Select(x => x.Article)
                 .OrderBy(x => x.CreatedAt).Take(20)
-                .Select(x => x.ToFEArticlePreview());
+                .Select(x => x.ToFEArticlePreview(requester));
 
             var articles = await articlesQuery.ToListAsync();
 
