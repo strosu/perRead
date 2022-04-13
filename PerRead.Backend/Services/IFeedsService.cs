@@ -96,7 +96,7 @@ namespace PerRead.Backend.Services
             
             var articlesQuery = 
                 articleAuthors.Select(x => x.Article)
-                .OrderBy(x => x.CreatedAt).Take(20)
+                .OrderByDescending(x => x.CreatedAt).Take(20)
                 .Select(x => x.ToFEArticlePreview(requester));
 
             var articles = await articlesQuery.ToListAsync();
