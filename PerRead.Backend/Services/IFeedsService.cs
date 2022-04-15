@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
-using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
@@ -11,6 +12,8 @@ namespace PerRead.Backend.Services
         Task<FEFeed> CreateNewFeed(string feedName);
 
         Task<FEFeed> GetFeed(string feedId);
+
+        Task<FEFeedInfo> GetFeedInfo(string feedId);
 
         Task AddAuthorToFeed(string feedId, string authorId);
 
@@ -41,8 +44,8 @@ namespace PerRead.Backend.Services
             if (!feeds.Any())
             {
                 var defaultFeed = await _feedsRepository.CreateNewFeed(owner, "defaultFEEEDNAME");
-                return new List<FEFeedPreview> { 
-                    defaultFeed.ToFEFeedPreview() 
+                return new List<FEFeedPreview> {
+                    defaultFeed.ToFEFeedPreview()
                 };
 
             }
@@ -93,8 +96,8 @@ namespace PerRead.Backend.Services
             var articleAuthors = feedAuthors.Select(x => x.Articles).SelectMany(x => x);
 
             var requester = await _authorRepository.GetAuthorWithReadArticles(_accessor.GetUserId()).SingleAsync();
-            
-            var articlesQuery = 
+
+            var articlesQuery =
                 articleAuthors.Select(x => x.Article)
                 .OrderByDescending(x => x.CreatedAt).Take(20)
                 .Select(x => x.ToFEArticlePreview(requester));
@@ -104,5 +107,10 @@ namespace PerRead.Backend.Services
             return feed.ToFEFeed(articles);
         }
 
+        public async Task<FEFeedInfo> GetFeedInfo(string feedId)
+        {
+            var feed = await _feedsRepository.GetFeedWithAuthors(feedId);
+            return feed.ToFEFeedInfo();
+        }
     }
 }

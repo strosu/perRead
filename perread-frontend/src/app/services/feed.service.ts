@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { FeedPreview } from '../models/feed/feed-preview.model';
 import { Constants } from '../constants';
 import { Feed } from '../models/feed/feed.model';
+import { FeedInfo } from '../models/feed/feed-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,9 @@ export class FeedService {
 
   addAuthorToFeed(feedId: string, authorId: string) : Observable<any> {
     return this.httpClient.post(`${Constants.BACKENDURL}/feed/${feedId}/add/${authorId}`, null);
+  }
+
+  getFeedInfo(feedId: string) : Observable<FeedInfo> {
+    return this.httpClient.get<FeedInfo>(`${Constants.BACKENDURL}/feed/info/${feedId}`)
   }
 }

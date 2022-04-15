@@ -7,8 +7,7 @@ namespace PerRead.Backend.Models.FrontEnd
 
         public string FeedName { get; set; }
 
-        // TODO - maybe return a simpler object that FEAuthor?
-        public IEnumerable<FEAuthor> SubscribedAuthors { get; set; }
+        public IEnumerable<FEAuthorPreview> SubscribedAuthors { get; set; }
     }
 }
 

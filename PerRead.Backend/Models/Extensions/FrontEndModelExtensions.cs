@@ -19,7 +19,7 @@ namespace PerRead.Backend.Models.FrontEnd
 
         public static FEArticle ToFEArticle(this Article articleModel)
         {
-            return new FEArticle 
+            return new FEArticle
             {
                 Id = articleModel.ArticleId,
                 Title = articleModel.Title,
@@ -55,7 +55,7 @@ namespace PerRead.Backend.Models.FrontEnd
             return articlePreview;
         }
 
-        public static FETag ToFETag(this Tag tagModel) 
+        public static FETag ToFETag(this Tag tagModel)
         {
             return new FETag
             {
@@ -81,8 +81,8 @@ namespace PerRead.Backend.Models.FrontEnd
             {
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
+                AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
                 ArticlePreviews = authorModel.Articles?.Select(x => x.Article.ToFEArticlePreview()),
-                AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri
             };
         }
 
@@ -105,26 +105,6 @@ namespace PerRead.Backend.Models.FrontEnd
         public static FEAuthorPreview ToFEAuthorPreview(this ArticleAuthor articleAuthorLink)
         {
             return articleAuthorLink.Author.ToFEAuthorPreview();
-        }
-
-        public static FEFeedPreview ToFEFeedPreview(this Feed feed)
-        {
-            return new FEFeedPreview
-            {
-                FeedId = feed.FeedId,
-                FeedName = feed.FeedName,
-            };
-        }
-
-        public static FEFeed ToFEFeed(this Feed feed, IEnumerable<FEArticlePreview> articles = null)
-        {
-            // TODO - mayybe revisit passing null as a default
-            return new FEFeed
-            {
-                FeedId = feed.FeedId,
-                FeedName = feed.FeedName,
-                ArticlePreviews = articles
-            };
         }
     }
 }
