@@ -44,5 +44,11 @@ namespace PerRead.Backend.Controllers
 
             return feed;
         }
+
+        [HttpGet("/feed/info/{feedId}")]
+        public async Task<FEFeedInfo> GetFeedInfo(string feedId)
+        {
+            return null;
+        }
     }
 }
