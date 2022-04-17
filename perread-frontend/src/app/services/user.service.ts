@@ -3,6 +3,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
 import { UserPreview } from '../models/user/user-preview.model';
+import { UserSettings } from '../models/user/user-settings.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,13 @@ export class UserService {
 
   addMoreTokens(): Observable<number> {
     return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/addtokens`, null);
+  }
+
+  getCurrentUserSettings(): Observable<UserSettings> {
+    return this.httpClient.get<UserSettings>(`${Constants.BACKENDURL}/user/settings`);
+  }
+
+  updateCurrentUserSettings(data: UserSettings) : Observable<UserSettings> {
+    return this.httpClient.post<UserSettings>(`${Constants.BACKENDURL}/user/settings`, data);
   }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
 
 namespace PerRead.Backend.Controllers
@@ -41,6 +42,33 @@ namespace PerRead.Backend.Controllers
             catch
             {
                 return BadRequest();
+            }
+        }
+
+        [HttpGet("/user/settings")]
+        public async Task<IActionResult> GetUserSettings()
+        {
+            var result = await _userService.GetCurrentUserSettings();
+
+            if (result == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("/user/settings")]
+        public async Task<IActionResult> UpdateUserSettings([FromBody] FEUserSettings settings)
+        {
+            try
+            {
+                await _userService.UpdateUserSettings(settings);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -1,22 +1,11 @@
 ﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.Helpers;
 
 namespace PerRead.Backend.Models.FrontEnd
 {
     public static class FrontEndModelExtensions
     {
-        public static FEUserPreview ToUserPreview(this Author author)
-        {
-            // Check how we can load only part of the row when needed. No point getting all the data if we do a small transform on it
-            return new FEUserPreview
-            {
-                UserId = author.AuthorId,
-                UserName = author.Name,
-                ProfileImageUri = string.IsNullOrEmpty(author.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : author.ProfileImageUri,
-                ReadingTokens = author.ReadingTokens
-            };
-        }
-
         public static FEArticle ToFEArticle(this Article articleModel)
         {
             return new FEArticle
@@ -75,36 +64,6 @@ namespace PerRead.Backend.Models.FrontEnd
             };
         }
 
-        public static FEAuthor ToFEAuthor(this Author authorModel)
-        {
-            return new FEAuthor
-            {
-                Id = authorModel.AuthorId,
-                Name = authorModel.Name,
-                AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
-                ArticlePreviews = authorModel.Articles?.Select(x => x.Article.ToFEArticlePreview()),
-            };
-        }
 
-        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink)
-        {
-            return articleAuthorLink.Author.ToFEAuthor();
-        }
-
-
-        public static FEAuthorPreview ToFEAuthorPreview(this Author authorModel)
-        {
-            return new FEAuthorPreview
-            {
-                AuthorId = authorModel.AuthorId,
-                AuthorName = authorModel.Name,
-                AuthorImageUri = string.IsNullOrEmpty(authorModel?.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri
-            };
-        }
-
-        public static FEAuthorPreview ToFEAuthorPreview(this ArticleAuthor articleAuthorLink)
-        {
-            return articleAuthorLink.Author.ToFEAuthorPreview();
-        }
     }
 }

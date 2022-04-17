@@ -1,1 +1,19 @@
 <p>user-preferences works!</p>
+<div>
+    {{userSettings?.userName}}
+    {{userSettings?.requireConfirmationAbove}}
+    <div>
+        <div class="submit-form">
+          <div class="form-group">
+            <label for="title">Require confirmation above</label>
+            <input type="number" class="form-control" id="requireConfirmationAbove" required [(ngModel)]="this.userSettings && this.userSettings.requireConfirmationAbove"
+              name="title" />
+          </div>
+      
+          <div class="form-group element-spacing">
+            <button (click)="updateSettings()" class="btn btn-success">Submit</button>
+          </div>      
+        </div>
+      </div>
+
+</div>

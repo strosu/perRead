@@ -4,6 +4,6 @@
     {
         public string UserName { get; set; }
 
-        public int
+        public uint RequireConfirmationAbove { get; set; }
     }
 }

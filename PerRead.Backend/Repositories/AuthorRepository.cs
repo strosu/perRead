@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.FrontEnd;
 
 namespace PerRead.Backend.Repositories
 {
@@ -107,6 +108,15 @@ namespace PerRead.Backend.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateSettings(string authorId, FEUserSettings userSettings)
+        {
+            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
+
+            author.RequireConfirmationAbove = userSettings.RequireConfirmationAbove;
+
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface IAuthorRepository
@@ -128,6 +138,10 @@ namespace PerRead.Backend.Repositories
         Task AddTokens(string authorId, long amount);
 
         Task MarkAsRead(string authorId, Article article);
+
+        // TODO - rename userSettings object to something else;
+        // Should be fine to use it directly, as it's simply a representation of the data from the DB
+        Task UpdateSettings(string authorId, FEUserSettings userSettings);
     }
 
     public class AuthorCommand

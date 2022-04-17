@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
+using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
@@ -9,6 +10,10 @@ namespace PerRead.Backend.Services
     {
         Task<FEUserPreview?> GetCurrentUserPreview();
         Task<long> AddMoreTokens();
+
+        Task<FEUserSettings?> GetCurrentUserSettings();
+
+        Task UpdateUserSettings(FEUserSettings userSettings);
     }
 
     public class UserService : IUserService
@@ -34,6 +39,19 @@ namespace PerRead.Backend.Services
         {
             var authorId = _accessor.GetUserId();
             return await _authorRepository.GetAuthor(authorId).Select(x => x.ToUserPreview()).SingleAsync();
+        }
+
+        public async Task<FEUserSettings?> GetCurrentUserSettings()
+        {
+            var authorId = _accessor.GetUserId();
+
+            return await _authorRepository.GetAuthor(authorId).Select(x => x.ToFEUserSettings()).SingleAsync();
+        }
+
+        public async Task UpdateUserSettings(FEUserSettings userSettings)
+        {
+            var authorId = _accessor.GetUserId();
+            await _authorRepository.UpdateSettings(authorId, userSettings);
         }
     }
 }
