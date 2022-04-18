@@ -124,6 +124,28 @@ namespace PerRead.Backend.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds)
+        {
+            var author = await _context.Authors
+                .Include(x => x.UnlockedArticles).FirstOrDefaultAsync(x => x.AuthorId == authorId);
+            
+            var toRemoveList = author.UnlockedArticles.Where(x => !unlockedIds.Contains(x.Id)).ToList();
+
+            foreach (var toRemove in toRemoveList)
+            {
+                author.UnlockedArticles.Remove(toRemove);
+            }
+
+            //var articlesUnlocked = await _context.Authors.Where(x => x.AuthorId == authorId)
+            //    .Include(x => x.UnlockedArticles)
+            //    .SelectMany(x => x.UnlockedArticles)
+            //    .ToListAsync();
+
+            //articlesUnlocked.RemoveAll(x => !unlockedIds.Contains(x.Id));
+
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface IAuthorRepository
@@ -149,6 +171,8 @@ namespace PerRead.Backend.Repositories
         // TODO - rename userSettings object to something else;
         // Should be fine to use it directly, as it's simply a representation of the data from the DB
         Task UpdateSettings(string authorId, FEUserSettings userSettings);
+
+        Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds);
     }
 
     public class AuthorCommand

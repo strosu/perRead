@@ -34,4 +34,8 @@ export class UserService {
   getCurrentUserUnlockedArticles() : Observable<ArticleUnlockInfo[]> {
     return this.httpClient.get<ArticleUnlockInfo[]>(`${Constants.BACKENDURL}/user/acquired`);
   }
+
+  updateCurrentUserUnlockedArticles(articles: number[]) : Observable<any> {
+    return this.httpClient.post<number[]>(`${Constants.BACKENDURL}/user/acquired`, articles);
+  }
 }

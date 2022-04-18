@@ -1,0 +1,7 @@
+.mat-option.mat-active {
+    background: blue !important;
+  }
+  
+  .mat-option.mat-selected {
+    background: red !important;
+  }

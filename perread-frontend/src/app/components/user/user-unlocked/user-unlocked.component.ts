@@ -26,4 +26,13 @@ export class UserUnlockedComponent implements OnInit {
     );
   }
 
+  save() : void {
+    this.userService.updateCurrentUserUnlockedArticles(this.articleUnlockInfos.map(x => x.articleUnlockId)).subscribe(
+      {
+        next: data => console.log(data),
+        error: err => console.log(err)
+      }
+    );
+  }
+
 }

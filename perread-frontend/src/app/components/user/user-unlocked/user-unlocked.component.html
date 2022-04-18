@@ -1,1 +1,7 @@
-<p>user-unlocked works!</p>
+<mat-list color="primary"  #unlocked>
+    <mat-list-item *ngFor="let article of articleUnlockInfos let indexOfelement=index">
+      <app-unlocked-article [index]=indexOfelement [articleList]=articleUnlockInfos></app-unlocked-article>
+    </mat-list-item>
+  </mat-list>
+  
+  <button mat-raised-button color="warn" (click)=save()>Save</button>

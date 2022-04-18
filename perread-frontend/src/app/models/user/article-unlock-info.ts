@@ -2,8 +2,8 @@ import { Time } from "@angular/common";
 import { ArticlePreview } from "../article/article-preview.model";
 
 export class ArticleUnlockInfo {
-    articleUnlockId: string = '';
-    articlePreview?: ArticlePreview;
+    articleUnlockId: number = 0;
+    article: ArticlePreview = <ArticlePreview>{};
     aquisitionPrice: number = 0;
     aquisitionDate?: Date;
 }

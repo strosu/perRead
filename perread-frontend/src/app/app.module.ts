@@ -30,8 +30,11 @@ import { AboutComponent } from './components/home/about/about.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule} from '@angular/material/list'; 
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
+import {MatButtonModule} from '@angular/material/button';
+import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component'; 
 
 @NgModule({
   declarations: [
@@ -56,7 +59,8 @@ import { UserPreferencesComponent } from './components/user/user-preferences/use
     AboutComponent,
     HomeComponent,
     UserUnlockedComponent,
-    UserPreferencesComponent
+    UserPreferencesComponent,
+    UnlockedArticleComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,9 @@ import { UserPreferencesComponent } from './components/user/user-preferences/use
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatListModule,
+    MatButtonModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
