@@ -49,7 +49,8 @@ namespace PerRead.Backend.Repositories
         public IQueryable<Author> GetAuthorWithReadArticles(string id)
         {
             return GetAuthor(id)
-                .Include(author => author.UnlockedArticles);
+                .Include(author => author.UnlockedArticles)
+                .ThenInclude(articleUnlock => articleUnlock.Article);
         }
 
         public IQueryable<Author> GetAuthorByName(string name)
@@ -103,7 +104,13 @@ namespace PerRead.Backend.Repositories
 
             //var author = await GetAuthorWithReadArticles(authorId).FirstOrDefaultAsync();
 
-            author.UnlockedArticles.Add(article);
+            author.UnlockedArticles.Add(new ArticleUnlock
+            {
+                AquisitionDate = DateTime.UtcNow,
+                AquisitionPrice = article.Price,
+                ArticleId = article.ArticleId,
+                AuthorId = authorId,
+            });
             author.ReadingTokens -= article.Price;
 
             await _context.SaveChangesAsync();

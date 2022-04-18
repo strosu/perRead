@@ -46,16 +46,9 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpGet("/user/settings")]
-        public async Task<IActionResult> GetUserSettings()
+        public async Task<FEUserSettings?> GetUserSettings()
         {
-            var result = await _userService.GetCurrentUserSettings();
-
-            if (result == null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok(result);
+            return await _userService.GetCurrentUserSettings();
         }
 
         [HttpPost("/user/settings")]
@@ -70,6 +63,12 @@ namespace PerRead.Backend.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("/user/acquired")]
+        public async Task<IEnumerable<FEArticleUnlockInfo>> GetUnlockedArticles()
+        {
+            return await _userService.GetUnlockedArticles();
         }
     }
 }

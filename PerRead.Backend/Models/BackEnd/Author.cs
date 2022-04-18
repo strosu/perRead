@@ -24,7 +24,7 @@
         /// DO NOT USE THIS. Here just for EF convenience
         /// TODO - configure it differently to get rid of this
         /// </summary>
-        public IList<Article> UnlockedArticles { get; set; }
+        public IList<ArticleUnlock> UnlockedArticles { get; set; }
 
         /// <summary>
         /// DO NOT USE THIS. Here just for EF convenience

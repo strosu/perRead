@@ -32,10 +32,10 @@ namespace PerRead.Backend.Repositories
             modelBuilder.Entity<ArticleAuthor>()
                 .HasKey(x => new { x.ArticleId, x.AuthorId });
 
-            modelBuilder.Entity<Author>()
-                .HasMany(p => p.UnlockedArticles)
-                .WithMany(p => p.Unlocked)
-                .UsingEntity(j => j.ToTable("UnlockedArticles"));
+            //modelBuilder.Entity<Author>()
+            //    .HasMany(p => p.UnlockedArticles)
+            //    .WithMany(p => p.Unlocked)
+            //    .UsingEntity(j => j.ToTable("UnlockedArticles"));
 
             modelBuilder.Entity<Feed>()
                 .HasMany(p => p.SubscribedAuthors)

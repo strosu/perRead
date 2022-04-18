@@ -24,6 +24,7 @@ BACKEND:
 
 TODO:
 - add reading tokens to the current user (requires signing in)
+    - page with "prices" and token amounts
 - REFRESH TOKEN mechanism
 - Add User managemenent
     - new table for user history, preferences etc
@@ -37,6 +38,12 @@ TODO:
 
 - include the profile picture in the author preview
 - are authors and users mapped 1 to 1? Does the author table become the users table? For some objects, yes. Where do we store the settings?
+    - additional settings: show different colors (prices)? Maybe user wants a feed with just free articles. Have a toggle in the feed settings
+    - settings page for the feeds, with options to edit each of them
+    - have a new feed option in the user settings, as it's not something they want to do too often (or by accident, i.e. the plus as a new tab)
+    - history page, allow deleting one by one
+    - overlay text over the price label, e.g. FREE, UNAFFORDABLE, etc
+    - add button the author list on empty feeds
 
 - revisit tags, safety around parallel requests;
 - do some basic search for titles

@@ -14,6 +14,8 @@ namespace PerRead.Backend.Services
         Task<FEUserSettings?> GetCurrentUserSettings();
 
         Task UpdateUserSettings(FEUserSettings userSettings);
+
+        Task<IEnumerable<FEArticleUnlockInfo>> GetUnlockedArticles();
     }
 
     public class UserService : IUserService
@@ -46,6 +48,13 @@ namespace PerRead.Backend.Services
             var authorId = _accessor.GetUserId();
 
             return await _authorRepository.GetAuthor(authorId).Select(x => x.ToFEUserSettings()).SingleAsync();
+        }
+
+        public async Task<IEnumerable<FEArticleUnlockInfo>> GetUnlockedArticles()
+        {
+            var authorId = _accessor.GetUserId();
+            return await _authorRepository.GetAuthorWithReadArticles(authorId)
+                .SelectMany(x => x.UnlockedArticles).Select(x => x.ToFEArticleUnlockInfo()).ToListAsync();
         }
 
         public async Task UpdateUserSettings(FEUserSettings userSettings)

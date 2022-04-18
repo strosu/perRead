@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ArticleUnlockInfo } from 'src/app/models/user/article-unlock-info';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-unlocked',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserUnlockedComponent implements OnInit {
 
-  constructor() { }
+  articleUnlockInfos: ArticleUnlockInfo[] = [];
+
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.userService.getCurrentUserUnlockedArticles().subscribe(
+      {
+        next: data => {
+          console.log(data);
+          this.articleUnlockInfos = data;
+        },
+
+        error : err => console.log(err)
+      }
+    );
   }
 
 }
