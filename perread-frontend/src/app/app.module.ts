@@ -34,7 +34,8 @@ import { MatListModule} from '@angular/material/list';
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import {MatButtonModule} from '@angular/material/button';
-import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component'; 
+import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component';
+import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component'; 
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { UnlockedArticleComponent } from './components/user/unlocked-article/unl
     HomeComponent,
     UserUnlockedComponent,
     UserPreferencesComponent,
-    UnlockedArticleComponent
+    UnlockedArticleComponent,
+    FeedManagementComponent
   ],
   imports: [
     BrowserModule,

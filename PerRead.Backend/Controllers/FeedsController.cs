@@ -48,7 +48,7 @@ namespace PerRead.Backend.Controllers
         [HttpGet("/feed/info/{feedId}")]
         public async Task<FEFeedInfo> GetFeedInfo(string feedId)
         {
-            return null;
+            return await _feedsService.GetFeedInfo(feedId);
         }
     }
 }

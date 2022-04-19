@@ -20,6 +20,13 @@ P1 scenarios:
 - search by titles
 - search by author
 
+TODO NEXT:
+- component for presenting an article in the list of read articles
+- component for editing a feed's properties, authors etc
+    - component for presenting an author in the list of authors included in a feed
+- component for "buying" tokens
+- component for adding an author to one of multiple feeds
+
 BACKEND:
 
 TODO:

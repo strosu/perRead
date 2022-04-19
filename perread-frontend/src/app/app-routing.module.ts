@@ -4,6 +4,7 @@ import { AddArticleComponent } from './components/article/add-article/add-articl
 import { AllArticlesComponent } from './components/article/all-articles/all-articles.component';
 import { ArticleDetailsComponent } from './components/article/article-details/article-details.component';
 import { AuthorDetailsComponent } from './components/author/author-details/author-details.component';
+import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -25,7 +26,8 @@ const routes: Routes = [
   { path: 'tags/:id', component: TagDetailsComponent},
   { path: 'tags/popular', component: TagDetailsComponent},
   { path: 'preferences', component: UserPreferencesComponent},
-  { path: 'unlocked', component: UserUnlockedComponent}
+  { path: 'unlocked', component: UserUnlockedComponent},
+  { path: 'feed-management', component: FeedManagementComponent}
 ];
 
 @NgModule({
