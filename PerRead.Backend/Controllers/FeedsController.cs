@@ -50,5 +50,11 @@ namespace PerRead.Backend.Controllers
         {
             return await _feedsService.GetFeedInfo(feedId);
         }
+
+        [HttpPost("/feeds/{feedId}/details")]
+        public async Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails)
+        {
+            await _feedsService.UpdateFeedInfo(feedId, feedDetails);
+        }
     }
 }

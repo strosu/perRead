@@ -16,6 +16,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<Feed> GetUserFeeds(Author owner);
 
         IQueryable<Author> GetAuthors(string feedId);
+
+        Task UpdateFeed(Feed feed);
     }
 
     public class FeedRepository : IFeedRepository
@@ -95,6 +97,12 @@ namespace PerRead.Backend.Repositories
             return _context.Feeds
                 .AsNoTracking()
                 .Where(x => x.Owner == owner);
+        }
+
+        public async Task UpdateFeed(Feed feed)
+        {
+            _context.Feeds.Update(feed);
+            await _context.SaveChangesAsync();
         }
     }
 }

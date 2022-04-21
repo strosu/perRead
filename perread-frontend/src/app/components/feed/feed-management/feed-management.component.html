@@ -1,4 +1,15 @@
-<mat-tab-group dynamicHeight>
+<mat-list color="primary"  #unlocked>
+  <mat-list-item *ngFor="let feed of feeds let indexOfelement=index">
+    <!-- <app-feed-details [feedPreview]=feed></app-feed-details> -->
+    {{feed.feedName}}
+    <a routerLink="/feed/{{feed.feedId}}/edit" mat-raised-button color="primary">Edit</a>
+
+  </mat-list-item>
+</mat-list>
+
+<a routerLink="/feed/new" mat-raised-button color="primary">Add new feed</a>
+
+<!-- <mat-tab-group dynamicHeight>
     <mat-tab *ngFor="let feed of feeds">
       <ng-template mat-tab-label>
         {{feed.feedName}}
@@ -9,4 +20,4 @@
       </ng-template>
 
     </mat-tab>
-  </mat-tab-group>
+  </mat-tab-group> -->

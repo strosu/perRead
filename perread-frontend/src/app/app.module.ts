@@ -34,9 +34,11 @@ import { MatListModule} from '@angular/material/list';
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'; 
 import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component';
 import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
-import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component'; 
+import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
+import { AddFeedComponent } from './components/feed/add-feed/add-feed.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { FeedDetailsComponent } from './components/feed/feed-details/feed-detail
     UserPreferencesComponent,
     UnlockedArticleComponent,
     FeedManagementComponent,
-    FeedDetailsComponent
+    FeedDetailsComponent,
+    AddFeedComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +77,8 @@ import { FeedDetailsComponent } from './components/feed/feed-details/feed-detail
     BrowserAnimationsModule,
     MatTabsModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSlideToggleModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

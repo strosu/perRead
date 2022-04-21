@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FeedDetails } from 'src/app/models/feed/feed-details.model';
-import { FeedPreview } from 'src/app/models/feed/feed-preview.model';
 import { FeedService } from 'src/app/services/feed.service';
 
 @Component({
@@ -9,16 +9,17 @@ import { FeedService } from 'src/app/services/feed.service';
   styleUrls: ['./feed-details.component.css']
 })
 export class FeedDetailsComponent implements OnInit {
-
-  @Input()
-  feedPreview: FeedPreview = <FeedPreview>{};
   
   feedDetails: FeedDetails = <FeedDetails>{};
 
-  constructor(private feedService: FeedService) { }
+  constructor(
+    private feedService: FeedService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.feedService.getFeedDetails(this.feedPreview.feedId).subscribe(
+    const id = String(this.route.snapshot.paramMap.get('id'));
+
+    this.feedService.getFeedDetails(id).subscribe(
       {
         next: data => {
           console.log(data);
@@ -27,6 +28,13 @@ export class FeedDetailsComponent implements OnInit {
         error : err => console.log(err)
       }
     );
+  }
+
+  updateFeed() : void {
+    this.feedService.updateFeed(this.feedDetails.feedId, this.feedDetails).subscribe({
+      next: data => console.log(data),
+      error: err => console.log(err)
+    });
   }
 
 }

@@ -29,4 +29,8 @@ export class FeedService {
   getFeedDetails(feedId: string) : Observable<FeedDetails> {
     return this.httpClient.get<FeedDetails>(`${Constants.BACKENDURL}/feeds/${feedId}/details`)
   }
+
+  updateFeed(feedId: string, feedDetails: FeedDetails) : Observable<any>{
+    return this.httpClient.post(`${Constants.BACKENDURL}/feeds/${feedId}/details`, feedDetails);
+  }
 }
