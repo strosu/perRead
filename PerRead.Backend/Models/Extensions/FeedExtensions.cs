@@ -15,10 +15,10 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FEFeed ToFEFeed(this Feed feed, IEnumerable<FEArticlePreview> articles = null)
+        public static FEFeedWithArticles ToFEFeed(this Feed feed, IEnumerable<FEArticlePreview> articles = null)
         {
             // TODO - mayybe revisit passing null as a default
-            return new FEFeed
+            return new FEFeedWithArticles
             {
                 FeedId = feed.FeedId,
                 FeedName = feed.FeedName,
@@ -26,13 +26,17 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FEFeedInfo ToFEFeedInfo(this Feed feed)
+        public static FEFeedDetails ToFEFeedInfo(this Feed feed)
         {
-            return new FEFeedInfo
+            return new FEFeedDetails
             {
                 FeedId = feed.FeedId,
                 FeedName = feed.FeedName,
-                SubscribedAuthors = feed.SubscribedAuthors.Select(x => x.ToFEAuthorPreview())
+                SubscribedAuthors = feed.SubscribedAuthors.Select(x => x.ToFEAuthorPreview()),
+                RequireConfirmationAbove = feed.RequireConfirmationAbove,
+                ShowFreeArticles = feed.ShowFreeArticles,
+                ShowArticlesAboveConfirmationLimit = feed.ShowArticlesAboveConfirmationLimit,
+                ShowUnaffordableArticles = feed.ShowUnaffordableArticles
             };
         }
     }

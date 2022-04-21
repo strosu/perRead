@@ -27,9 +27,4 @@ export class FeedListComponent implements OnInit {
       error: error => console.log(error)
     })
   }
-
-  method() {
-    var triggerEl = document.querySelector('v-pills-tab')
-    bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name
-  }
 }

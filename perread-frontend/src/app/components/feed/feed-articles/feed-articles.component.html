@@ -1,0 +1,6 @@
+<div *ngIf="hasAnyArticles; else elseBlock">
+    <app-article-list [articleDescriptions]=articles></app-article-list>
+</div>
+<ng-template #elseBlock>
+    This feed is empty, for now
+</ng-template>

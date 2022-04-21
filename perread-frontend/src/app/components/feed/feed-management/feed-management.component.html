@@ -1,1 +1,12 @@
-<p>feed-management works!</p>
+<mat-tab-group dynamicHeight>
+    <mat-tab *ngFor="let feed of feeds">
+      <ng-template mat-tab-label>
+        {{feed.feedName}}
+      </ng-template>
+
+      <ng-template matTabContent>
+          <app-feed-details [feedPreview]=feed></app-feed-details>
+      </ng-template>
+
+    </mat-tab>
+  </mat-tab-group>

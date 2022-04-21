@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { FeedPreview } from '../models/feed/feed-preview.model';
 import { Constants } from '../constants';
 import { Feed } from '../models/feed/feed.model';
-import { FeedInfo } from '../models/feed/feed-info.model';
+import { FeedDetails } from '../models/feed/feed-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +18,15 @@ export class FeedService {
     return this.httpClient.get<FeedPreview[]>(`${Constants.BACKENDURL}/feeds`);
   }
 
-  getFeedDetails(feedId: string) : Observable<Feed>{
-    return this.httpClient.get<Feed>(`${Constants.BACKENDURL}/feed/${feedId}`);
+  getFeedWithArticles(feedId: string) : Observable<Feed>{
+    return this.httpClient.get<Feed>(`${Constants.BACKENDURL}/feeds/${feedId}`);
   } 
 
   addAuthorToFeed(feedId: string, authorId: string) : Observable<any> {
-    return this.httpClient.post(`${Constants.BACKENDURL}/feed/${feedId}/add/${authorId}`, null);
+    return this.httpClient.post(`${Constants.BACKENDURL}/feeds/${feedId}/add/${authorId}`, null);
   }
 
-  getFeedInfo(feedId: string) : Observable<FeedInfo> {
-    return this.httpClient.get<FeedInfo>(`${Constants.BACKENDURL}/feed/info/${feedId}`)
+  getFeedDetails(feedId: string) : Observable<FeedDetails> {
+    return this.httpClient.get<FeedDetails>(`${Constants.BACKENDURL}/feeds/${feedId}/details`)
   }
 }

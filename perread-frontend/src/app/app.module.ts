@@ -25,7 +25,7 @@ import { PopularTagsComponent } from './components/tags/popular-tags/popular-tag
 import { UserNavMenuComponent } from './components/user/user-nav-menu/user-nav-menu.component';
 import { NavbarComponent } from './components/nav/navbar/navbar.component';
 import { FeedListComponent } from './components/feed/feed-list/feed-list.component';
-import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
+import { FeedArticlesComponent } from './components/feed/feed-articles/feed-articles.component';
 import { AboutComponent } from './components/home/about/about.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,9 +33,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule} from '@angular/material/list'; 
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component';
-import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component'; 
+import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
+import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component'; 
 
 @NgModule({
   declarations: [
@@ -56,13 +57,14 @@ import { FeedManagementComponent } from './components/feed/feed-management/feed-
     UserNavMenuComponent,
     NavbarComponent,
     FeedListComponent,
-    FeedDetailsComponent,
+    FeedArticlesComponent,
     AboutComponent,
     HomeComponent,
     UserUnlockedComponent,
     UserPreferencesComponent,
     UnlockedArticleComponent,
-    FeedManagementComponent
+    FeedManagementComponent,
+    FeedDetailsComponent
   ],
   imports: [
     BrowserModule,

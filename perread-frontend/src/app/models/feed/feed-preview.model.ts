@@ -1,4 +1,4 @@
 export class FeedPreview {
-    feedId? : string;
-    feedName? : string;
+    feedId : string = '';
+    feedName : string = '';
 }
