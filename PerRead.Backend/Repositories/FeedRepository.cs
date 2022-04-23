@@ -18,6 +18,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<Author> GetAuthors(string feedId);
 
         Task UpdateFeed(Feed feed);
+
+        Task DeleteFeed(Feed feed);
     }
 
     public class FeedRepository : IFeedRepository
@@ -35,7 +37,11 @@ namespace PerRead.Backend.Repositories
             {
                 FeedName = name,
                 Owner = owner,
-                FeedId = Guid.NewGuid().ToString()
+                FeedId = Guid.NewGuid().ToString(),
+                RequireConfirmationAbove = 1,
+                ShowFreeArticles = true,
+                ShowArticlesAboveConfirmationLimit = true,
+                ShowUnaffordableArticles = true,
             };
 
             _context.Feeds.Add(feed);
@@ -48,7 +54,6 @@ namespace PerRead.Backend.Repositories
         public async Task<Feed> GetFeedInfo(string feedId)
         {
             return await _context.Feeds
-                .AsNoTracking()
                 .Where(x => x.FeedId == feedId)
                 .Include(x => x.Owner).FirstOrDefaultAsync();
         }
@@ -56,7 +61,6 @@ namespace PerRead.Backend.Repositories
         public async Task<Feed> GetFeedWithAuthors(string feedId)
         {
             return await _context.Feeds
-                .AsNoTracking()
                 .Where(x => x.FeedId == feedId)
                 .Include(x => x.SubscribedAuthors).FirstOrDefaultAsync();
         }
@@ -102,6 +106,13 @@ namespace PerRead.Backend.Repositories
         public async Task UpdateFeed(Feed feed)
         {
             _context.Feeds.Update(feed);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteFeed(Feed feed)
+        {
+            _context.Feeds.Remove(feed);
+
             await _context.SaveChangesAsync();
         }
     }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FeedDetails } from 'src/app/models/feed/feed-details.model';
 import { FeedService } from 'src/app/services/feed.service';
 
@@ -14,7 +14,8 @@ export class FeedDetailsComponent implements OnInit {
 
   constructor(
     private feedService: FeedService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     const id = String(this.route.snapshot.paramMap.get('id'));
@@ -32,7 +33,20 @@ export class FeedDetailsComponent implements OnInit {
 
   updateFeed() : void {
     this.feedService.updateFeed(this.feedDetails.feedId, this.feedDetails).subscribe({
-      next: data => console.log(data),
+      next: data => {
+        console.log(data);
+        this.router.navigate(['/feed-management'], { replaceUrl: true });
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  deleteFeed() : void {
+    this.feedService.deleteFeed(this.feedDetails.feedId).subscribe({
+      next: data => {
+        console.log(data);
+        this.router.navigate(['/feed-management'], { replaceUrl: true });
+      },
       error: err => console.log(err)
     });
   }

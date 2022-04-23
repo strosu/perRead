@@ -33,4 +33,8 @@ export class FeedService {
   updateFeed(feedId: string, feedDetails: FeedDetails) : Observable<any>{
     return this.httpClient.post(`${Constants.BACKENDURL}/feeds/${feedId}/details`, feedDetails);
   }
+
+  deleteFeed(feedId: string) : Observable<any> {
+    return this.httpClient.delete(`${Constants.BACKENDURL}/feeds/${feedId}`);
+  }
 }

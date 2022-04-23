@@ -10,16 +10,19 @@ namespace PerRead.Backend.Services
 {
     public interface IFeedsService
     {
-        Task<FEFeedWithArticles> CreateNewFeed(string feedName);
+        Task<IEnumerable<FEFeedPreview>> GetFeeds();
 
-        Task<FEFeedWithArticles> GetFeed(string feedId);
+        Task<FEFeedWithArticles> GetFeedArticles(string feedId);
+
+        Task<FEFeedWithArticles> CreateNewFeed(string feedName);
 
         Task<FEFeedDetails> GetFeedInfo(string feedId);
 
         Task AddAuthorToFeed(string feedId, string authorId);
 
-        Task<IEnumerable<FEFeedPreview>> GetFeeds();
         Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails);
+
+        Task DeleteFeed(string feedId);
     }
 
     public class FeedsService : IFeedsService
@@ -91,7 +94,7 @@ namespace PerRead.Backend.Services
             await _feedsRepository.AddToFeed(feedId, author);
         }
 
-        public async Task<FEFeedWithArticles> GetFeed(string feedId)
+        public async Task<FEFeedWithArticles> GetFeedArticles(string feedId)
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
             var feedAuthors = _feedsRepository.GetAuthors(feedId);
@@ -100,11 +103,13 @@ namespace PerRead.Backend.Services
             var requester = await _authorRepository.GetAuthorWithReadArticles(_accessor.GetUserId()).SingleAsync();
 
             var articlesQuery =
-                articleAuthors.Select(x => x.Article)
+                articleAuthors.Select(x => x.Article);
+
+            var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
                 .OrderByDescending(x => x.CreatedAt).Take(20)
                 .Select(x => x.ToFEArticlePreview(requester));
 
-            var articles = await articlesQuery.ToListAsync();
+            var articles = await filteredQuery.ToListAsync();
 
             return feed.ToFEFeed(articles);
         }
@@ -129,17 +134,58 @@ namespace PerRead.Backend.Services
             await _feedsRepository.UpdateFeed(feed);
         }
 
+        public async Task DeleteFeed(string feedId)
+        {
+            var feed = await _feedsRepository.GetFeedInfo(feedId);
+            var requesterId = _accessor.GetUserId();
+
+            // Only the owner can delete a feed
+            if (feed.Owner.AuthorId != requesterId)
+            {
+                throw new ArgumentException("You don't own this feed");
+            }
+
+            await _feedsRepository.DeleteFeed(feed);
+        }
+        
+        private IQueryable<Article> ApplyFeedFilters(IQueryable<Article> articles, Feed feed, Author requester)
+        {
+            if (!feed.ShowFreeArticles)
+            {
+                articles = articles.Where(x => x.Price > 0);
+            }
+
+            if (!feed.ShowArticlesAboveConfirmationLimit)
+            {
+                articles = articles.Where(x => x.Price <= requester.RequireConfirmationAbove);
+            }
+            
+            if (!feed.ShowUnaffordableArticles)
+            {
+                articles = articles.Where(x => x.Price <= requester.ReadingTokens);
+            }
+
+            return articles;
+        }
+        
         private static void UpdateFeed(Feed feed, FEFeedDetails feedDetails)
         {
             feed.FeedName = feedDetails.FeedName;
 
             var subscribedAuthorIds = feedDetails.SubscribedAuthors.Select(x => x.AuthorId);
-            feed.SubscribedAuthors = feed.SubscribedAuthors.Where(x => subscribedAuthorIds.Contains(x.AuthorId)).ToList();
+            var unsubscribedAuthors = feed.SubscribedAuthors.Where(x => !subscribedAuthorIds.Contains(x.AuthorId));
+
+            foreach (var unsub in unsubscribedAuthors)
+            {
+                feed.SubscribedAuthors.Remove(unsub);
+            }
 
             feed.RequireConfirmationAbove = feedDetails.RequireConfirmationAbove;
             feed.ShowFreeArticles = feedDetails.ShowFreeArticles;
             feed.ShowArticlesAboveConfirmationLimit = feedDetails.ShowArticlesAboveConfirmationLimit;
             feed.ShowUnaffordableArticles = feedDetails.ShowUnaffordableArticles;
         }
+
+
     }
 }

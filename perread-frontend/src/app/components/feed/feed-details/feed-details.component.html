@@ -1,18 +1,35 @@
 <div>
-    <h3><b>Settings:</b></h3>
+    <h3><b>{{feedDetails.feedName}} Settings:</b></h3>
     <div>
         <div class="submit-form">
           <div class="form-group">
-            <label>Require confirmation above</label>
-            <input type="number" class="form-control" id="requireConfirmationAbove" required [(ngModel)]="this.feedDetails && this.feedDetails.requireConfirmationAbove"
-              name="title" />
+            
+            <div>
+                <label>Feed name</label>
+                <input type="text" [(ngModel)]="this.feedDetails.feedName"/>    
+            </div>
 
-              <mat-slide-toggle [(ngModel)]="this.feedDetails.showFreeArticles">Show free articles</mat-slide-toggle>
+            <div>
+                <label>Require confirmation above</label>
+                <input type="number" class="form-control" id="requireConfirmationAbove" required [(ngModel)]="this.feedDetails && this.feedDetails.requireConfirmationAbove" name="title" />    
+            </div>
+            
+            <div class="toggleOption">
+                Show free articles <mat-slide-toggle [(ngModel)]="this.feedDetails.showFreeArticles"></mat-slide-toggle>
+            </div>
 
+            <div class="toggleOption">
+                Show articles above confirmation limit <mat-slide-toggle [(ngModel)]="this.feedDetails.showArticlesAboveConfirmationLimit"></mat-slide-toggle>
+            </div>
+
+            <div class="toggleOption">
+                Show unaffordable articles <mat-slide-toggle [(ngModel)]="this.feedDetails.showUnaffordableArticles"></mat-slide-toggle>
+            </div>
           </div>
       
-          <div class="form-group element-spacing">
-            <button (click)="updateFeed()" class="btn btn-success">Submit</button>
+          <div>
+            <button (click)="updateFeed()" class="btn btn-success">Save</button>
+            <button (click)="deleteFeed()" class="btn btn-danger">Delete</button>
           </div>      
         </div>
       </div>

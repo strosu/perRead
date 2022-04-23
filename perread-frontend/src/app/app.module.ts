@@ -35,6 +35,8 @@ import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlo
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; 
+import { MatCardModule } from '@angular/material/card'; 
+import {MatFormFieldModule} from '@angular/material/form-field'; 
 import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component';
 import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
 import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
@@ -78,7 +80,9 @@ import { AddFeedComponent } from './components/feed/add-feed/add-feed.component'
     MatTabsModule,
     MatListModule,
     MatButtonModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

@@ -17,11 +17,11 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpGet("/feeds/{feedId}")]
-        public async Task<FEFeedWithArticles> GetFeed(string feedId)
+        public async Task<FEFeedWithArticles> GetFeedArticles(string feedId)
         {
             // The feed is composed of a list of articles, based on the authors added to it
             // TODO - multiple feeds per user, need to take an argument here
-            return await _feedsService.GetFeed(feedId);
+            return await _feedsService.GetFeedArticles(feedId);
         }
 
         [HttpPost("/feeds/{feedId}/add/{authorId}")]
@@ -55,6 +55,12 @@ namespace PerRead.Backend.Controllers
         public async Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails)
         {
             await _feedsService.UpdateFeedInfo(feedId, feedDetails);
+        }
+
+        [HttpDelete("/feeds/{feedId}")]
+        public async Task DeleteFeed(string feedId)
+        {
+            await _feedsService.DeleteFeed(feedId);
         }
     }
 }
