@@ -6,7 +6,7 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class SectionExtensions
     {
-        public static FESectionWithArticles ToFESection(this Section section, Author requester)
+        public static FESectionWithArticles ToFESectionWithArticles(this Section section, Author requester)
         {
             return new FESectionWithArticles
             {
@@ -17,7 +17,7 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FESectionPreview ToFESection(this Section section)
+        public static FESectionPreview ToFESectionPreview(this Section section)
         {
             return new FESectionPreview
             {

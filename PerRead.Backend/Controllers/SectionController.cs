@@ -18,7 +18,7 @@ namespace PerRead.Backend.Controllers
         [HttpGet("/{authorId}/{sectionId}")]
         public async Task<FESectionWithArticles> GetSectionArticles(string authorId, string sectionName)
         {
-            return await _sectionsService.GetSectionsArticles(authorId, sectionName);
+            return await _sectionsService.GetSectionArticles(authorId, sectionName);
         }
     }
 }

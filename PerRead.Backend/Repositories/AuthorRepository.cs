@@ -38,6 +38,13 @@ namespace PerRead.Backend.Repositories
                 .Where(author => author.AuthorId == id);
         }
 
+        public IQueryable<Section> GetAuthorSections(string authorId)
+        {
+            return GetAuthor(authorId)
+                .Include(author => author.PublishSections)
+                .SelectMany(x => x.PublishSections);
+        }
+
         public IQueryable<Author> GetAuthorWithArticles(string id)
         {
             return GetAuthor(id)
@@ -163,6 +170,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<Author> GetAuthorByName(string name);
 
         IQueryable<Author> GetAuthors();
+
+        IQueryable<Section> GetAuthorSections(string authorId);
 
         Task<long> AddMoreTokensAsync(string usedId);
 
