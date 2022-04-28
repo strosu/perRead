@@ -5,20 +5,20 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class AuthorExtensions
     {
-        public static FEAuthor ToFEAuthor(this Author authorModel)
+        public static FEAuthor ToFEAuthor(this Author authorModel, Author requester = null)
         {
             return new FEAuthor
             {
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
                 AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
-                ArticlePreviews = authorModel.Articles?.Select(x => x.Article.ToFEArticlePreview()),
+                ArticlePreviews = authorModel.Articles?.OrderByDescending(a => a.Article.CreatedAt).Select(x => x.Article.ToFEArticlePreview(requester)),
             };
         }
 
-        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink)
+        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink, Author requester = null)
         {
-            return articleAuthorLink.Author.ToFEAuthor();
+            return articleAuthorLink.Author.ToFEAuthor(requester);
         }
 
 

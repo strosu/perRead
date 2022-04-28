@@ -21,7 +21,7 @@ namespace PerRead.Backend.Models.FrontEnd
             };
         }
 
-        public static FEArticlePreview ToFEArticlePreview(this Article articleModel, Author requester = null)
+        public static FEArticlePreview ToFEArticlePreview(this Article articleModel, Author requester)
         {
             var articlePreview = new FEArticlePreview
             {
@@ -44,13 +44,13 @@ namespace PerRead.Backend.Models.FrontEnd
             return articlePreview;
         }
 
-        public static FETag ToFETag(this Tag tagModel)
+        public static FETag ToFETag(this Tag tagModel, Author requester)
         {
             return new FETag
             {
                 Id = tagModel.TagId,
                 Name = tagModel.TagName,
-                ArticlePreviews = tagModel.Articles?.Select(x => x.ToFEArticlePreview()),
+                ArticlePreviews = tagModel.Articles?.Select(x => x.ToFEArticlePreview(requester)),
                 FirstUsage = tagModel.FirstUsage,
             };
         }

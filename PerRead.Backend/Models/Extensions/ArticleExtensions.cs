@@ -9,7 +9,7 @@ namespace PerRead.Backend.Models.Extensions
         {
             return new FEArticleUnlockInfo
             {
-                Article = articleUnlock.Article.ToFEArticlePreview(),
+                Article = articleUnlock.Article.ToFEArticlePreview(Author.NonLoggedInAuthor),
                 ArticleUnlockId = articleUnlock.Id,
                 AquisitionDate = articleUnlock.AquisitionDate,
                 AquisitionPrice = articleUnlock.AquisitionPrice,

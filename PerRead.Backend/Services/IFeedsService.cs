@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Extensions;
@@ -29,21 +28,18 @@ namespace PerRead.Backend.Services
     {
         private readonly IFeedRepository _feedsRepository;
         private readonly IAuthorRepository _authorRepository;
-        private readonly IHttpContextAccessor _accessor;
+        private readonly IRequesterGetter _requesterGetter;
 
-
-        public FeedsService(IFeedRepository feedsRepository, IAuthorRepository authorRepository, IHttpContextAccessor accessor)
+        public FeedsService(IFeedRepository feedsRepository, IAuthorRepository authorRepository, IRequesterGetter requesterGetter)
         {
             _feedsRepository = feedsRepository;
             _authorRepository = authorRepository;
-            _accessor = accessor;
+            _requesterGetter = requesterGetter;
         }
 
         public async Task<IEnumerable<FEFeedPreview>> GetFeeds()
         {
-            var currentUser = _accessor.GetUserId();
-            var owner = await _authorRepository.GetAuthor(currentUser).FirstOrDefaultAsync();
-
+            var owner = await _requesterGetter.GetRequester();
             var feeds = await _feedsRepository.GetUserFeeds(owner).ToListAsync();
 
             if (!feeds.Any())
@@ -60,8 +56,7 @@ namespace PerRead.Backend.Services
 
         public async Task<FEFeedWithArticles> CreateNewFeed(string feedName)
         {
-            var currentUser = _accessor.GetUserId();
-            var owner = await _authorRepository.GetAuthor(currentUser).FirstOrDefaultAsync();
+            var owner = await _requesterGetter.GetRequester();
 
             if (owner == null)
             {
@@ -77,9 +72,9 @@ namespace PerRead.Backend.Services
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
 
-            var requester = _accessor.GetUserId();
+            var requester = await _requesterGetter.GetRequester();
 
-            if (feed.Owner.AuthorId != requester)
+            if (feed.Owner.AuthorId != requester.AuthorId)
             {
                 throw new ArgumentException("cannot add for someone else lol");
             }
@@ -100,10 +95,11 @@ namespace PerRead.Backend.Services
             var feedAuthors = _feedsRepository.GetAuthors(feedId);
             var articleAuthors = feedAuthors.Select(x => x.Articles).SelectMany(x => x);
 
-            var requester = await _authorRepository.GetAuthorWithReadArticles(_accessor.GetUserId()).SingleAsync();
-
             var articlesQuery =
-                articleAuthors.Select(x => x.Article);
+                articleAuthors.Include(x => x.Article.Tags)
+                .Select(x => x.Article);
+
+            var requester = await _requesterGetter.GetRequester();
 
             var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
                 .OrderByDescending(x => x.CreatedAt).Take(20)
@@ -137,10 +133,10 @@ namespace PerRead.Backend.Services
         public async Task DeleteFeed(string feedId)
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
-            var requesterId = _accessor.GetUserId();
+            var requester = await _requesterGetter.GetRequester();
 
             // Only the owner can delete a feed
-            if (feed.Owner.AuthorId != requesterId)
+            if (feed.Owner.AuthorId != requester.AuthorId)
             {
                 throw new ArgumentException("You don't own this feed");
             }

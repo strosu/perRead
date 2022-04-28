@@ -97,6 +97,7 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IPaymentService, PaymentService>();
     builder.Services.AddScoped<IFeedsService, FeedsService>();
+    builder.Services.AddScoped<IRequesterGetter, RequesterGetter>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
