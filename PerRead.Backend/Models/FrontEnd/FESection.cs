@@ -1,6 +1,6 @@
 ﻿namespace PerRead.Backend.Models.FrontEnd
 {
-    public class FESection
+    public class FESectionWithArticles
     {
         public string Name { get; set; }
 

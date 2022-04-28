@@ -4,12 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Filters;
 using Microsoft.AspNetCore.Identity;
 using PerRead.Backend.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Extensions;
 using Microsoft.OpenApi.Models;
@@ -98,6 +92,7 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IPaymentService, PaymentService>();
     builder.Services.AddScoped<IFeedsService, FeedsService>();
     builder.Services.AddScoped<IRequesterGetter, RequesterGetter>();
+    builder.Services.AddScoped<ISectionsService, SectionsService>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();

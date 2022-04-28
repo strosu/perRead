@@ -6,9 +6,9 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class SectionExtensions
     {
-        public static FESection ToFESection(this Section section, Author requester)
+        public static FESectionWithArticles ToFESection(this Section section, Author requester)
         {
-            return new FESection
+            return new FESectionWithArticles
             {
                 Name = section.Name,
                 Description = section.Description,

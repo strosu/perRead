@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public IEnumerable<FESection> Sections { get; set; }
+        public IEnumerable<FESectionWithArticles> Sections { get; set; }
 
         public string AuthorImageUri { get; set; }
     }
