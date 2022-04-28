@@ -41,6 +41,10 @@ import { UnlockedArticleComponent } from './components/user/unlocked-article/unl
 import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
 import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
 import { AddFeedComponent } from './components/feed/add-feed/add-feed.component';
+import { AddSectionComponent } from './components/sections/add-section/add-section.component';
+import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
+import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
+import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +73,11 @@ import { AddFeedComponent } from './components/feed/add-feed/add-feed.component'
     UnlockedArticleComponent,
     FeedManagementComponent,
     FeedDetailsComponent,
-    AddFeedComponent
+    AddFeedComponent,
+    AddSectionComponent,
+    SectionManagementComponent,
+    SectionDetailsComponent,
+    SectionArticlesComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,8 @@ declare var bootstrap: any;
   templateUrl: './feed-list.component.html',
   styleUrls: ['./feed-list.component.css']
 })
+
+// Represents the list of feeds in the home component
 export class FeedListComponent implements OnInit {
 
   feeds: FeedPreview[] = [];
