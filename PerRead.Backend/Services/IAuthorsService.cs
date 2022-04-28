@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Extensions;
-using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
@@ -12,7 +10,7 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IRequesterGetter _requesterGetter;
 
-        public AuthorsService(IAuthorRepository authorRepository, IRequesterGetter requesterGetter)
+        public AuthorsService(IAuthorRepository authorRepository, IRequesterGetter requesterGetter, IFeedRepository feedRepository)
         {
             _authorRepository = authorRepository;
             _requesterGetter = requesterGetter;
@@ -23,6 +21,8 @@ namespace PerRead.Backend.Services
             var author = _authorRepository.GetAuthorWithArticles(id);
 
             var requester = await _requesterGetter.GetRequester();
+
+
             return await author.Select(x => x.ToFEAuthor(requester)).FirstOrDefaultAsync();
         }
 

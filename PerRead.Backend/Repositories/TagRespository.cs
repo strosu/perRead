@@ -35,14 +35,14 @@ namespace PerRead.Backend.Repositories
             return newTag;
         }
 
-        public IQueryable<Tag> GetTabByTagId(int tagId, int top = BusinessContants.DefaultArticlesWithTag, int startIndex = 0)
+        public IQueryable<Tag> GetTabByTagId(int tagId, int top = BusinessConstants.DefaultArticlesWithTag, int startIndex = 0)
         {
             return GetWhereWithArticles(x => x.TagId == tagId);
                 //.Skip(startIndex)
                 //.Take(top);
         }
 
-        public IQueryable<Tag> GetTagByName(string tagName, int top = BusinessContants.DefaultArticlesWithTag, int startIndex = 0)
+        public IQueryable<Tag> GetTagByName(string tagName, int top = BusinessConstants.DefaultArticlesWithTag, int startIndex = 0)
         {
             return GetWhereWithArticles(x => x.TagName == tagName);
                 //.Skip(startIndex)
@@ -61,9 +61,9 @@ namespace PerRead.Backend.Repositories
 
     public interface ITagRepository
     {
-        IQueryable<Tag> GetTabByTagId(int tagId, int top = BusinessContants.DefaultArticlesWithTag, int startIndex = 0);
+        IQueryable<Tag> GetTabByTagId(int tagId, int top = BusinessConstants.DefaultArticlesWithTag, int startIndex = 0);
 
-        IQueryable<Tag> GetTagByName(string tagName, int top = BusinessContants.DefaultArticlesWithTag, int startIndex = 0);
+        IQueryable<Tag> GetTagByName(string tagName, int top = BusinessConstants.DefaultArticlesWithTag, int startIndex = 0);
 
         Task<Tag> GetOrCreate(string tagName);
     }

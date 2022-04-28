@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Extensions;
+using PerRead.Backend.Constants;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -44,7 +44,7 @@ namespace PerRead.Backend.Services
 
             if (!feeds.Any())
             {
-                var defaultFeed = await _feedsRepository.CreateNewFeed(owner, "defaultFEEEDNAME");
+                var defaultFeed = await _feedsRepository.CreateNewFeed(owner, BusinessConstants.DefaultFeedName);
                 return new List<FEFeedPreview> {
                     defaultFeed.ToFEFeedPreview()
                 };

@@ -51,9 +51,9 @@ namespace PerRead.Backend.Models.Commands
                 throw new ArgumentException("Each article requires at least one tag");
             }
 
-            if (article.Content == null || article.Content.Length < BusinessContants.MinimumArticleContentLength)
+            if (article.Content == null || article.Content.Length < BusinessConstants.MinimumArticleContentLength)
             {
-                throw new ArgumentException($"Content must be at least {BusinessContants.MinimumArticleContentLength}");
+                throw new ArgumentException($"Content must be at least {BusinessConstants.MinimumArticleContentLength}");
             }
         }
     }
