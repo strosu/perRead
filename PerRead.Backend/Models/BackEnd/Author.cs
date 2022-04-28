@@ -8,7 +8,7 @@
         public static Author NonLoggedInAuthor = new Author
         {
             AuthorId = null,
-            Articles = Enumerable.Empty<ArticleAuthor>(),
+            Sections = Enumerable.Empty<Section>(),
             Name = "Annonymous",
             ReadingTokens = 0,
             RequireConfirmationAbove = 0,
@@ -25,9 +25,9 @@
 
         public int PopularityRank { get; set; }
 
-        public IEnumerable<ArticleAuthor> Articles { get; set; }
-
         public string? ProfileImageUri { get; set; }
+
+        public IEnumerable<Section> Sections { get; set; }
 
         public long ReadingTokens { get; set; }
 

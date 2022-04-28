@@ -41,7 +41,8 @@ namespace PerRead.Backend.Repositories
         public IQueryable<Author> GetAuthorWithArticles(string id)
         {
             return GetAuthor(id)
-                .Include(author => author.Articles)
+                .Include(author => author.Sections)
+                    .ThenInclude(author => author.Articles)
                     .ThenInclude(articleAuthor => articleAuthor.Article)
                     .ThenInclude(article => article.Tags);
         }
@@ -67,7 +68,8 @@ namespace PerRead.Backend.Repositories
         public IQueryable<Author> GetAuthors()
         {
             return _context.Authors.AsNoTracking()
-                .Include(x => x.Articles)
+                .Include(x => x.Sections)
+                .ThenInclude(x => x.Articles)
                     .ThenInclude(al => al.Article)
                     .ThenInclude(ar => ar.Tags);
         }

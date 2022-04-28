@@ -22,7 +22,6 @@ namespace PerRead.Backend.Services
 
             var requester = await _requesterGetter.GetRequester();
 
-
             return await author.Select(x => x.ToFEAuthor(requester)).FirstOrDefaultAsync();
         }
 

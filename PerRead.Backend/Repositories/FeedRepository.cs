@@ -89,6 +89,7 @@ namespace PerRead.Backend.Repositories
             return _context.Feeds
                 .AsNoTracking().Where(x => x.FeedId == feedId)
                 .Include(x => x.SubscribedAuthors)
+                .ThenInclude(x => x.Sections)
                 .ThenInclude(x => x.Articles)
                 .ThenInclude(x => x.Article)
                 .ThenInclude(x => x.ArticleAuthors)
