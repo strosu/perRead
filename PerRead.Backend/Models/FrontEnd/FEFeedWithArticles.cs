@@ -19,7 +19,9 @@
 
         public string FeedName { get; set; }
 
-        public IEnumerable<FEAuthorPreview> SubscribedAuthors { get; set; }
+        public IEnumerable<FESectionPreview> SubscribedSections { get; set; }
+
+        //public IEnumerable<FEAuthorPreview> SubscribedAuthors { get; set; }
 
         public int RequireConfirmationAbove { get; set; } = 1;
 

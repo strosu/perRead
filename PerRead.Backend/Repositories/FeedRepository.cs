@@ -7,15 +7,17 @@ namespace PerRead.Backend.Repositories
     {
         Task<Feed> CreateNewFeed(Author owner, string name);
 
-        Task AddToFeed(string feedId, Author authorToAdd);
+        Task AddToFeed(string feedId, Section sectionToAdd);
 
         Task<Feed> GetFeedInfo(string feedId);
 
-        Task<Feed> GetFeedWithAuthors(string feedId);
+        Task<Feed> GetFeedWithSections(string feedId);
 
         IQueryable<Feed> GetUserFeeds(Author owner);
 
-        IQueryable<Author> GetAuthors(string feedId);
+        //IQueryable<Author> GetAuthors(string feedId);
+
+        IQueryable<Section> GetSections(string feedId);
 
         Task UpdateFeed(Feed feed);
 
@@ -58,14 +60,14 @@ namespace PerRead.Backend.Repositories
                 .Include(x => x.Owner).FirstOrDefaultAsync();
         }
 
-        public async Task<Feed> GetFeedWithAuthors(string feedId)
+        public async Task<Feed> GetFeedWithSections(string feedId)
         {
             return await _context.Feeds
                 .Where(x => x.FeedId == feedId)
-                .Include(x => x.SubscribedAuthors).FirstOrDefaultAsync();
+                .Include(x => x.SubscribedSections).FirstOrDefaultAsync();
         }
 
-        public async Task AddToFeed(string feedId, Author authorToAdd)
+        public async Task AddToFeed(string feedId, Section sectionToAdd)
         {
             var feed = await _context.Feeds.FindAsync(feedId);
 
@@ -74,28 +76,37 @@ namespace PerRead.Backend.Repositories
                 throw new ArgumentException("feed does not exist");
             }
 
-            if (feed.SubscribedAuthors == null)
+            if (feed.SubscribedSections == null)
             {
-                feed.SubscribedAuthors = new List<Author>();
+                feed.SubscribedSections = new List<Section>();
             }
 
-            feed.SubscribedAuthors.Add(authorToAdd);
+            feed.SubscribedSections.Add(sectionToAdd);
 
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Author> GetAuthors(string feedId)
+        public IQueryable<Section> GetSections(string feedId)
         {
             return _context.Feeds
                 .AsNoTracking().Where(x => x.FeedId == feedId)
-                .Include(x => x.SubscribedAuthors)
-                .ThenInclude(x => x.Sections)
-                .ThenInclude(x => x.Articles)
-                .ThenInclude(x => x.Article)
-                .ThenInclude(x => x.ArticleAuthors)
-                .ThenInclude(x => x.Author)
-                .SelectMany(f => f.SubscribedAuthors);
+                .Include(x => x.SubscribedSections)
+                .SelectMany(x => x.SubscribedSections);
         }
+
+
+        //public IQueryable<Author> GetAuthors(string feedId)
+        //{
+        //    return _context.Feeds
+        //        .AsNoTracking().Where(x => x.FeedId == feedId)
+        //        .Include(x => x.SubscribedAuthors)
+        //        .ThenInclude(x => x.PublishSections)
+        //        .ThenInclude(x => x.Articles)
+        //        .ThenInclude(x => x.Article)
+        //        .ThenInclude(x => x.ArticleAuthors)
+        //        .ThenInclude(x => x.Author)
+        //        .SelectMany(f => f.SubscribedAuthors);
+        //}
 
         public IQueryable<Feed> GetUserFeeds(Author owner)
         {

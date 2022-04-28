@@ -29,12 +29,14 @@ namespace PerRead.Backend.Services
         private readonly IFeedRepository _feedsRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IRequesterGetter _requesterGetter;
+        private readonly ISectionRepository _sectionRepository;
 
-        public FeedsService(IFeedRepository feedsRepository, IAuthorRepository authorRepository, IRequesterGetter requesterGetter)
+        public FeedsService(IFeedRepository feedsRepository, IAuthorRepository authorRepository, IRequesterGetter requesterGetter, ISectionRepository sectionRepository)
         {
             _feedsRepository = feedsRepository;
             _authorRepository = authorRepository;
             _requesterGetter = requesterGetter;
+            _sectionRepository = sectionRepository;
         }
 
         public async Task<IEnumerable<FEFeedPreview>> GetFeeds()
@@ -68,7 +70,7 @@ namespace PerRead.Backend.Services
             return feed.ToFEFeed();
         }
 
-        public async Task AddAuthorToFeed(string feedId, string authorId)
+        public async Task AddAuthorToFeed(string feedId, string sectionId)
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
 
@@ -79,40 +81,45 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("cannot add for someone else lol");
             }
 
-            var author = await _authorRepository.GetAuthor(authorId).FirstOrDefaultAsync();
+            var section = await _sectionRepository.GetSection(sectionId);
 
-            if (author == null)
+            if (section == null)
             {
-                throw new ArgumentException("could not find the author to subscribe to");
+                throw new ArgumentException("could not find the section to subscribe to");
             }
 
-            await _feedsRepository.AddToFeed(feedId, author);
+            await _feedsRepository.AddToFeed(feedId, section);
         }
 
         public async Task<FEFeedWithArticles> GetFeedArticles(string feedId)
         {
-            var feed = await _feedsRepository.GetFeedInfo(feedId);
-            var feedAuthors = _feedsRepository.GetAuthors(feedId);
-            var articleAuthors = feedAuthors.Select(x => x.Articles).SelectMany(x => x);
+            return new FEFeedWithArticles { };
 
-            var articlesQuery =
-                articleAuthors.Include(x => x.Article.Tags)
-                .Select(x => x.Article);
 
-            var requester = await _requesterGetter.GetRequester();
+            //var feed = await _feedsRepository.GetFeedInfo(feedId);
+            //var feedSections = await _feedsRepository.GetFeedWithSections(feedId);
 
-            var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
-                .OrderByDescending(x => x.CreatedAt).Take(20)
-                .Select(x => x.ToFEArticlePreview(requester));
 
-            var articles = await filteredQuery.ToListAsync();
+            //var articleAuthors = feedSections.SubscribedSections.Select(x => x.Articles).SelectMany(x => x);
 
-            return feed.ToFEFeed(articles);
+            //var articlesQuery =
+            //    articleAuthors.Include(x => x.Article.Tags)
+            //    .Select(x => x.Article);
+
+            //var requester = await _requesterGetter.GetRequester();
+
+            //var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
+            //    .OrderByDescending(x => x.CreatedAt).Take(20)
+            //    .Select(x => x.ToFEArticlePreview(requester));
+
+            //var articles = await filteredQuery.ToListAsync();
+
+            //return feed.ToFEFeed(articles);
         }
 
         public async Task<FEFeedDetails> GetFeedInfo(string feedId)
         {
-            var feed = await _feedsRepository.GetFeedWithAuthors(feedId);
+            var feed = await _feedsRepository.GetFeedWithSections(feedId);
 
             if (feed == null)
             {
@@ -124,7 +131,7 @@ namespace PerRead.Backend.Services
 
         public async Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails)
         {
-            var feed = await _feedsRepository.GetFeedWithAuthors(feedId);
+            var feed = await _feedsRepository.GetFeedWithSections(feedId);
             UpdateFeed(feed, feedDetails);
 
             await _feedsRepository.UpdateFeed(feed);
@@ -143,7 +150,7 @@ namespace PerRead.Backend.Services
 
             await _feedsRepository.DeleteFeed(feed);
         }
-        
+
         private IQueryable<Article> ApplyFeedFilters(IQueryable<Article> articles, Feed feed, Author requester)
         {
             if (!feed.ShowFreeArticles)
@@ -155,7 +162,7 @@ namespace PerRead.Backend.Services
             {
                 articles = articles.Where(x => x.Price <= requester.RequireConfirmationAbove);
             }
-            
+
             if (!feed.ShowUnaffordableArticles)
             {
                 articles = articles.Where(x => x.Price <= requester.ReadingTokens);
@@ -163,17 +170,17 @@ namespace PerRead.Backend.Services
 
             return articles;
         }
-        
+
         private static void UpdateFeed(Feed feed, FEFeedDetails feedDetails)
         {
             feed.FeedName = feedDetails.FeedName;
 
-            var subscribedAuthorIds = feedDetails.SubscribedAuthors.Select(x => x.AuthorId);
-            var unsubscribedAuthors = feed.SubscribedAuthors.Where(x => !subscribedAuthorIds.Contains(x.AuthorId));
+            var subscribedSectionIds = feedDetails.SubscribedSections.Select(x => x.SectionId);
+            var unsubscribedAuthors = feed.SubscribedSections.Where(x => !subscribedSectionIds.Contains(x.SectionId));
 
             foreach (var unsub in unsubscribedAuthors)
             {
-                feed.SubscribedAuthors.Remove(unsub);
+                feed.SubscribedSections.Remove(unsub);
             }
 
             feed.RequireConfirmationAbove = feedDetails.RequireConfirmationAbove;

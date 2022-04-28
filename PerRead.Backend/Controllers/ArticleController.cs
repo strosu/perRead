@@ -32,7 +32,7 @@ namespace PerRead.Controllers
 
         [HttpGet("{id}")]
         //[Route("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(string id)
         {
             var article = await _articleService.Get(id);
 
@@ -67,7 +67,7 @@ namespace PerRead.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {

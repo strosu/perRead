@@ -8,11 +8,10 @@
         public static Author NonLoggedInAuthor = new Author
         {
             AuthorId = null,
-            Sections = Enumerable.Empty<Section>(),
+            PublishSections = Enumerable.Empty<Section>(),
             Name = "Annonymous",
             ReadingTokens = 0,
             RequireConfirmationAbove = 0,
-            SubscribedFeeds = Enumerable.Empty<Feed>(),
             UnlockedArticles = new List<ArticleUnlock>()
         };
 
@@ -27,7 +26,7 @@
 
         public string? ProfileImageUri { get; set; }
 
-        public IEnumerable<Section> Sections { get; set; }
+        public IEnumerable<Section> PublishSections { get; set; }
 
         public long ReadingTokens { get; set; }
 
@@ -36,12 +35,6 @@
         /// TODO - configure it differently to get rid of this
         /// </summary>
         public IList<ArticleUnlock> UnlockedArticles { get; set; }
-
-        /// <summary>
-        /// DO NOT USE THIS. Here just for EF convenience
-        /// TODO - configure it differently to get rid of this
-        /// </summary>
-        public IEnumerable<Feed> SubscribedFeeds { get; set; }
 
         /// <summary>
         /// The price under which articles do not require confirmation

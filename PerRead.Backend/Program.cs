@@ -1,4 +1,4 @@
-using PerRead.Backend.Repositories;
+﻿using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Filters;
@@ -105,6 +105,7 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ITagRepository, TagRespository>();
     builder.Services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
     builder.Services.AddScoped<IFeedRepository, FeedRepository>();
+    builder.Services.AddScoped<ISectionRepository, SectionRepository>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 

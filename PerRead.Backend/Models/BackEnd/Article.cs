@@ -5,7 +5,7 @@
     /// </summary>
     public class Article
     {
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
 
         public ICollection<ArticleAuthor> ArticleAuthors { get; set; }
 
@@ -29,7 +29,7 @@
     {
         public Article Article { get; set; }
 
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
 
         public Author Author { get; set; }
 

@@ -17,6 +17,8 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<Feed> Feeds { get; set; }
 
+        public DbSet<Section> Sections { get; set; }
+
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,15 +34,18 @@ namespace PerRead.Backend.Repositories
             modelBuilder.Entity<ArticleAuthor>()
                 .HasKey(x => new { x.ArticleId, x.AuthorId });
 
+            modelBuilder.Entity<SectionArticle>()
+                .HasKey(x => new { x.ArticleId, x.SectionId });
+
             //modelBuilder.Entity<Author>()
             //    .HasMany(p => p.UnlockedArticles)
             //    .WithMany(p => p.Unlocked)
             //    .UsingEntity(j => j.ToTable("UnlockedArticles"));
 
-            modelBuilder.Entity<Feed>()
-                .HasMany(p => p.SubscribedAuthors)
-                .WithMany(p => p.SubscribedFeeds)
-                .UsingEntity(j => j.ToTable("FeedAuthors"));
+            //modelBuilder.Entity<Feed>()
+            //    .HasMany(p => p.SubscribedSections)
+            //    .WithMany(p => p.SubscribedFeeds)
+            //    .UsingEntity(j => j.ToTable("FeedAuthors"));
 
             modelBuilder.Entity<Feed>()
                 .HasOne(p => p.Owner);

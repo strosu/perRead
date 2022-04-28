@@ -21,6 +21,7 @@ namespace PerRead.Backend.Repositories
             // Add the article
             var newArticle = new Article
             {
+                ArticleId = Guid.NewGuid().ToString(),
                 Title = article.Title,
                 Price = article.Price,
                 Content = article.Content,
@@ -47,7 +48,7 @@ namespace PerRead.Backend.Repositories
             return newArticle;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(string id)
         {
             var article = await _context.Articles
                 .AsNoTracking()
@@ -63,7 +64,7 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Article?> Get(int id)
+        public async Task<Article?> Get(string id)
         {
             return await _context.Articles
                 .AsNoTracking()
@@ -83,7 +84,7 @@ namespace PerRead.Backend.Repositories
                 .Include(x => x.Tags);
         }
 
-        public async Task<Article?> GetSimpleArticle(int id)
+        public async Task<Article?> GetSimpleArticle(string id)
         {
             return await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
         }
@@ -97,9 +98,9 @@ public interface IArticleRepository
 
     IQueryable<Article> GetAll();
 
-    Task<Article?> Get(int id);
+    Task<Article?> Get(string id);
 
-    Task Delete(int id);
+    Task Delete(string id);
 
-    Task<Article?> GetSimpleArticle(int id);
+    Task<Article?> GetSimpleArticle(string id);
 }

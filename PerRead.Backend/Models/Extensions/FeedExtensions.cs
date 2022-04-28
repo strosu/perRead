@@ -32,7 +32,7 @@ namespace PerRead.Backend.Models.Extensions
             {
                 FeedId = feed.FeedId,
                 FeedName = feed.FeedName,
-                SubscribedAuthors = feed.SubscribedAuthors.Select(x => x.ToFEAuthorPreview()),
+                SubscribedSections = feed.SubscribedSections.Select(x => x.ToFESection()),
                 RequireConfirmationAbove = feed.RequireConfirmationAbove,
                 ShowFreeArticles = feed.ShowFreeArticles,
                 ShowArticlesAboveConfirmationLimit = feed.ShowArticlesAboveConfirmationLimit,

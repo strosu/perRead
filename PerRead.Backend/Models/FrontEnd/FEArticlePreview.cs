@@ -10,7 +10,7 @@ namespace PerRead.Backend.Models.FrontEnd
     /// </summary>
     public class FEArticlePreview
     {
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
 
         public IEnumerable<FEAuthorPreview> AuthorPreviews { get; set; }
 

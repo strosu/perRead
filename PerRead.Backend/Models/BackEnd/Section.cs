@@ -6,11 +6,19 @@
 
         public string Name { get; set; }
 
+        public string Description;
+
         public string AuthorId { get; set; }
 
         public Author Author { get; set; }
 
         public IEnumerable<SectionArticle> Articles { get; set; }
+
+        /// <summary>
+        /// DO NOT USE THIS. Here just for EF convenience
+        /// TODO - configure it differently to get rid of this
+        /// </summary>
+        //public IEnumerable<Feed> SubscribedFeeds { get; set; }
     }
 
     public class SectionArticle

@@ -11,11 +11,11 @@ namespace PerRead.Backend.Services
     {
         Task<IEnumerable<FEArticlePreview>> GetAll();
 
-        Task<FEArticle?> Get(int id);
+        Task<FEArticle?> Get(string id);
 
         Task<FEArticle> Create(ArticleCommand article);
 
-        Task Delete(int id);
+        Task Delete(string id);
     }
 
     public class ArticleService : IArticleService
@@ -27,7 +27,7 @@ namespace PerRead.Backend.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ArticleService(
-            IArticleRepository articleRepository, 
+            IArticleRepository articleRepository,
             IAuthorRepository authorRepository,
             ITagRepository tagRespository,
             IImageService imageService,
@@ -64,24 +64,24 @@ namespace PerRead.Backend.Services
             var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), path, article);
             return articleModel.ToFEArticle();
         }
-         
+
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
             var articles = _articleRepository.GetAll();
-            
+
             var authorId = _httpContextAccessor.GetUserId();
             var requester = await _authorRepository.GetAuthorWithReadArticles(authorId).SingleAsync();
 
             return await articles.Select(article => article.ToFEArticlePreview(requester)).ToListAsync();
         }
 
-        public async Task<FEArticle?> Get(int id)
+        public async Task<FEArticle?> Get(string id)
         {
             var article = await _articleRepository.Get(id);
             return article?.ToFEArticle();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(string id)
         {
             var article = await _articleRepository.Get(id);
 

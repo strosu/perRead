@@ -17,7 +17,7 @@ namespace PerRead.Backend.Services
             _articleRepository = articleRepository;
         }
 
-        public async Task<PaymentResult> Settle(int articleId, string to, long amount)
+        public async Task<PaymentResult> Settle(string articleId, string to, long amount)
         {
             // Short circuit for free articles
             if (amount == 0)
@@ -68,7 +68,7 @@ namespace PerRead.Backend.Services
     public interface IPaymentService
     {
         // TODO - the payments service should not be concerned with articleIds
-        Task<PaymentResult> Settle(int articleId, string to, long amount);
+        Task<PaymentResult> Settle(string articleId, string to, long amount);
     }
 
     public class PaymentResult

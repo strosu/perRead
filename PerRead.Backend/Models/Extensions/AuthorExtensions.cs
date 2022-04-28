@@ -12,7 +12,7 @@ namespace PerRead.Backend.Models.Extensions
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
                 AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
-                ArticlePreviews = authorModel.Articles?.OrderByDescending(a => a.Article.CreatedAt).Select(x => x.Article.ToFEArticlePreview(requester)),
+                Sections = authorModel.PublishSections.Select(x => x.ToFESection(requester))
             };
         }
 

@@ -8,7 +8,7 @@
 
         public Author Owner { get; set; }
 
-        public IList<Author> SubscribedAuthors { get; set; }
+        public IList<Section> SubscribedSections { get; set; }
 
         public int RequireConfirmationAbove { get; set; }
 
