@@ -1,0 +1,13 @@
+<mat-tab-group dynamicHeight>
+    <mat-tab *ngFor="let section of sectionPreviews">
+      <ng-template mat-tab-label>
+        {{section.name}}
+      </ng-template>
+
+      <ng-template matTabContent>
+          <!-- <app-feed-articles [sectionPreview]=section></app-feed-articles> -->
+          <app-section-articles [sectionPreview]="section"></app-section-articles>
+      </ng-template>
+
+    </mat-tab>
+  </mat-tab-group>

@@ -25,19 +25,22 @@ namespace PerRead.Backend.Services
         private readonly ITagRepository _tagRespository;
         private readonly IImageService _imageService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ISectionRepository _sectionRepository;
 
         public ArticleService(
             IArticleRepository articleRepository,
             IAuthorRepository authorRepository,
             ITagRepository tagRespository,
             IImageService imageService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            ISectionRepository sectionRepository)
         {
             _articleRepository = articleRepository;
             _authorRepository = authorRepository;
             _tagRespository = tagRespository;
             _imageService = imageService;
             _httpContextAccessor = httpContextAccessor;
+            _sectionRepository = sectionRepository;
         }
 
         public async Task<FEArticle> Create(ArticleCommand article)
@@ -60,8 +63,10 @@ namespace PerRead.Backend.Services
             // Save the image somewhere usefull and get its path
             var path = await _imageService.Save(author.AuthorId, article.ArticleImage);
 
+            var sections = await _sectionRepository.GetAllSections().Where(x => article.SectionIds.Contains(x.SectionId)).ToListAsync();
+
             // Create the article itself
-            var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), path, article);
+            var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), sections, path, article);
             return articleModel.ToFEArticle();
         }
 

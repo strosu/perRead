@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
+using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
@@ -19,6 +20,7 @@ namespace PerRead.Backend.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthorRepository _authorRepository;
         private readonly IFeedRepository _feedRepository;
+        private readonly ISectionRepository _sectionRepository;
         private readonly JwtSettings _jwtSettings;
 
         public AuthService(
@@ -26,12 +28,14 @@ namespace PerRead.Backend.Services
             SignInManager<ApplicationUser> signInManager,
             IOptionsSnapshot<JwtSettings> jwtSettings,
             IAuthorRepository authorRepository,
-            IFeedRepository feedRepository)
+            IFeedRepository feedRepository,
+            ISectionRepository sectionRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorRepository = authorRepository;
             _feedRepository = feedRepository;
+            _sectionRepository = sectionRepository;
             _jwtSettings = jwtSettings.Value;
         }
 
@@ -95,6 +99,11 @@ namespace PerRead.Backend.Services
 
             await _feedRepository.CreateNewFeed(newAuthor, "defaultFeedNameHere");
 
+            await _sectionRepository.CreateNewSection(newAuthor.AuthorId, new SectionCommand
+            {
+                Name = "defaultNEWSECTIONNAME",
+                Description = "enter your description here perhaps"
+            });
         }
 
         private string BuildRegisterError(IdentityResult badResult)

@@ -15,6 +15,8 @@ namespace PerRead.Backend.Models.Commands
         public IEnumerable<string> Tags { get; set; }
 
         public ArticleImage ArticleImage { get; set; }
+
+        public IEnumerable<string> SectionIds { get; set; }
     }
 
     public class ArticleImage

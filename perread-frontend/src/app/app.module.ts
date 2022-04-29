@@ -45,6 +45,7 @@ import { AddSectionComponent } from './components/sections/add-section/add-secti
 import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
+import { SectionListComponent } from './components/sections/section-list/section-list.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { SectionArticlesComponent } from './components/sections/section-articles
     AddSectionComponent,
     SectionManagementComponent,
     SectionDetailsComponent,
-    SectionArticlesComponent
+    SectionArticlesComponent,
+    SectionListComponent
   ],
   imports: [
     BrowserModule,

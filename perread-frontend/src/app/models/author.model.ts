@@ -1,8 +1,8 @@
-import { ArticlePreview } from "./article/article-preview.model";
+import { SectionPreview } from "./section/section-preview.model";
 
 export class Author {
     id?: number;
     name?: string;
-    articlePreviews?: ArticlePreview[];
+    sectionPreviews?: SectionPreview[];
     authorImageUri?: string;
 }

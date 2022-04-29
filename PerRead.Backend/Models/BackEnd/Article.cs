@@ -20,6 +20,8 @@
         public DateTime CreatedAt { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public IEnumerable<SectionArticle> Sections { get; set; }
     }
 
     /// <summary>
