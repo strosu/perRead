@@ -27,6 +27,14 @@ TODO NEXT:
 - component for "buying" tokens
 - component for adding an author to one of multiple feeds
 
+TODO Sections:
+- add list of sections when creating an article, require at least one
+- UI for editing sections: adding more, editing existing
+- UI for editing an article, associating it with a section
+- UI for subscribing to a section from a feed
+
+
+
 BACKEND:
 
 TODO:
