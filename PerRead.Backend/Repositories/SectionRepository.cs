@@ -15,7 +15,7 @@ namespace PerRead.Backend.Repositories
 
         Task<Section> CreateNewSection(string authorId, SectionCommand sectionCommand);
 
-        Task<Section> UpdateSection(SectionCommand sectionCommand);
+        Task<Section> UpdateSection(Section section, SectionCommand sectionCommand);
     }
 
     public class SectionRepository : ISectionRepository
@@ -55,10 +55,8 @@ namespace PerRead.Backend.Repositories
             return newSection;
         }
 
-        public async Task<Section> UpdateSection(SectionCommand sectionCommand)
+        public async Task<Section> UpdateSection(Section section, SectionCommand sectionCommand)
         {
-            var section = await _context.Sections.SingleOrDefaultAsync(x => x.SectionId == sectionCommand.SectionId);
-
             section.Name = sectionCommand.Name;
             section.Description = sectionCommand.Description;
 

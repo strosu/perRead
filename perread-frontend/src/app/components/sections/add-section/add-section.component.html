@@ -1,1 +1,17 @@
-<p>add-section works!</p>
+<div>
+    <div class="submit-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" required [(ngModel)]="this.sectionComand.name" name="title" />
+        </div>
+
+        <div class="form-group">
+            <label for="content">Description</label>
+            <input class="form-control" id="description" required [(ngModel)]="this.sectionComand.description" name="content" />
+        </div>
+
+        <div class="form-group element-spacing">
+            <button (click)="saveSection()" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -11,18 +10,17 @@ namespace PerRead.Backend.Services
     {
         Task<FESectionWithArticles> GetSectionArticles(string sectionId);
         Task<FESectionWithArticles> CreateSection(SectionCommand sectionCommand);
-        Task<FESectionWithArticles> UpdateSection(SectionCommand sectionCommand);
+        Task<FESectionWithArticles> UpdateSection(string sectionId, SectionCommand sectionCommand);
+        Task<IEnumerable<FESectionPreview>> ListSections();
     }
 
     public class SectionsService : ISectionsService
     {
-        private readonly IAuthorRepository _authorRepository;
         private readonly ISectionRepository _sectionRepository;
         private readonly IRequesterGetter _requesterGetter;
 
-        public SectionsService(IAuthorRepository authorRepository, ISectionRepository sectionRepository, IRequesterGetter requesterGetter)
+        public SectionsService(ISectionRepository sectionRepository, IRequesterGetter requesterGetter)
         {
-            _authorRepository = authorRepository;
             _sectionRepository = sectionRepository;
             _requesterGetter = requesterGetter;
         }
@@ -50,18 +48,27 @@ namespace PerRead.Backend.Services
             return await _sectionRepository.GetSectionArticles(section.SectionId).Select(x => x.ToFESectionWithArticles(requester)).FirstOrDefaultAsync();
         }
 
-        public async Task<FESectionWithArticles> UpdateSection(SectionCommand sectionCommand)
+        public async Task<IEnumerable<FESectionPreview>> ListSections()
+        {
+            var requester = await _requesterGetter.GetRequester();
+            return await _sectionRepository.GetAllSections()
+                .Where(x => x.AuthorId == requester.AuthorId)
+                .Select(x => x.ToFESectionPreview())
+                .ToListAsync();
+        }
+
+        public async Task<FESectionWithArticles> UpdateSection(string sectionId, SectionCommand sectionCommand)
         {
             var requester = await _requesterGetter.GetRequester();
 
-            var section = await _sectionRepository.GetSection(sectionCommand.SectionId);
+            var section = await _sectionRepository.GetSection(sectionId);
 
             if (section.AuthorId != requester.AuthorId)
             {
                 throw new ArgumentException("you don't own this");
             }
 
-            return (await _sectionRepository.UpdateSection(sectionCommand)).ToFESectionWithArticles(requester);
+            return (await _sectionRepository.UpdateSection(section, sectionCommand)).ToFESectionWithArticles(requester);
         }
     }
 }

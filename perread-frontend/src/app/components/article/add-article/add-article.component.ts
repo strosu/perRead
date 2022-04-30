@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ArticleCommand, ArticleImage } from 'src/app/models/article/article-command.model';
+import { SectionPreview } from 'src/app/models/section/section-preview.model';
+import { Section } from 'src/app/models/section/section.model';
 import { ArticlesService } from 'src/app/services/articles.service';
+import { SectionsService } from 'src/app/services/sections.service';
 
 @Component({
   selector: 'app-add-article',
@@ -18,12 +22,24 @@ export class AddArticleComponent implements OnInit {
   };
 
   tags: string = '';
-
   articleCommand: ArticleCommand = new ArticleCommand();
+  sections: SectionPreview[] = [];
+  selectedSections = new FormControl();
 
-  constructor(private articleService: ArticlesService, private router: Router) { }
+  constructor(
+    private articleService: ArticlesService, 
+    private sectionService: SectionsService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.sectionService.listSections().subscribe(
+      {
+        next: data => {
+          console.log(data);
+          this.sections = data;
+        }
+      }
+    );
   }
 
   saveArticle(): void {

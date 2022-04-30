@@ -1,41 +1,47 @@
 <div>
-  <div class="submit-form">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" required [(ngModel)]="this.articleCommand.title"
-        name="title" />
-    </div>
-
-    <div class="form-group">
-      <label for="tags">Tags (comma separated)</label>
-      <input class="form-control" id="tags" required [(ngModel)]="tags" name="tags" />
-    </div>
-
-    <div class="form-group">
-      <label for="price">Price</label>
-      <input class="form-control" id="price" required [(ngModel)]="this.articleCommand.price" name="price" />
-    </div>
-    
-    <div class="form-group">
-      <label>Article image</label>
-      <div class="custom-file fileInputProfileWrap">
-        <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfileWrap">
-        <div class="img-space" *ngIf="isImageSaved">
-          <img [src]="articleCommand.articleImage.base64Encoded" />
-          <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+    <div class="submit-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" required [(ngModel)]="this.articleCommand.title" name="title" />
         </div>
-      </div>
-    </div>
-    
-    <div class="form-group">
-      <label for="content">Content</label>
-      <input class="form-control" id="content" required [(ngModel)]="this.articleCommand.content" name="content" />
-    </div>
 
-    <div class="form-group element-spacing">
-      <button (click)="saveArticle()" class="btn btn-success">Submit</button>
+        <div class="form-group">
+            <label for="tags">Tags (comma separated)</label>
+            <input class="form-control" id="tags" required [(ngModel)]="tags" name="tags" />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input class="form-control" id="price" required [(ngModel)]="this.articleCommand.price" name="price" />
+        </div>
+
+        <div class="form-group">
+            <label>Article image</label>
+            <div class="custom-file fileInputProfileWrap">
+                <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfileWrap">
+                <div class="img-space" *ngIf="isImageSaved">
+                    <img [src]="articleCommand.articleImage.base64Encoded" />
+                    <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+                </div>
+            </div>
+        </div>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Sections:</mat-label>
+            <mat-select [formControl]="selectedSections" multiple>
+                <mat-option *ngFor="let section of sections" [value]="section">{{section.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="form-group">
+            <label for="content">Content</label>
+            <input class="form-control" id="content" required [(ngModel)]="this.articleCommand.content" name="content" />
+        </div>
+
+        <div class="form-group element-spacing">
+            <button (click)="saveArticle()" class="btn btn-success">Submit</button>
+        </div>
+
+
     </div>
-
-
-  </div>
 </div>

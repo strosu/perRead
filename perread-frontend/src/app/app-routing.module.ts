@@ -10,6 +10,7 @@ import { FeedManagementComponent } from './components/feed/feed-management/feed-
 import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AddSectionComponent } from './components/sections/add-section/add-section.component';
 import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
 import { TagDetailsComponent } from './components/tags/tag-details/tag-details.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
@@ -33,7 +34,8 @@ const routes: Routes = [
   { path: 'feed-management', component: FeedManagementComponent },
   { path: 'feed/new', component: AddFeedComponent },
   { path: 'feed/:id/edit', component: FeedDetailsComponent },
-  { path: 'section-management', component: SectionManagementComponent }
+  { path: 'section-management', component: SectionManagementComponent },
+  { path: 'sections/new', component: AddSectionComponent }
 ];
 
 @NgModule({

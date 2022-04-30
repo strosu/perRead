@@ -2,7 +2,7 @@
 {
     public class SectionCommand
     {
-        public string SectionId { get; set; }
+        //public string SectionId { get; set; }
 
         public string Name { get; set; }
 

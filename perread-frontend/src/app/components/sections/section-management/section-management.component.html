@@ -1,1 +1,10 @@
-<p>section-management works!</p>
+<mat-list color="primary" #unlocked>
+    <mat-list-item *ngFor="let section of sections let indexOfelement=index">
+        <!-- <app-feed-details [feedPreview]=feed></app-feed-details> -->
+        {{section.name}}
+        <a routerLink="/sections/{{section.sectionId}}/edit" mat-raised-button color="primary">Edit</a>
+
+    </mat-list-item>
+</mat-list>
+
+<a routerLink="/sections/new" mat-raised-button color="primary">Add new section</a>

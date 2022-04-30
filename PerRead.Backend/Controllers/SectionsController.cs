@@ -26,15 +26,21 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpPost("sections/add")]
-        public async Task<FESectionWithArticles> CreateSection([FromBody]SectionCommand sectionCommand)
+        public async Task<FESectionWithArticles> CreateSection([FromBody] SectionCommand sectionCommand)
         {
             return await _sectionsService.CreateSection(sectionCommand);
         }
 
         [HttpPost("sections/{sectionId}/edit")]
-        public async Task<FESectionWithArticles> UpdateSection([FromBody]SectionCommand sectionCommand)
+        public async Task<FESectionWithArticles> UpdateSection(string sectionId, [FromBody] SectionCommand sectionCommand)
         {
-            return await _sectionsService.UpdateSection(sectionCommand);
+            return await _sectionsService.UpdateSection(sectionId, sectionCommand);
+        }
+
+        [HttpGet("sections")]
+        public async Task<IEnumerable<FESectionPreview>> ListSections()
+        {
+            return await _sectionsService.ListSections();
         }
     }
 }

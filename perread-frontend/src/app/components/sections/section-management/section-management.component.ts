@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SectionPreview } from 'src/app/models/section/section-preview.model';
+import { SectionsService } from 'src/app/services/sections.service';
 
 @Component({
   selector: 'app-section-management',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SectionManagementComponent implements OnInit {
 
-  constructor() { }
+sections: SectionPreview[] = [];
+
+  constructor(private sectionsService: SectionsService) { }
 
   ngOnInit(): void {
+    this.sectionsService.listSections().subscribe({
+      next: data => {
+        console.log(data);
+        this.sections = data;
+      }
+    });
   }
 
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -46,6 +46,7 @@ import { SectionManagementComponent } from './components/sections/section-manage
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 import { SectionListComponent } from './components/sections/section-list/section-list.component';
+import {MatSelectModule} from '@angular/material/select'; 
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { SectionListComponent } from './components/sections/section-list/section
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatTabsModule,
@@ -92,7 +94,8 @@ import { SectionListComponent } from './components/sections/section-list/section
     MatButtonModule,
     MatSlideToggleModule,
     MatCardModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

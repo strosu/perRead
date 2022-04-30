@@ -4,6 +4,7 @@ export class ArticleCommand {
     price: number = 1;
     content: string = 'type your content here';
     articleImage: ArticleImage = new ArticleImage();
+    sectionIds: string[] = [];
 }
 
 export class ArticleImage {
