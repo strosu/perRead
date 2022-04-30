@@ -43,16 +43,14 @@ export class AddArticleComponent implements OnInit {
   }
 
   saveArticle(): void {
+    
+    let selected: SectionPreview[];
+    selected = this.selectedSections.value;
+
+    this.articleCommand.sectionIds = selected.map(x => x.sectionId);
+
     this.articleCommand.tags = this.tags?.split(",");
     
-    // const data = {
-    //   title: this.articleCommand.title,
-    //   content: this.articleCommand.content,
-    //   price: this.articleCommand.price,
-    //   tags: this.articleCommand.tags?.split(","),
-    //   articleImageBase64: this.articleCommand.articleImageBase64
-    // };
-
     this.articleService.create(this.articleCommand)
       .subscribe(
         response => {

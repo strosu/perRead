@@ -36,7 +36,12 @@ namespace PerRead.Backend.Repositories
         {
             return _context.Sections.Where(x => x.SectionId == sectionId)
                 .Include(x => x.Articles)
-                .ThenInclude(x => x.Article);
+                .ThenInclude(x => x.Article)
+                .ThenInclude(x => x.ArticleAuthors)
+                .ThenInclude(x => x.Author)
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.Article)
+                .ThenInclude(x => x.Tags);
         }
 
         public async Task<Section> CreateNewSection(string authorId, SectionCommand sectionCommand)

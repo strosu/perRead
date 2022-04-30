@@ -32,8 +32,8 @@ namespace PerRead.Backend.Repositories
             newArticle.Sections = sections.Select(section => new SectionArticle
             {
                 Article = newArticle,
-                Section = section
-            });
+                SectionId = section.SectionId
+            }).ToList();
 
             newArticle.ArticleAuthors = new List<ArticleAuthor>
             {
