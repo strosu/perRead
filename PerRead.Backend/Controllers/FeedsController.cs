@@ -24,10 +24,10 @@ namespace PerRead.Backend.Controllers
             return await _feedsService.GetFeedArticles(feedId);
         }
 
-        [HttpPost("/feeds/{feedId}/add/{authorId}")]
-        public async Task<IActionResult> AddAuthorToFeed(string feedId, string authorId)
+        [HttpPost("/feeds/{feedId}/add/{sectionId}")]
+        public async Task<IActionResult> AddSectionToFeed(string feedId, string sectionId)
         {
-            await _feedsService.AddAuthorToFeed(feedId, authorId);
+            await _feedsService.AddSectionToFeed(feedId, sectionId);
             return Ok();
         }
 

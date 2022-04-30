@@ -17,7 +17,7 @@ namespace PerRead.Backend.Services
 
         Task<FEFeedDetails> GetFeedInfo(string feedId);
 
-        Task AddAuthorToFeed(string feedId, string authorId);
+        Task AddSectionToFeed(string feedId, string sectionId);
 
         Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails);
 
@@ -27,7 +27,6 @@ namespace PerRead.Backend.Services
     public class FeedsService : IFeedsService
     {
         private readonly IFeedRepository _feedsRepository;
-        private readonly IAuthorRepository _authorRepository;
         private readonly IRequesterGetter _requesterGetter;
         private readonly ISectionRepository _sectionRepository;
 
@@ -70,7 +69,7 @@ namespace PerRead.Backend.Services
             return feed.ToFEFeed();
         }
 
-        public async Task AddAuthorToFeed(string feedId, string sectionId)
+        public async Task AddSectionToFeed(string feedId, string sectionId)
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
 
