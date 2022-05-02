@@ -18,11 +18,13 @@ namespace PerRead.Backend.Services
     {
         private readonly ISectionRepository _sectionRepository;
         private readonly IRequesterGetter _requesterGetter;
+        private readonly IFeedRepository _feedRepository;
 
-        public SectionsService(ISectionRepository sectionRepository, IRequesterGetter requesterGetter)
+        public SectionsService(ISectionRepository sectionRepository, IRequesterGetter requesterGetter, IFeedRepository feedRepository)
         {
             _sectionRepository = sectionRepository;
             _requesterGetter = requesterGetter;
+            _feedRepository = feedRepository;
         }
 
         public async Task<FESectionWithArticles> CreateSection(SectionCommand sectionCommand)
@@ -31,7 +33,9 @@ namespace PerRead.Backend.Services
 
             var section = await _sectionRepository.CreateNewSection(requester.AuthorId, sectionCommand);
 
-            return section.ToFESectionWithArticles(requester);
+            var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
+
+            return section.ToFESectionWithArticles(requester, feeds);
         }
 
         public async Task<FESectionWithArticles> GetSectionArticles(string sectionId)
@@ -45,7 +49,9 @@ namespace PerRead.Backend.Services
 
             var requester = await _requesterGetter.GetRequester();
 
-            return await _sectionRepository.GetSectionArticles(section.SectionId).Select(x => x.ToFESectionWithArticles(requester)).FirstOrDefaultAsync();
+            var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
+
+            return await _sectionRepository.GetSectionArticles(section.SectionId).Select(x => x.ToFESectionWithArticles(requester, feeds)).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<FESectionPreview>> ListSections()
@@ -68,7 +74,9 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("you don't own this");
             }
 
-            return (await _sectionRepository.UpdateSection(section, sectionCommand)).ToFESectionWithArticles(requester);
+            var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
+
+            return (await _sectionRepository.UpdateSection(section, sectionCommand)).ToFESectionWithArticles(requester, feeds);
         }
     }
 }

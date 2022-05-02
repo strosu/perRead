@@ -1,0 +1,7 @@
+p {
+    font-family: Lato;
+}
+
+.mat-select-panel {
+    max-height: unset !important;
+}

@@ -1,1 +1,17 @@
-<p>add-feed works!</p>
+<div>
+    <div class="submit-form">
+        <div class="form-group">
+            <label for="title">Feed name</label>
+            <input type="text" class="form-control" id="name" required [(ngModel)]="feedName" name="name" />
+        </div>
+
+        <div class="form-group">
+            <label for="content">Description</label>
+            <input class="form-control" id="description" required [(ngModel)]="feedDescription" name="description" />
+        </div>
+
+        <div class="form-group element-spacing">
+            <button (click)="saveFeed()" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+</div>

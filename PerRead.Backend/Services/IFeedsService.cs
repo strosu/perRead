@@ -33,7 +33,6 @@ namespace PerRead.Backend.Services
         public FeedsService(IFeedRepository feedsRepository, IAuthorRepository authorRepository, IRequesterGetter requesterGetter, ISectionRepository sectionRepository)
         {
             _feedsRepository = feedsRepository;
-            _authorRepository = authorRepository;
             _requesterGetter = requesterGetter;
             _sectionRepository = sectionRepository;
         }

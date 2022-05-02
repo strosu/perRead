@@ -12,7 +12,7 @@
 
         // Should hold a map of whether each feed of the current user is subscribed to this section
         // Based on this, construct the UI
-        public IEnumerable<FeedSubscriptionToSection> FeedSectionStatus { get; set; }
+        public IEnumerable<SectionSubscriptonStatus> FeedSubscriptionStatuses { get; set; }
     }
 
     public class FESectionPreview
@@ -22,9 +22,9 @@
         public string SectionId { get; set; }
     }
 
-    public class FeedSubscriptionToSection
+    public class SectionSubscriptonStatus
     {
-        public FEFeedPreview FeedPreview { get; set; }
+        public FEFeedPreview Feed { get; set; }
 
         public bool IsSubscribedToSection { get; set; }
     }

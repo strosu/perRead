@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Feed } from 'src/app/models/feed/feed.model';
+import { FeedService } from 'src/app/services/feed.service';
 
 @Component({
   selector: 'app-add-feed',
@@ -7,9 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddFeedComponent implements OnInit {
 
-  constructor() { }
+  feedName: string = '';
+  feedDescription: string = '';
+
+  constructor(private feedService: FeedService, private router: Router) { }
 
   ngOnInit(): void {
+
   }
 
+  saveFeed() : void {
+    this.feedService.addFeed(this.feedName).subscribe({
+      next: data => {
+        console.log(data);
+        this.router.navigate(['/feed-management'], { replaceUrl: true });
+      },
+      error: data => console.log(data)
+    });
+  }
 }

@@ -1,1 +1,28 @@
+<mat-form-field class="full-width" [formGroup]="form">
+    <mat-select placeholder="Feed status" formControlName="project" multiple #matSelect>
+
+        <mat-option *ngFor="let feed of sectionWithArticles.feedSubscriptionStatuses" (ngModelChange)='onOptionsSelected($event)' [value]="feed">{{ feed.feed?.feedName }}</mat-option>
+        <hr>
+
+        <div class="row no-gutters pb-1">
+            <div class="col-sm-6 text-right pr-2">
+                <button type="button" class="btn btn-primary" (click)="okClicked()">Ok</button>
+            </div>
+            <div class="col-sm-6 text-right  pr-2">
+                <button type="button" class="btn btn-danger" (click)="cancelClicked()">Cancel</button>
+            </div>
+        </div>
+    </mat-select>
+</mat-form-field>
+
+<!-- <mat-form-field>
+    <mat-select (openedChange)="comboChange($event)" placeholder="Toppings" [formControl]="toppings" multiple>
+        <mat-option *ngFor="let feed of sectionWithArticles.feedSubscriptionStatuses" [ value]="feed">{{feed.feed?.feedName}}</mat-option>
+    </mat-select>
+</mat-form-field> -->
+<!-- 
+<div>
+    value selected is : {{valueSelected}}
+</div> -->
+
 <app-article-list [articleDescriptions]="sectionWithArticles?.articlePreviews"></app-article-list>

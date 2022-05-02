@@ -112,7 +112,8 @@ namespace PerRead.Backend.Repositories
         {
             return _context.Feeds
                 .AsNoTracking()
-                .Where(x => x.Owner == owner);
+                .Where(x => x.Owner == owner)
+                .Include(x => x.SubscribedSections);
         }
 
         public async Task UpdateFeed(Feed feed)

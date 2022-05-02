@@ -22,8 +22,12 @@ export class FeedService {
     return this.httpClient.get<Feed>(`${Constants.BACKENDURL}/feeds/${feedId}`);
   } 
 
-  addAuthorToFeed(feedId: string, authorId: string) : Observable<any> {
-    return this.httpClient.post(`${Constants.BACKENDURL}/feeds/${feedId}/add/${authorId}`, null);
+  addFeed(feedName: string) : Observable<Feed> {
+    return this.httpClient.post<Feed>(`${Constants.BACKENDURL}/feeds/add/${feedName}`, null);
+  }
+
+  addSectionToFeed(feedId: string, sectionId: string) : Observable<any> {
+    return this.httpClient.post(`${Constants.BACKENDURL}/feeds/${feedId}/add/${sectionId}`, null);
   }
 
   getFeedDetails(feedId: string) : Observable<FeedDetails> {
