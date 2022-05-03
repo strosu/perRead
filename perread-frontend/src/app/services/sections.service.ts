@@ -28,4 +28,8 @@ export class SectionsService {
   updateSection(sectionId: string, sectionCommand: SectionCommand) : Observable<Section> {
     return this.httpClient.post<Section>(`${Constants.BACKENDURL}/section/${sectionId}/edit`, sectionCommand);
   }
+
+  addSectionToFeeds(sectionId: string, feedIds: string[]) : Observable<any> {
+    return this.httpClient.post(`${Constants.BACKENDURL}/feeds/addSection/${sectionId}`, feedIds);
+  }
 }

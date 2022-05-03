@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SectionCommand } from 'src/app/models/section/section-command.model';
 import { SectionPreview } from 'src/app/models/section/section-preview.model';
-import { Section } from 'src/app/models/section/section.model';
+import { Section, SectionSubscriptionStatus } from 'src/app/models/section/section.model';
 import { SectionsService } from 'src/app/services/sections.service';
 
 @Component({
@@ -15,7 +16,11 @@ export class SectionArticlesComponent implements OnInit {
   sectionPreview: SectionPreview = <SectionPreview>{};
   sectionWithArticles: Section = <Section>{};
 
-  form: FormGroup = <FormGroup>{};
+  subscribedSections = new FormControl();
+
+  valueSelected: string = '';
+  
+  @ViewChild('sectionsSelect') mySelect: any;
 
   constructor(private sectionsService: SectionsService) {
    }
@@ -27,9 +32,6 @@ export class SectionArticlesComponent implements OnInit {
         next: data => {
           console.log(data);
           this.sectionWithArticles = data;
-          this.form = new FormGroup({
-            project: new FormControl(this.sectionWithArticles.feedSubscriptionStatuses)      
-          });
         },
         error: err => console.log(err)
       }
@@ -37,14 +39,22 @@ export class SectionArticlesComponent implements OnInit {
   }
 
   okClicked() {
-    let current = this.form.controls['project'].value;
-    console.log(current);
-    // this.matSelect.close()
+    this.valueSelected = this.subscribedSections.value && this.subscribedSections.value.toString();
+    console.log(this.valueSelected);
+
+    let selectedSections = <SectionSubscriptionStatus[]>this.subscribedSections.value;
+
+    this.sectionsService.addSectionToFeeds(this.sectionPreview.sectionId, selectedSections.map(x => x.feed.feedId)).subscribe({
+      next: data => {
+        console.log(data);
+        this.mySelect.close()
+      },
+      error : err => console.log(err)
+    });
   }
 
   cancelClicked() {
-    // this.form.controls['project'].setValue(this.last_selection)
-    // this.matSelect.close()
+    this.mySelect.close();
   }
 
   onOptionsSelected($event : any){

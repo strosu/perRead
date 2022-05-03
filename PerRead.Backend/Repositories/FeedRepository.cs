@@ -9,6 +9,8 @@ namespace PerRead.Backend.Repositories
 
         Task AddToFeed(string feedId, Section sectionToAdd);
 
+        Task RemoveFromFeed(string feedId, Section sectionToRemove);
+
         Task<Feed> GetFeedInfo(string feedId);
 
         Task<Feed> GetFeedWithSections(string feedId);
@@ -69,7 +71,7 @@ namespace PerRead.Backend.Repositories
 
         public async Task AddToFeed(string feedId, Section sectionToAdd)
         {
-            var feed = await _context.Feeds.FindAsync(feedId);
+            var feed = await _context.Feeds.Where(x => x.FeedId == feedId).Include(x => x.SubscribedSections).SingleAsync();
 
             if (feed == null)
             {
@@ -125,6 +127,21 @@ namespace PerRead.Backend.Repositories
         public async Task DeleteFeed(Feed feed)
         {
             _context.Feeds.Remove(feed);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveFromFeed(string feedId, Section sectionToRemove)
+        {
+            var feed = await _context.Feeds.Where(x => x.FeedId == feedId)
+                .Include(x => x.SubscribedSections).SingleAsync();
+
+            if (feed == null)
+            {
+                throw new ArgumentException("feed does not exist");
+            }
+
+            feed.SubscribedSections.Remove(sectionToRemove);
 
             await _context.SaveChangesAsync();
         }

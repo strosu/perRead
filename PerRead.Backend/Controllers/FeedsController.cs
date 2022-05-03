@@ -31,6 +31,13 @@ namespace PerRead.Backend.Controllers
             return Ok();
         }
 
+        [HttpPost("/feeds/addSection/{sectionId}")]
+        public async Task<IActionResult> AddSectionToFeeds(string sectionId, [FromBody]IEnumerable<string> subscribedFeedIds)
+        {
+            await _feedsService.AddSectionToFeeds(sectionId, subscribedFeedIds);
+            return Ok();
+        }
+
         [HttpGet("/feeds")]
         public async Task<IEnumerable<FEFeedPreview>> GetFeeds()
         {

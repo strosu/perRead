@@ -30,6 +30,19 @@ namespace PerRead.Backend.Services
                 return Author.NonLoggedInAuthor;
             }
 
+            // TODO - should not get the articles read except in a few cases
+            return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
+        }
+
+        public async Task<Author> GetRequesterWithArticles()
+        {
+            var userId = _accessor.GetUserId();
+
+            if (userId == null)
+            {
+                return Author.NonLoggedInAuthor;
+            }
+
             return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
         }
     }

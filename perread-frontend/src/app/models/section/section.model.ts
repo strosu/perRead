@@ -10,6 +10,6 @@ export class Section {
 }
 
 export class SectionSubscriptionStatus {
-    feed?: FeedPreview;
+    feed: FeedPreview = <FeedPreview>{};
     isSubscribedToSection: boolean = false;
 }

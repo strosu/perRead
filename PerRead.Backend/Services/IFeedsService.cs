@@ -22,6 +22,8 @@ namespace PerRead.Backend.Services
         Task UpdateFeedInfo(string feedId, FEFeedDetails feedDetails);
 
         Task DeleteFeed(string feedId);
+
+        Task AddSectionToFeeds(string sectionId, IEnumerable<string> subscribedFeedIds);
     }
 
     public class FeedsService : IFeedsService
@@ -187,6 +189,62 @@ namespace PerRead.Backend.Services
             feed.ShowUnaffordableArticles = feedDetails.ShowUnaffordableArticles;
         }
 
+        public async Task AddSectionToFeeds(string sectionId, IEnumerable<string> subscribedFeedIds)
+        {
+            var requester = await _requesterGetter.GetRequester();
 
+            var userFeeds = await _feedsRepository.GetUserFeeds(requester).ToListAsync();
+
+            if (subscribedFeedIds.Any(x => !userFeeds.Any(feed => feed.FeedId == x))) 
+            {
+                throw new ArgumentException("one or more feed don't belong to the current user");
+            }
+
+            var section = await _sectionRepository.GetSection(sectionId);
+
+            if (section == null)
+            {
+                throw new ArgumentException("could not find the section to subscribe to");
+            }
+
+            (var toSubscribe, var toUnsub) = GetList(userFeeds, subscribedFeedIds, section);
+
+            var addSectionTasks = toSubscribe.Select(x => _feedsRepository.AddToFeed(x, section));
+            var removeSectionTasks = toUnsub.Select(x => _feedsRepository.RemoveFromFeed(x, section));
+
+            var sectionTasks = addSectionTasks.Concat(addSectionTasks);
+
+            await Task.WhenAll(sectionTasks);
+        }
+
+        private (IEnumerable<string> toSubscribeTo, IEnumerable<string> toUnsubscribeFrom) GetList(IEnumerable<Feed> allFeeds, IEnumerable<string> targetFeedIds, Section section)
+        {
+            var toSubscribeTo = new List<string>();
+            var toUnsubscribeFrom = new List<string>();
+
+            foreach (var feed in allFeeds)
+            {
+                if (feed.SubscribedSections.Any(x => x.SectionId == section.SectionId))
+                {
+                    if (targetFeedIds.Contains(feed.FeedId))
+                    {
+                        // Feed should contain the subscription, and it does
+                        continue;
+                    }
+
+                    toUnsubscribeFrom.Add(feed.FeedId);
+                }
+
+                if (!targetFeedIds.Contains(feed.FeedId))
+                {
+                    // Feed should not contain it, and it doesn't
+                    continue;
+                }
+
+                toSubscribeTo.Add(feed.FeedId);
+            }
+
+            return (toSubscribeTo, toUnsubscribeFrom);
+        }
     }
 }
