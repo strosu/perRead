@@ -12,12 +12,12 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddSectionComponent } from './components/sections/add-section/add-section.component';
 import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
+import { SectionPageComponent } from './components/sections/section-page/section-page.component';
 import { TagDetailsComponent } from './components/tags/tag-details/tag-details.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
 
 const routes: Routes = [
-  // { path: '', redirectTo: 'articles', pathMatch: 'full' },
   { path: '', component: HomeComponent},
   { path: 'articles', component: AllArticlesComponent },
   { path: 'article/:id', component: ArticleDetailsComponent},
@@ -25,8 +25,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'authors/:id', component: AuthorDetailsComponent},
-  // { path: 'authors/all', component: AuthorDetailsComponent},
-  // { path: 'authors/', component: AuthorDetailsComponent},
   { path: 'tags/:id', component: TagDetailsComponent },
   { path: 'tags/popular', component: TagDetailsComponent },
   { path: 'preferences', component: UserPreferencesComponent },
@@ -35,7 +33,8 @@ const routes: Routes = [
   { path: 'feed/new', component: AddFeedComponent },
   { path: 'feed/:id/edit', component: FeedDetailsComponent },
   { path: 'section-management', component: SectionManagementComponent },
-  { path: 'sections/new', component: AddSectionComponent }
+  { path: 'sections/new', component: AddSectionComponent },
+  { path: 'sections/:id', component: SectionPageComponent}
 ];
 
 @NgModule({

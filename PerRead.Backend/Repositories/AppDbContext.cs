@@ -37,6 +37,9 @@ namespace PerRead.Backend.Repositories
             modelBuilder.Entity<SectionArticle>()
                 .HasKey(x => new { x.ArticleId, x.SectionId });
 
+            modelBuilder.Entity<SectionFeedMapping>()
+                .HasKey(x => new { x.SectionId, x.FeedId });
+
             //modelBuilder.Entity<Author>()
             //    .HasMany(p => p.UnlockedArticles)
             //    .WithMany(p => p.Unlocked)

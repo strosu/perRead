@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
 
 namespace PerRead.Backend.Repositories
@@ -80,10 +81,14 @@ namespace PerRead.Backend.Repositories
 
             if (feed.SubscribedSections == null)
             {
-                feed.SubscribedSections = new List<Section>();
+                feed.SubscribedSections = new List<SectionFeedMapping>();
             }
 
-            feed.SubscribedSections.Add(sectionToAdd);
+            feed.SubscribedSections.Add(new SectionFeedMapping
+            {
+                Feed = feed,
+                Section = sectionToAdd
+            });
 
             await _context.SaveChangesAsync();
         }
@@ -93,7 +98,9 @@ namespace PerRead.Backend.Repositories
             return _context.Feeds
                 .AsNoTracking().Where(x => x.FeedId == feedId)
                 .Include(x => x.SubscribedSections)
-                .SelectMany(x => x.SubscribedSections);
+                .ThenInclude(x => x.Section)
+                .SelectMany(x => x.SubscribedSections)
+                .Select(x => x.Section);
         }
 
 
@@ -141,7 +148,9 @@ namespace PerRead.Backend.Repositories
                 throw new ArgumentException("feed does not exist");
             }
 
-            feed.SubscribedSections.Remove(sectionToRemove);
+            var sectionFeedMap = feed.SubscribedSections.FirstOrDefault(x => x.SectionId == sectionToRemove.SectionId);
+
+            feed.SubscribedSections.Remove(sectionFeedMap);
 
             await _context.SaveChangesAsync();
         }

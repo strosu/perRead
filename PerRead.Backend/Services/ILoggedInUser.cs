@@ -23,15 +23,17 @@ namespace PerRead.Backend.Services
 
         public async Task<Author> GetRequester()
         {
-            var userId = _accessor.GetUserId();
+            try
+            {
+                var userId = _accessor.GetUserId();
 
-            if (userId == null)
+                // TODO - should not get the articles read except in a few cases
+                return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
+            }
+            catch
             {
                 return Author.NonLoggedInAuthor;
             }
-
-            // TODO - should not get the articles read except in a few cases
-            return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
         }
 
         public async Task<Author> GetRequesterWithArticles()

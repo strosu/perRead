@@ -1,7 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { SectionCommand } from 'src/app/models/section/section-command.model';
-import { SectionPreview } from 'src/app/models/section/section-preview.model';
+import { FormControl } from '@angular/forms';
 import { Section, SectionSubscriptionStatus } from 'src/app/models/section/section.model';
 import { SectionsService } from 'src/app/services/sections.service';
 
@@ -13,25 +11,25 @@ import { SectionsService } from 'src/app/services/sections.service';
 export class SectionArticlesComponent implements OnInit {
 
   @Input()
-  sectionPreview: SectionPreview = <SectionPreview>{};
+  sectionId: string = '';
   sectionWithArticles: Section = <Section>{};
-
   subscribedSections = new FormControl();
-
-  valueSelected: string = '';
   
+  showFeeds: boolean = false;
+
   @ViewChild('sectionsSelect') mySelect: any;
 
   constructor(private sectionsService: SectionsService) {
    }
 
   ngOnInit(): void {
-
-    this.sectionsService.getSection(this.sectionPreview.sectionId).subscribe(
+    this.sectionsService.getSection(this.sectionId).subscribe(
       {
         next: data => {
           console.log(data);
           this.sectionWithArticles = data;
+          this.subscribedSections.setValue(this.sectionWithArticles.feedSubscriptionStatuses.filter(x => x.isSubscribedToSection));
+          this.showFeeds = this.sectionWithArticles.feedSubscriptionStatuses.length > 0;
         },
         error: err => console.log(err)
       }
@@ -39,12 +37,12 @@ export class SectionArticlesComponent implements OnInit {
   }
 
   okClicked() {
-    this.valueSelected = this.subscribedSections.value && this.subscribedSections.value.toString();
-    console.log(this.valueSelected);
+    // this.valueSelected = this.subscribedSections.value && this.subscribedSections.value.toString();
+    // console.log(this.valueSelected);
 
     let selectedSections = <SectionSubscriptionStatus[]>this.subscribedSections.value;
 
-    this.sectionsService.addSectionToFeeds(this.sectionPreview.sectionId, selectedSections.map(x => x.feed.feedId)).subscribe({
+    this.sectionsService.addSectionToFeeds(this.sectionId, selectedSections.map(x => x.feed.feedId)).subscribe({
       next: data => {
         console.log(data);
         this.mySelect.close()

@@ -195,7 +195,7 @@ namespace PerRead.Backend.Services
 
             var userFeeds = await _feedsRepository.GetUserFeeds(requester).ToListAsync();
 
-            if (subscribedFeedIds.Any(x => !userFeeds.Any(feed => feed.FeedId == x))) 
+            if (subscribedFeedIds.Any(x => !userFeeds.Any(feed => feed.FeedId == x)))
             {
                 throw new ArgumentException("one or more feed don't belong to the current user");
             }
@@ -212,7 +212,7 @@ namespace PerRead.Backend.Services
             var addSectionTasks = toSubscribe.Select(x => _feedsRepository.AddToFeed(x, section));
             var removeSectionTasks = toUnsub.Select(x => _feedsRepository.RemoveFromFeed(x, section));
 
-            var sectionTasks = addSectionTasks.Concat(addSectionTasks);
+            var sectionTasks = addSectionTasks.Concat(removeSectionTasks);
 
             await Task.WhenAll(sectionTasks);
         }

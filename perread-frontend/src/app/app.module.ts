@@ -46,7 +46,8 @@ import { SectionManagementComponent } from './components/sections/section-manage
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 import { SectionListComponent } from './components/sections/section-list/section-list.component';
-import {MatSelectModule} from '@angular/material/select'; 
+import {MatSelectModule} from '@angular/material/select';
+import { SectionPageComponent } from './components/sections/section-page/section-page.component'; 
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import {MatSelectModule} from '@angular/material/select';
     SectionManagementComponent,
     SectionDetailsComponent,
     SectionArticlesComponent,
-    SectionListComponent
+    SectionListComponent,
+    SectionPageComponent
   ],
   imports: [
     BrowserModule,

@@ -18,7 +18,7 @@
         /// DO NOT USE THIS. Here just for EF convenience
         /// TODO - configure it differently to get rid of this
         /// </summary>
-        //public IEnumerable<Feed> SubscribedFeeds { get; set; }
+        public IEnumerable<SectionFeedMapping> SubscribedFeeds { get; set; }
     }
 
     public class SectionArticle
