@@ -93,12 +93,25 @@ namespace PerRead.Backend.Services
 
         public async Task<FEFeedWithArticles> GetFeedArticles(string feedId)
         {
-            return new FEFeedWithArticles { };
+            var feed = await _feedsRepository.GetFeedInfo(feedId);
 
+            var requester = await _requesterGetter.GetRequester();
 
-            //var feed = await _feedsRepository.GetFeedInfo(feedId);
-            //var feedSections = await _feedsRepository.GetFeedWithSections(feedId);
+            var articleQuery = _feedsRepository.GetFeedQuery(feedId)
+                .Select(x => x.SubscribedSections).SelectMany(x => x)
+                .SelectMany(x => x.Section.Articles)
+                .Include(x => x.Article.Tags)
+                .Include(x => x.Article.ArticleAuthors)
+                .ThenInclude(x => x.Author)
+                .Select(x => x.Article);
 
+            var filteredQuery = ApplyFeedFilters(articleQuery, feed, requester)
+                .OrderByDescending(x => x.CreatedAt).Take(20)
+                .Select(x => x.ToFEArticlePreview(requester));
+
+            var articles = await filteredQuery.ToListAsync();
+
+            return feed.ToFEFeed(articles);
 
             //var articleAuthors = feedSections.SubscribedSections.Select(x => x.Articles).SelectMany(x => x);
 
@@ -106,7 +119,7 @@ namespace PerRead.Backend.Services
             //    articleAuthors.Include(x => x.Article.Tags)
             //    .Select(x => x.Article);
 
-            //var requester = await _requesterGetter.GetRequester();
+
 
             //var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
             //    .OrderByDescending(x => x.CreatedAt).Take(20)

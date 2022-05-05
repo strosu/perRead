@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
 
 namespace PerRead.Backend.Repositories
@@ -15,6 +14,8 @@ namespace PerRead.Backend.Repositories
         Task<Feed> GetFeedInfo(string feedId);
 
         Task<Feed> GetFeedWithSections(string feedId);
+
+        IQueryable<Feed> GetFeedQuery(string feedId);
 
         IQueryable<Feed> GetUserFeeds(Author owner);
 
@@ -67,7 +68,13 @@ namespace PerRead.Backend.Repositories
         {
             return await _context.Feeds
                 .Where(x => x.FeedId == feedId)
-                .Include(x => x.SubscribedSections).FirstOrDefaultAsync();
+                .Include(x => x.SubscribedSections)
+                .ThenInclude(x => x.Section).FirstOrDefaultAsync();
+        }
+
+        public IQueryable<Feed> GetFeedQuery(string feedId)
+        {
+            return _context.Feeds.Where(x => x.FeedId == feedId);
         }
 
         public async Task AddToFeed(string feedId, Section sectionToAdd)
