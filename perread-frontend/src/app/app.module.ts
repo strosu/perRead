@@ -47,7 +47,11 @@ import { SectionDetailsComponent } from './components/sections/section-details/s
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 import { SectionListComponent } from './components/sections/section-list/section-list.component';
 import {MatSelectModule} from '@angular/material/select';
-import { SectionPageComponent } from './components/sections/section-page/section-page.component'; 
+import { SectionPageComponent } from './components/sections/section-page/section-page.component';
+import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component'; 
+import {MatGridListModule} from '@angular/material/grid-list';
+import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
+import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component'; 
 
 @NgModule({
   declarations: [
@@ -82,7 +86,10 @@ import { SectionPageComponent } from './components/sections/section-page/section
     SectionDetailsComponent,
     SectionArticlesComponent,
     SectionListComponent,
-    SectionPageComponent
+    SectionPageComponent,
+    TokensPageComponent,
+    AddTokensComponent,
+    WithdrawTokensComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +104,8 @@ import { SectionPageComponent } from './components/sections/section-page/section
     MatSlideToggleModule,
     MatCardModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

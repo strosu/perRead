@@ -1,0 +1,36 @@
+<mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <mat-card (click)="addToCart(500, 5)">
+            Add 500 tokens - 5$
+        </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <mat-card (click)="addToCart(1000, 10)">
+            Add 1000 tokens - 10$
+        </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <mat-card (click)="addToCart(10000, 100)">
+            Add 10000 tokens - 100$
+        </mat-card>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+<div class="center">
+    Curent tokens: {{currentTokens}}
+</div>
+
+<div class="center">
+    Tokens to purchase: {{tokensToBuy}}
+</div>
+
+<div class="center">
+    Amount to pay: {{ammountToPay}}$
+</div>
+
+<div flex>
+    <button class="buttons-class" mat-raised-button color="primary" (click)="buy()" [disabled]="this.tokensToBuy == 0">Submit</button>
+</div>

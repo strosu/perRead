@@ -1,0 +1,21 @@
+<div class="center">
+    <h1>
+        Current tokens: {{tokenAmount}}
+    </h1>
+</div>
+
+<mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <mat-card routerLink="/tokens/add">
+            <!-- <mat-card-title>Add tokens</mat-card-title> -->
+            Add tokens
+        </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <mat-card routerLink="/tokens/withdraw">
+            Withdraw tokens
+        </mat-card>
+    </mat-grid-tile>
+
+</mat-grid-list>

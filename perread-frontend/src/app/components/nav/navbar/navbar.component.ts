@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
     this.tokenService.onLogin.subscribe(_ => this.onLogIn()); // set it manually, don't wait for the token to be set, as this will happen afterwards
     this.tokenService.onLogout.subscribe(_ => this.isLoggedIn = false);
     this.articleService.onArticleServed.subscribe(_ => this.getUserPreview());
+    this.usersService.onUpdatedUserInformation.subscribe(_ => this.getUserPreview());
 
     if (this.isLoggedIn) {
       this.getUserPreview();

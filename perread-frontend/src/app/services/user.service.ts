@@ -11,7 +11,7 @@ import { UserSettings } from '../models/user/user-settings.model';
 })
 export class UserService {
 
-  // @Output() onUpdatedUserInformation: EventEmitter<UserPreview> = new EventEmitter();
+  @Output() onUpdatedUserInformation: EventEmitter<any> = new EventEmitter();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,8 +19,8 @@ export class UserService {
     return this.httpClient.get<UserPreview>(`${Constants.BACKENDURL}/user/preview`);
   }
 
-  addMoreTokens(): Observable<number> {
-    return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/addtokens`, null);
+  addMoreTokens(amount: number): Observable<number> {
+    return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/addtokens/${amount}`, null);
   }
 
   getCurrentUserSettings(): Observable<UserSettings> {

@@ -9,6 +9,9 @@ import { FeedDetailsComponent } from './components/feed/feed-details/feed-detail
 import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
+import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component';
+import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddSectionComponent } from './components/sections/add-section/add-section.component';
 import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
@@ -34,7 +37,10 @@ const routes: Routes = [
   { path: 'feed/:id/edit', component: FeedDetailsComponent },
   { path: 'section-management', component: SectionManagementComponent },
   { path: 'sections/new', component: AddSectionComponent },
-  { path: 'sections/:id', component: SectionPageComponent}
+  { path: 'sections/:id', component: SectionPageComponent},
+  { path: 'tokens', component: TokensPageComponent},
+  { path: 'tokens/add', component: AddTokensComponent},
+  { path: 'tokens/withdraw', component: WithdrawTokensComponent}
 ];
 
 @NgModule({
