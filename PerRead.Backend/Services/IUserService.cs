@@ -9,7 +9,7 @@ namespace PerRead.Backend.Services
     public interface IUserService
     {
         Task<FEUserPreview?> GetCurrentUserPreview();
-        Task<long> AddMoreTokens();
+        Task<long> AddMoreTokens(int amount);
 
         Task<FEUserSettings?> GetCurrentUserSettings();
 
@@ -33,10 +33,10 @@ namespace PerRead.Backend.Services
             _accessor = accessor;
         }
 
-        public async Task<long> AddMoreTokens()
+        public async Task<long> AddMoreTokens(int amount)
         {
             var userId = _accessor.GetUserId();
-            return await _authorRepository.AddMoreTokensAsync(userId);
+            return await _authorRepository.AddMoreTokensAsync(userId, amount);
         }
 
         public async Task<FEUserPreview?> GetCurrentUserPreview()

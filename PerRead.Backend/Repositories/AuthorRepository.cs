@@ -58,7 +58,9 @@ namespace PerRead.Backend.Repositories
         {
             return GetAuthor(id)
                 .Include(author => author.UnlockedArticles)
-                .ThenInclude(articleUnlock => articleUnlock.Article);
+                .ThenInclude(articleUnlock => articleUnlock.Article)
+                .ThenInclude(article => article.ArticleAuthors)
+                .ThenInclude(aa => aa.Author);
         }
 
         public IQueryable<Author> GetAuthorByName(string name)
@@ -81,7 +83,7 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(ar => ar.Tags);
         }
 
-        public async Task<long> AddMoreTokensAsync(string userId)
+        public async Task<long> AddMoreTokensAsync(string userId, int amount)
         {
             var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == userId);
 
@@ -90,7 +92,7 @@ namespace PerRead.Backend.Repositories
                 throw new ArgumentException(nameof(userId));
             }
 
-            author.ReadingTokens += 10;
+            author.ReadingTokens += amount;
 
             await _context.SaveChangesAsync();
 
@@ -173,7 +175,7 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Section> GetAuthorSections(string authorId);
 
-        Task<long> AddMoreTokensAsync(string usedId);
+        Task<long> AddMoreTokensAsync(string usedId, int amount);
 
         Task AddTokens(string authorId, long amount);
 

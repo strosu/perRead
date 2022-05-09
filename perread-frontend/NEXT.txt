@@ -22,17 +22,22 @@ P1 scenarios:
 
 TODO NEXT:
 - component for presenting an article in the list of read articles
+    - for read articles, show something clickable. Display more information, e.g. acquire date
 - component for editing a feed's properties, authors etc
     - component for presenting an author in the list of authors included in a feed
 - component for "buying" tokens
 - component for adding an author to one of multiple feeds
+- show all authors
+- show subscribed authors (authors for which at least one section is subscribed). Do we need a section preview? Might look better as cards vs tabs
+- user/author preferences:
+    - allow uploading an profile image
+    - use initials or similar in case no picture provided
+    - display image, description etc in author page
+- on empty feed, add button to redirect to browse all authors
 
 TODO Sections:
 - add list of sections when creating an article, require at least one
-- UI for editing sections: adding more, editing existing
 - UI for editing an article, associating it with a section
-- UI for subscribing to a section from a feed
-
 
 
 BACKEND:
@@ -122,4 +127,5 @@ DONE:
 - sign up - needs redirecting to login page - DONE (redirects to main page, might as well login the user if they gave us the credentials. Nicer UX since they don't need to confirm anything)
 - sign in - needs redirecting to last visited page - DONE
 - make intercepter look at 401s all the time and redirect to login with current page as an argument - DONE
-
+- UI for subscribing to a section from a feed - DONE
+- UI for editing sections: adding more, editing existing - DONE
