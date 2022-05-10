@@ -20,7 +20,11 @@ export class UserService {
   }
 
   addMoreTokens(amount: number): Observable<number> {
-    return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/addtokens/${amount}`, null);
+    return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/tokens/add/${amount}`, null);
+  }
+
+  withdrawTokens(amount: number) : Observable<number> {
+    return this.httpClient.post<number>(`${Constants.BACKENDURL}/user/tokens/withdraw/${amount}`, null);
   }
 
   getCurrentUserSettings(): Observable<UserSettings> {

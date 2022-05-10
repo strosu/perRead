@@ -1,1 +1,17 @@
-<p>withdraw-tokens works!</p>
+<div class="center">
+    Curent tokens: {{tokensInAccount}}
+</div>
+
+Amount to withdraw:
+<input type="number" class="form-control" required [(ngModel)]="this.tokensToWithdraw" (change)="computeAmount()" />
+
+<div>
+    Money to receive:
+    <div>
+        {{moneyToReceive}} $
+    </div>
+</div>
+
+<div flex>
+    <button class="buttons-class" mat-raised-button color="primary" (click)="withdraw()" [disabled]="(this.tokensInAccount < this.tokensToWithdraw) || (this.tokensToWithdraw < 100)">Submit</button>
+</div>

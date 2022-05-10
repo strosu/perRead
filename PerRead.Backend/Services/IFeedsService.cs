@@ -106,6 +106,7 @@ namespace PerRead.Backend.Services
                 .Select(x => x.Article);
 
             var filteredQuery = ApplyFeedFilters(articleQuery, feed, requester)
+                .Distinct()
                 .OrderByDescending(x => x.CreatedAt).Take(20)
                 .Select(x => x.ToFEArticlePreview(requester));
 

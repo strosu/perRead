@@ -29,7 +29,7 @@ namespace PerRead.Backend.Controllers
             return Ok(result);
         }
 
-        [HttpPost("/user/addTokens/{amount}")]
+        [HttpPost("/user/tokens/add/{amount}")]
         // TODO - rename this
         // TODO - need an actual implementation later
         public async Task<IActionResult> AddMoreTokens(int amount)
@@ -38,6 +38,21 @@ namespace PerRead.Backend.Controllers
             {
                 var currentTokenCount = await _userService.AddMoreTokens(amount);
                 return Ok(currentTokenCount);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("user/tokens/withdraw/{amount}")]
+        public async Task<IActionResult> WithdrawTokens(int amount)
+        {
+            try
+            {
+                var currentTokenCount = await _userService.WithdrawTokens(amount);
+                return Ok(currentTokenCount);
+
             }
             catch
             {

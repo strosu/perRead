@@ -99,6 +99,28 @@ namespace PerRead.Backend.Repositories
             return author.ReadingTokens;
         }
 
+        public async Task<long> WithdrawTokens(string authorId, int amount)
+        {
+            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
+
+            if (author == null)
+            {
+                throw new ArgumentException(nameof(authorId));
+            }
+
+            if (author.ReadingTokens < amount)
+            {
+                throw new ArgumentException("Insufficient tokens");
+            }
+
+            author.ReadingTokens -= amount;
+
+            await _context.SaveChangesAsync();
+
+            return author.ReadingTokens;
+        }
+
+
         public async Task AddTokens(string authorId, long amount)
         {
             var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
@@ -110,7 +132,7 @@ namespace PerRead.Backend.Repositories
 
         public async Task MarkAsRead(string authorId, Article article)
         {
-            var author = await  (_context.Authors.Where(x => x.AuthorId == authorId)
+            var author = await (_context.Authors.Where(x => x.AuthorId == authorId)
                 .Include(x => x.UnlockedArticles)).FirstOrDefaultAsync();
 
             //var author = await GetAuthorWithReadArticles(authorId).FirstOrDefaultAsync();
@@ -140,7 +162,7 @@ namespace PerRead.Backend.Repositories
         {
             var author = await _context.Authors
                 .Include(x => x.UnlockedArticles).FirstOrDefaultAsync(x => x.AuthorId == authorId);
-            
+
             var toRemoveList = author.UnlockedArticles.Where(x => !unlockedIds.Contains(x.Id)).ToList();
 
             foreach (var toRemove in toRemoveList)
@@ -176,6 +198,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<Section> GetAuthorSections(string authorId);
 
         Task<long> AddMoreTokensAsync(string usedId, int amount);
+
+        Task<long> WithdrawTokens(string authorId, int amount);
 
         Task AddTokens(string authorId, long amount);
 

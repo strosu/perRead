@@ -18,17 +18,16 @@ namespace PerRead.Backend.Services
         Task<IEnumerable<FEArticleUnlockInfo>> GetUnlockedArticles();
 
         Task UpdateUnlockedArticles(IEnumerable<long> articleInfos);
+        Task<long> WithdrawTokens(int amount);
     }
 
     public class UserService : IUserService
     {
-        private readonly IUserPreferenceRepository _userPreferenceRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IHttpContextAccessor _accessor;
 
         public UserService(IUserPreferenceRepository userPreferenceRepository, IAuthorRepository authorRepository, IHttpContextAccessor accessor)
         {
-            _userPreferenceRepository = userPreferenceRepository;
             _authorRepository = authorRepository;
             _accessor = accessor;
         }
@@ -69,6 +68,12 @@ namespace PerRead.Backend.Services
         {
             var authorId = _accessor.GetUserId();
             await _authorRepository.UpdateSettings(authorId, userSettings);
+        }
+
+        public async Task<long> WithdrawTokens(int amount)
+        {
+            var authorid = _accessor.GetUserId();
+            return await _authorRepository.WithdrawTokens(authorid, amount);
         }
     }
 }
