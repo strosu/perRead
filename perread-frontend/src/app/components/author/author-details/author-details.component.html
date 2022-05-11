@@ -1,5 +1,15 @@
 <h1>{{author?.name}}</h1>
 
-Available sections:
-<app-section-list [sectionPreviews]="author?.sectionPreviews"></app-section-list>
+<mat-tab-group dynamicHeight animationDuration="0ms">
+    <mat-tab label="Bio">
+        Some random stuff about the author, to be returned from the backend.
+        <br> Should be user configurable, obviously
+    </mat-tab>
+    <mat-tab label="Sections">
+        <app-section-list [sectionPreviews]="author?.sectionPreviews"></app-section-list>
+    </mat-tab>
+</mat-tab-group>
+
+<!-- Available sections:
+<app-section-list [sectionPreviews]="author?.sectionPreviews"></app-section-list> -->
 <!-- <app-article-list [articleDescriptions]="author?.articlePreviews"></app-article-list> -->
