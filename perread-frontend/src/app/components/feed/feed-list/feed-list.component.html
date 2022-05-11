@@ -1,12 +1,12 @@
-<mat-tab-group dynamicHeight>
+<mat-tab-group dynamicHeight animationDuration="0ms">
     <mat-tab *ngFor="let feed of feeds">
-      <ng-template mat-tab-label>
-        {{feed.feedName}}
-      </ng-template>
+        <ng-template mat-tab-label>
+            {{feed.feedName}}
+        </ng-template>
 
-      <ng-template matTabContent>
-          <app-feed-articles [feedPreview]=feed></app-feed-articles>
-      </ng-template>
+        <ng-template matTabContent>
+            <app-feed-articles [feedPreview]=feed></app-feed-articles>
+        </ng-template>
 
     </mat-tab>
-  </mat-tab-group>
+</mat-tab-group>

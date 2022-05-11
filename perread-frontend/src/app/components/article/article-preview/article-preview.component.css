@@ -1,54 +1,58 @@
 .with-gray-background {
     background-color: #dbede4;
 }
-/* 
-.purchased {
-    background-color: #dbede4;
+
+.image {
+    height: 160px;
+    /* adjust as needed */
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.overlap {
+    top: -180px;
+    position: relative;
+    left: 10px;
+}
+
+.read {
+    width: 50px;
+    height: 30px;
+    background: #2c3891da;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: white;
 }
 
 .within-buying-limit {
-    background-color: #11c20266;
+    width: 50px;
+    height: 30px;
+    background: #00ff3480;
+    pointer-events: none;
 }
 
 .outside-of-limit-but-afforrdable {
-    background-color: #c2bf0266;
+    width: 50px;
+    height: 30px;
+    background: #fffb0080;
+    pointer-events: none;
 }
 
 .unaffordable {
-    background-color: #c2020269;
-} */
-
-.overlap{
-    top: -180px;
-position: relative;
-left: 10px;
+    width: 50px;
+    height: 30px;
+    background: #ff000080;
+    pointer-events: none;
 }
 
-.read{
-    width:50px;
-    height:30px;
-    background:#2c3891da;
-    pointer-events: none; 
-}
-
-.within-buying-limit{
-    width:50px;
-    height:30px;
-    background:#00ff3480;
-    pointer-events: none; 
-}
-
-.outside-of-limit-but-afforrdable{
-    width:50px;
-    height:30px;
-    background:#fffb0080;
-    pointer-events: none; 
-}
-
-
-.unaffordable{
-    width:50px;
-    height:30px;
-    background:#ff000080;
-    pointer-events: none; 
+.example-card {
+    max-width: 400px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    background-color: #dbede4;
+    padding: 8px;
+    height: 360px;
 }
