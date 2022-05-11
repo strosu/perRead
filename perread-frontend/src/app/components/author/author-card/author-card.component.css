@@ -1,0 +1,26 @@
+.example-card {
+    max-width: 400px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    background-color: #dbede4;
+    padding-top: 48px;
+    height: 120px;
+    font-size: medium;
+    /* justify-content: center;
+    display: flex; */
+}
+
+.area {
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+
+.bubble {
+    position: absolute;
+    left: 93px;
+    top: 21px;
+    width: 135px;
+    height: 84px;
+    display: table;
+}

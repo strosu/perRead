@@ -1,4 +1,4 @@
-import { AuthorPreview } from "../author-preview.model";
+import { AuthorPreview } from "../author/author-preview.model";
 
 export class FeedDetails {
     feedId : string = '';

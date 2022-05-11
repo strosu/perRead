@@ -28,7 +28,8 @@ namespace PerRead.Backend.Models.Extensions
             {
                 AuthorId = authorModel.AuthorId,
                 AuthorName = authorModel.Name,
-                AuthorImageUri = string.IsNullOrEmpty(authorModel?.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri
+                AuthorImageUri = string.IsNullOrEmpty(authorModel?.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
+                ArticleCount = authorModel.PublishedArticles
             };
         }
 

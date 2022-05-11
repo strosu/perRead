@@ -61,12 +61,16 @@ namespace PerRead.Backend.Services
             await Task.WhenAll(tagTasks);
 
             // Save the image somewhere usefull and get its path
-            var path = await _imageService.Save(author.AuthorId, article.ArticleImage);
+            //var path = await _imageService.Save(author.AuthorId, article.ArticleImage);
+            var path = "";
 
             var sections = await _sectionRepository.GetAllSections().Where(x => article.SectionIds.Contains(x.SectionId)).ToListAsync();
 
             // Create the article itself
             var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), sections, path, article);
+
+            await _authorRepository.IncrementPublishedArticleCount(authorId);
+
             return articleModel.ToFEArticle();
         }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Tag } from 'src/app/models/tag.model';
+import { Tag } from 'src/app/models/tag/tag.model';
 import { TagService } from 'src/app/services/tag.service';
 
 @Component({

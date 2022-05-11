@@ -40,5 +40,7 @@
         /// The price under which articles do not require confirmation
         /// </summary>
         public uint RequireConfirmationAbove { get; set; } = 10;
+
+        public int PublishedArticles { get; set; }
     }
 }

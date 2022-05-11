@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TagPreview } from 'src/app/models/tag-preview.model';
+import { TagPreview } from 'src/app/models/tag/tag-preview.model';
 
 @Component({
   selector: 'app-tag-list',

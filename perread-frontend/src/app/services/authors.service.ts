@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
-import { AuthorPreview } from '../models/author-preview.model';
-import { Author } from '../models/author.model';
+import { AuthorPreview } from '../models/author/author-preview.model';
+import { Author } from '../models/author/author.model';
 
 @Injectable({
   providedIn: 'root'

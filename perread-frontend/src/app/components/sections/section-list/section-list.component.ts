@@ -10,7 +10,7 @@ import { SectionPreview } from 'src/app/models/section/section-preview.model';
 export class SectionListComponent implements OnInit {
 
   @Input()
-  sectionPreviews?: SectionPreview[];
+  sectionPreviews: SectionPreview[] = [];
   
   projects:Project[] = [];
   form: FormGroup = <FormGroup>{};

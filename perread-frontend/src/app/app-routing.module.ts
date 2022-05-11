@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddArticleComponent } from './components/article/add-article/add-article.component';
 import { AllArticlesComponent } from './components/article/all-articles/all-articles.component';
 import { ArticleDetailsComponent } from './components/article/article-details/article-details.component';
+import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component';
 import { AuthorDetailsComponent } from './components/author/author-details/author-details.component';
 import { AddFeedComponent } from './components/feed/add-feed/add-feed.component';
 import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'authors/:id', component: AuthorDetailsComponent},
+  { path: 'authors', component: AllAuthorsComponentComponent},
   { path: 'tags/:id', component: TagDetailsComponent },
   { path: 'tags/popular', component: TagDetailsComponent },
   { path: 'preferences', component: UserPreferencesComponent },

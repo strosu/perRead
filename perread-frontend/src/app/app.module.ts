@@ -52,7 +52,10 @@ import { TokensPageComponent } from './components/payment/tokens-page/tokens-pag
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
-import { SectionPreviewComponent } from './components/sections/section-preview/section-preview.component'; 
+import { SectionPreviewComponent } from './components/sections/section-preview/section-preview.component';
+import { AuthorCardComponent } from './components/author/author-card/author-card.component';
+import { AuthorListComponent } from './components/author/author-list/author-list.component';
+import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component'; 
 
 @NgModule({
   declarations: [
@@ -91,7 +94,10 @@ import { SectionPreviewComponent } from './components/sections/section-preview/s
     TokensPageComponent,
     AddTokensComponent,
     WithdrawTokensComponent,
-    SectionPreviewComponent
+    SectionPreviewComponent,
+    AuthorCardComponent,
+    AuthorListComponent,
+    AllAuthorsComponentComponent
   ],
   imports: [
     BrowserModule,

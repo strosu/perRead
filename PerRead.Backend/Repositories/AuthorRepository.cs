@@ -120,6 +120,13 @@ namespace PerRead.Backend.Repositories
             return author.ReadingTokens;
         }
 
+        public async Task IncrementPublishedArticleCount(string authorId)
+        {
+            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
+            author.PublishedArticles++;
+
+            await _context.SaveChangesAsync();
+        }
 
         public async Task AddTokens(string authorId, long amount)
         {
@@ -210,6 +217,8 @@ namespace PerRead.Backend.Repositories
         Task UpdateSettings(string authorId, FEUserSettings userSettings);
 
         Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds);
+
+        Task IncrementPublishedArticleCount(string authorId);
     }
 
     public class AuthorCommand

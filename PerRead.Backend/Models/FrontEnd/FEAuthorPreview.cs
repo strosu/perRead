@@ -7,5 +7,7 @@
         public string AuthorName { get; set; }
 
         public string AuthorImageUri { get; set; }
+
+        public int ArticleCount { get; set; }
     }
 }
