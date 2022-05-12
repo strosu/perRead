@@ -5,20 +5,21 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class AuthorExtensions
     {
-        public static FEAuthor ToFEAuthor(this Author authorModel, Author requester = null)
+        public static FEAuthor ToFEAuthor(this Author authorModel)
         {
             return new FEAuthor
             {
                 Id = authorModel.AuthorId,
                 Name = authorModel.Name,
                 AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
-                SectionPreviews = authorModel.PublishSections.Select(x => x.ToFESectionPreview())
+                SectionPreviews = authorModel.PublishSections.Select(x => x.ToFESectionPreview()),
+                ArticleCount = authorModel.PublishedArticleCount
             };
         }
 
-        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink, Author requester = null)
+        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink)
         {
-            return articleAuthorLink.Author.ToFEAuthor(requester);
+            return articleAuthorLink.Author.ToFEAuthor();
         }
 
 
@@ -29,7 +30,7 @@ namespace PerRead.Backend.Models.Extensions
                 AuthorId = authorModel.AuthorId,
                 AuthorName = authorModel.Name,
                 AuthorImageUri = string.IsNullOrEmpty(authorModel?.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
-                ArticleCount = authorModel.PublishedArticles
+                ArticleCount = authorModel.PublishedArticleCount
             };
         }
 

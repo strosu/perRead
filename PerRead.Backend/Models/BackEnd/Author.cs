@@ -41,6 +41,6 @@
         /// </summary>
         public uint RequireConfirmationAbove { get; set; } = 10;
 
-        public int PublishedArticles { get; set; }
+        public int PublishedArticleCount { get; set; }
     }
 }

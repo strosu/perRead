@@ -95,7 +95,7 @@ namespace PerRead.Backend.Services
         {
             var feed = await _feedsRepository.GetFeedInfo(feedId);
 
-            var requester = await _requesterGetter.GetRequester();
+            var requester = await _requesterGetter.GetRequesterWithArticles();
 
             var articleQuery = _feedsRepository.GetFeedQuery(feedId)
                 .Select(x => x.SubscribedSections).SelectMany(x => x)

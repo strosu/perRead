@@ -7,6 +7,7 @@ namespace PerRead.Backend.Services
 {
     public interface IRequesterGetter
     {
+        Task<Author> GetRequesterWithArticles();
         Task<Author> GetRequester();
     }
 
@@ -28,7 +29,7 @@ namespace PerRead.Backend.Services
                 var userId = _accessor.GetUserId();
 
                 // TODO - should not get the articles read except in a few cases
-                return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
+                return await _authorRepository.GetAuthor(userId).SingleAsync();
             }
             catch
             {
@@ -38,14 +39,17 @@ namespace PerRead.Backend.Services
 
         public async Task<Author> GetRequesterWithArticles()
         {
-            var userId = _accessor.GetUserId();
+            try
+            {
+                var userId = _accessor.GetUserId();
 
-            if (userId == null)
+                // TODO - should not get the articles read except in a few cases
+                return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
+            }
+            catch
             {
                 return Author.NonLoggedInAuthor;
             }
-
-            return await _authorRepository.GetAuthorWithReadArticles(userId).SingleAsync();
         }
     }
 }

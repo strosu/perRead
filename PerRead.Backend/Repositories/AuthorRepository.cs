@@ -123,7 +123,7 @@ namespace PerRead.Backend.Repositories
         public async Task IncrementPublishedArticleCount(string authorId)
         {
             var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
-            author.PublishedArticles++;
+            author.PublishedArticleCount++;
 
             await _context.SaveChangesAsync();
         }

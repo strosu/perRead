@@ -17,7 +17,7 @@ namespace PerRead.Backend.Services
 
         public async Task<FETag> GetTag(int id)
         {
-            var requester = await _requesterGetter.GetRequester();
+            var requester = await _requesterGetter.GetRequesterWithArticles();
 
             return await _tagRepository.GetTabByTagId(id)
                 .Select(tag => tag.ToFETag(requester)).FirstOrDefaultAsync();
@@ -25,7 +25,7 @@ namespace PerRead.Backend.Services
 
         public async Task<FETag> GetTag(string tag)
         {
-            var requester = await _requesterGetter.GetRequester();
+            var requester = await _requesterGetter.GetRequesterWithArticles();
 
             return await _tagRepository.GetTagByName(tag)
                 .Select(tag => tag.ToFETag(requester)).FirstOrDefaultAsync();
@@ -35,7 +35,7 @@ namespace PerRead.Backend.Services
     public interface ITagService
     {
         Task<FETag> GetTag(string tag);
-        
+
         Task<FETag> GetTag(int id);
     }
 }

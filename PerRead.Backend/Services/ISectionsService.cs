@@ -47,7 +47,7 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Could not identify the session");
             }
 
-            var requester = await _requesterGetter.GetRequester();
+            var requester = await _requesterGetter.GetRequesterWithArticles();
 
             var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
 
