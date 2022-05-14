@@ -13,7 +13,8 @@ namespace PerRead.Backend.Models.Extensions
                 Name = authorModel.Name,
                 AuthorImageUri = string.IsNullOrEmpty(authorModel.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : authorModel.ProfileImageUri,
                 SectionPreviews = authorModel.PublishSections.Select(x => x.ToFESectionPreview()),
-                ArticleCount = authorModel.PublishedArticleCount
+                ArticleCount = authorModel.PublishedArticleCount,
+                About = authorModel.About
             };
         }
 
@@ -44,7 +45,8 @@ namespace PerRead.Backend.Models.Extensions
             return new FEUserSettings
             {
                 UserName = authorModel.Name,
-                RequireConfirmationAbove = authorModel.RequireConfirmationAbove
+                RequireConfirmationAbove = authorModel.RequireConfirmationAbove,
+                About = authorModel.About
             };
         }
 

@@ -6,4 +6,5 @@ export class Author {
     sectionPreviews: SectionPreview[] = [];
     authorImageUri?: string;
     articleCount: number = 0;
+    about: string = '';
 }

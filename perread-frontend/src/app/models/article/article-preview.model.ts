@@ -5,7 +5,7 @@ import { TagPreview } from "../tag/tag-preview.model";
 export class ArticlePreview {
     articleId: number = 0;
     authorPreviews: AuthorPreview[] = [];
-    tagPreviews?: TagPreview[];
+    tagPreviews: TagPreview[] = [];
 
     articleTitle: string = '';
     articleCreatedAt: Date = new Date();

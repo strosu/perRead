@@ -42,5 +42,7 @@
         public uint RequireConfirmationAbove { get; set; } = 10;
 
         public int PublishedArticleCount { get; set; }
+
+        public string About { get; set; }
     }
 }

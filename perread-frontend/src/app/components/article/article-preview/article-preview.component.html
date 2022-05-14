@@ -18,14 +18,14 @@
                 <div>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y'}}</div>
             </div>
 
-            <div id="block_container">
+            <div id="block_container" *ngIf="articlePreview.tagPreviews.length > 0">
                 <div class="text-dark-small"><strong>Tags: </strong></div>
                 <div *ngFor="let tag of articlePreview.tagPreviews">
                     <app-tag-preview [tagPreview]="tag"></app-tag-preview>
                 </div>
             </div>
 
-            <div id="block_container">
+            <div id="block_container" *ngIf="articlePreview.sectionPreviews.length > 0">
                 <div class="text-dark-small"><strong>Sections: </strong></div>
                 <div *ngFor="let section of articlePreview.sectionPreviews">
                     <app-section-preview [sectionPreview]="section"></app-section-preview>

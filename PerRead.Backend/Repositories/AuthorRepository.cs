@@ -161,6 +161,7 @@ namespace PerRead.Backend.Repositories
             var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
 
             author.RequireConfirmationAbove = userSettings.RequireConfirmationAbove;
+            author.About = userSettings.About;
 
             await _context.SaveChangesAsync();
         }
