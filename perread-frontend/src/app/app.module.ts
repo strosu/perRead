@@ -46,13 +46,14 @@ import { SectionManagementComponent } from './components/sections/section-manage
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 import { SectionListComponent } from './components/sections/section-list/section-list.component';
+import { SectionPreviewComponent } from './components/sections/section-preview/section-preview.component';
 import {MatSelectModule} from '@angular/material/select';
 import { SectionPageComponent } from './components/sections/section-page/section-page.component';
 import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component'; 
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
-import { SectionPreviewComponent } from './components/sections/section-preview/section-preview.component';
+import { SectionCardComponent } from './components/sections/section-card/section-card.component';
 import { AuthorCardComponent } from './components/author/author-card/author-card.component';
 import { AuthorListComponent } from './components/author/author-list/author-list.component';
 import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component'; 
@@ -97,7 +98,8 @@ import { AllAuthorsComponentComponent } from './components/author/all-authors-co
     SectionPreviewComponent,
     AuthorCardComponent,
     AuthorListComponent,
-    AllAuthorsComponentComponent
+    AllAuthorsComponentComponent,
+    SectionCardComponent
   ],
   imports: [
     BrowserModule,

@@ -2,15 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SectionPreview } from 'src/app/models/section/section-preview.model';
 
 @Component({
-  selector: 'app-section-preview',
-  templateUrl: './section-preview.component.html',
-  styleUrls: ['./section-preview.component.css']
+  selector: 'app-section-card',
+  templateUrl: './section-card.component.html',
+  styleUrls: ['./section-card.component.css']
 })
-export class SectionPreviewComponent implements OnInit {
+export class SectionCardComponent implements OnInit {
 
   @Input()
   sectionPreview: SectionPreview = <SectionPreview>{};
-  
+
   constructor() { }
 
   ngOnInit(): void {

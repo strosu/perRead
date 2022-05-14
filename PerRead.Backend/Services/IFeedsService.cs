@@ -100,6 +100,8 @@ namespace PerRead.Backend.Services
             var articleQuery = _feedsRepository.GetFeedQuery(feedId)
                 .Select(x => x.SubscribedSections).SelectMany(x => x)
                 .SelectMany(x => x.Section.Articles)
+                .Include(x => x.Article.Sections)
+                .ThenInclude(x => x.Section)
                 .Include(x => x.Article.Tags)
                 .Include(x => x.Article.ArticleAuthors)
                 .ThenInclude(x => x.Author)
@@ -113,22 +115,6 @@ namespace PerRead.Backend.Services
             var articles = await filteredQuery.ToListAsync();
 
             return feed.ToFEFeed(articles);
-
-            //var articleAuthors = feedSections.SubscribedSections.Select(x => x.Articles).SelectMany(x => x);
-
-            //var articlesQuery =
-            //    articleAuthors.Include(x => x.Article.Tags)
-            //    .Select(x => x.Article);
-
-
-
-            //var filteredQuery = ApplyFeedFilters(articlesQuery, feed, requester)
-            //    .OrderByDescending(x => x.CreatedAt).Take(20)
-            //    .Select(x => x.ToFEArticlePreview(requester));
-
-            //var articles = await filteredQuery.ToListAsync();
-
-            //return feed.ToFEFeed(articles);
         }
 
         public async Task<FEFeedDetails> GetFeedInfo(string feedId)

@@ -25,11 +25,13 @@
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Models\Auth\" />
     <None Remove="Extensions\" />
+    <None Remove="Repositories\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
     <Folder Include="Models\Auth\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="Repositories\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />

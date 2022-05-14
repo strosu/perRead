@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 

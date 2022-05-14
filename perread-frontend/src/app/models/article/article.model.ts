@@ -1,4 +1,5 @@
 import { AuthorPreview } from "../author/author-preview.model";
+import { SectionPreview } from "../section/section-preview.model";
 import { TagPreview } from "../tag/tag-preview.model";
 
 export class Article {
@@ -10,4 +11,5 @@ export class Article {
     authorPreviews?: AuthorPreview[];
     tagPreviews?: TagPreview[];
     articleImageUrl: string = '';
+    sectionPreviews: SectionPreview[] = [];
 }

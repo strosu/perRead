@@ -25,6 +25,13 @@
                 </div>
             </div>
 
+            <div id="block_container">
+                <div class="text-dark-small"><strong>Sections: </strong></div>
+                <div *ngFor="let section of articlePreview.sectionPreviews">
+                    <app-section-preview [sectionPreview]="section"></app-section-preview>
+                </div>
+            </div>
+
             <p>Price: {{articlePreview.articlePrice}}</p>
 
         </mat-card-subtitle>

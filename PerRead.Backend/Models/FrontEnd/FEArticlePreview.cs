@@ -28,6 +28,8 @@ namespace PerRead.Backend.Models.FrontEnd
 
         [JsonConverter(typeof(StringEnumConverter))]
         public ReadingState ReadingState { get; set; }
+
+        public IEnumerable<FESectionPreview> SectionPreviews { get; set; }
     }
 
     public enum ReadingState

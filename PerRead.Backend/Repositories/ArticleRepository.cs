@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Models;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Repositories.Extensions;
 
 namespace PerRead.Backend.Repositories
 {
@@ -75,9 +75,9 @@ namespace PerRead.Backend.Repositories
             return await _context.Articles
                 .AsNoTracking()
                 .Where(x => x.ArticleId == id)
-                .Include(article => article.ArticleAuthors)
-                    .ThenInclude(articleAuthor => articleAuthor.Author)
-                .Include(a => a.Tags)
+                .IncludeAuthors()
+                .IncludeTags()
+                .IncludeSections()
                 .SingleOrDefaultAsync();
         }
 
@@ -85,9 +85,9 @@ namespace PerRead.Backend.Repositories
         {
             return _context.Articles
                 .AsNoTracking()
-                .Include(x => x.ArticleAuthors)
-                    .ThenInclude(al => al.Author)
-                .Include(x => x.Tags);
+                .IncludeAuthors()
+                .IncludeSections()
+                .IncludeTags();
         }
 
         public async Task<Article?> GetSimpleArticle(string id)

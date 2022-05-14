@@ -1,4 +1,5 @@
 import { AuthorPreview } from "../author/author-preview.model";
+import { SectionPreview } from "../section/section-preview.model";
 import { TagPreview } from "../tag/tag-preview.model";
 
 export class ArticlePreview {
@@ -12,6 +13,7 @@ export class ArticlePreview {
     articlePrice: number = 0;
     articleImageUrl: string = '';
     readingState: string = '';
+    sectionPreviews: SectionPreview[] = [];
 }
 
 export enum ReadingState {
