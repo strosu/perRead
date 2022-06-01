@@ -4,8 +4,8 @@ P0 scenarios:
 User:
 - register
 - log in
-- browse all articles
-- browse all authors
+- browse all articles - DONE
+- browse all authors - DONE
 - allow subscribing to an author; needs feed to author mappings too
 - allow subscribing to a section - DONE
 - have the feed populated with articles by the subscribed authors - DONE
@@ -28,7 +28,7 @@ TODO NEXT:
     - component for presenting an author in the list of authors included in a feed
 - component for "buying" tokens - DONE
 - component for adding a section to one of multiple feeds - DONE
-- show all authors
+- show all authors - DONE
 - show subscribed authors (authors for which at least one section is subscribed). Do we need a section preview? Might look better as cards vs tabs
 - user/author preferences:
     - allow uploading an profile image
@@ -37,6 +37,8 @@ TODO NEXT:
 - on empty feed, add button to redirect to browse all authors
 - add Requests concept; map them to authors, allow users to create new ones and pledge to existing ones
 - add rating to articles
+- add confirmation dialog when the price can be paid but is higher than the threshold; 
+- do not allow navigating to unaffordable articles
 
 TODO Sections:
 - add list of sections when creating an article, require at least one
