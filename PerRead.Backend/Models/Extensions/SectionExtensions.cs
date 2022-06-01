@@ -12,7 +12,7 @@ namespace PerRead.Backend.Models.Extensions
                 Name = section.Name,
                 Description = section.Description,
                 SectionId = section.SectionId,
-                ArticlePreviews = section.Articles?.OrderByDescending(a => a.Article.CreatedAt).Select(x => x.Article.ToFEArticlePreview(requester)),
+                ArticlePreviews = section.Articles?.Select(x => x?.Article?.ToFEArticlePreview(requester)),
                 FeedSubscriptionStatuses = feeds.Select(x => x.ToSectionSubscription(section))
             };
         }
@@ -22,7 +22,8 @@ namespace PerRead.Backend.Models.Extensions
             return new FESectionPreview
             {
                 Name = section.Name,
-                SectionId = section.SectionId
+                SectionId = section.SectionId,
+                Description = section.Description
             };
         }
 

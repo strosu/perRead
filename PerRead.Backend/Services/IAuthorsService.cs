@@ -8,17 +8,27 @@ namespace PerRead.Backend.Services
     public class AuthorsService : IAuthorsService
     {
         private readonly IAuthorRepository _authorRepository;
+        private readonly IArticleRepository _articleRepository;
+        private readonly IRequesterGetter _requesterGetter;
 
-        public AuthorsService(IAuthorRepository authorRepository)
+        public AuthorsService(IAuthorRepository authorRepository, IArticleRepository articleRepository, IRequesterGetter requesterGetter)
         {
             _authorRepository = authorRepository;
+            _articleRepository = articleRepository;
+            _requesterGetter = requesterGetter;
         }
 
-        public async Task<FEAuthor?> GetAuthorAsync(string id)
+        public async Task<FEAuthor> GetAuthorAsync(string authorId)
         {
-            var author = _authorRepository.GetAuthorWithArticles(id);
+            var author = _authorRepository.GetAuthorWithArticles(authorId);
 
-            return await author.Select(x => x.ToFEAuthor()).FirstOrDefaultAsync();
+            var authorWithArticles = await author.Select(x => x.ToFEAuthor()).FirstOrDefaultAsync();
+
+            var requester = await _requesterGetter.GetRequesterWithArticles();
+
+            authorWithArticles.LatestArticles = await _articleRepository.GetLatestArticles(authorId).Select(x => x.ToFEArticlePreview(requester)).ToListAsync();
+
+            return authorWithArticles;
         }
 
         //public async Task<FEAuthor?> GetAuthorByNameAsync(string name)
@@ -36,7 +46,7 @@ namespace PerRead.Backend.Services
 
     public interface IAuthorsService
     {
-        Task<FEAuthor?> GetAuthorAsync(string id);
+        Task<FEAuthor> GetAuthorAsync(string id);
 
         //Task<FEAuthor?> GetAuthorByNameAsync(string name);
 

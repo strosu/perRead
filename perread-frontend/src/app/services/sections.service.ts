@@ -25,11 +25,19 @@ export class SectionsService {
     return this.httpClient.post<Section>(`${Constants.BACKENDURL}/sections/add`, sectionCommand);
   }
 
-  updateSection(sectionId: string, sectionCommand: SectionCommand) : Observable<Section> {
-    return this.httpClient.post<Section>(`${Constants.BACKENDURL}/section/${sectionId}/edit`, sectionCommand);
+  updateSection(sectionId: string, sectionPreview: SectionPreview) : Observable<Section> {
+    return this.httpClient.post<Section>(`${Constants.BACKENDURL}/section/${sectionId}/edit`, sectionPreview);
   }
 
   addSectionToFeeds(sectionId: string, feedIds: string[]) : Observable<any> {
     return this.httpClient.post(`${Constants.BACKENDURL}/feeds/addSection/${sectionId}`, feedIds);
+  }
+
+  getSectionDetails(sectionId: string) : Observable<SectionPreview> {
+    return this.httpClient.get<SectionPreview>(`${Constants.BACKENDURL}/section/${sectionId}/details`);
+  }
+
+  deleteSection(sectionId: string) : Observable<any> {
+    return this.httpClient.delete(`${Constants.BACKENDURL}/sections/${sectionId}`)
   }
 }

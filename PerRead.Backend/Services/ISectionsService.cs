@@ -10,8 +10,10 @@ namespace PerRead.Backend.Services
     {
         Task<FESectionWithArticles> GetSectionArticles(string sectionId);
         Task<FESectionWithArticles> CreateSection(SectionCommand sectionCommand);
-        Task<FESectionWithArticles> UpdateSection(string sectionId, SectionCommand sectionCommand);
+        Task<FESectionWithArticles> UpdateSection(string sectionId, FESectionPreview sectionPreview);
         Task<IEnumerable<FESectionPreview>> ListSections();
+        Task<FESectionPreview> GetSectionDetails(string sectionId);
+        Task DeleteSection(string sectionId);
     }
 
     public class SectionsService : ISectionsService
@@ -38,6 +40,26 @@ namespace PerRead.Backend.Services
             return section.ToFESectionWithArticles(requester, feeds);
         }
 
+        public async Task DeleteSection(string sectionId)
+        {
+            var section = await _sectionRepository.GetSection(sectionId);
+
+            if (section == null)
+            {
+                throw new ArgumentException("Section does not exist lol");
+            }
+
+            var requester = await _requesterGetter.GetRequester();
+
+
+            if (section.AuthorId != requester.AuthorId)
+            {
+                throw new ArgumentException("You're not the owner here");
+            }
+
+            await _sectionRepository.DeleteSection(section);
+        }
+
         public async Task<FESectionWithArticles> GetSectionArticles(string sectionId)
         {
             var section = await _sectionRepository.GetSection(sectionId);
@@ -54,6 +76,12 @@ namespace PerRead.Backend.Services
             return await _sectionRepository.GetSectionArticles(section.SectionId).Select(x => x.ToFESectionWithArticles(requester, feeds)).FirstOrDefaultAsync();
         }
 
+        public async Task<FESectionPreview> GetSectionDetails(string sectionId)
+        {
+            var section = await _sectionRepository.GetSection(sectionId);
+            return section.ToFESectionPreview();
+        }
+
         public async Task<IEnumerable<FESectionPreview>> ListSections()
         {
             var requester = await _requesterGetter.GetRequester();
@@ -63,7 +91,7 @@ namespace PerRead.Backend.Services
                 .ToListAsync();
         }
 
-        public async Task<FESectionWithArticles> UpdateSection(string sectionId, SectionCommand sectionCommand)
+        public async Task<FESectionWithArticles> UpdateSection(string sectionId, FESectionPreview sectionPreview)
         {
             var requester = await _requesterGetter.GetRequester();
 
@@ -76,7 +104,11 @@ namespace PerRead.Backend.Services
 
             var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
 
-            return (await _sectionRepository.UpdateSection(section, sectionCommand)).ToFESectionWithArticles(requester, feeds);
+            return (await _sectionRepository.UpdateSection(section, new SectionCommand
+            {
+                Name = sectionPreview.Name,
+                Description = sectionPreview.Description
+            })).ToFESectionWithArticles(requester, feeds);
         }
     }
 }

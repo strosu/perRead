@@ -25,6 +25,12 @@ namespace PerRead.Backend.Controllers
             return await _sectionsService.GetSectionArticles(sectionId);
         }
 
+        [HttpGet("section/{sectionId}/details")]
+        public async Task<FESectionPreview> GetSectionDetails(string sectionId)
+        {
+            return await _sectionsService.GetSectionDetails(sectionId);
+        }
+
         [HttpPost("sections/add")]
         public async Task<FESectionWithArticles> CreateSection([FromBody] SectionCommand sectionCommand)
         {
@@ -32,15 +38,21 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpPost("sections/{sectionId}/edit")]
-        public async Task<FESectionWithArticles> UpdateSection(string sectionId, [FromBody] SectionCommand sectionCommand)
+        public async Task<FESectionWithArticles> UpdateSection(string sectionId, [FromBody] FESectionPreview sectionPreview)
         {
-            return await _sectionsService.UpdateSection(sectionId, sectionCommand);
+            return await _sectionsService.UpdateSection(sectionId, sectionPreview);
         }
 
         [HttpGet("sections")]
         public async Task<IEnumerable<FESectionPreview>> ListSections()
         {
             return await _sectionsService.ListSections();
+        }
+
+        [HttpDelete("/sections/{sectionId}")]
+        public async Task DeleteFeed(string sectionId)
+        {
+            await _sectionsService.DeleteSection(sectionId);
         }
     }
 }

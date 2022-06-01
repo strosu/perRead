@@ -13,5 +13,7 @@
         public int ArticleCount { get; set; }
 
         public string About { get; set; }
+
+        public IEnumerable<FEArticlePreview> LatestArticles { get; set; }
     }
 }

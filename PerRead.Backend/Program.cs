@@ -80,7 +80,7 @@ app.Run();
 static void AddServices(WebApplicationBuilder builder)
 {
     builder.Services.AddDbContext<AppDbContext>(
-        options => options.UseSqlite(builder.Configuration.GetConnectionString("PerReadLocalDb")));
+        options => options.UseSqlite(builder.Configuration.GetConnectionString("PerReadLocalDb")).LogTo(Console.WriteLine, LogLevel.Information));
 
     // Services
     builder.Services.AddScoped<IArticleService, ArticleService>();

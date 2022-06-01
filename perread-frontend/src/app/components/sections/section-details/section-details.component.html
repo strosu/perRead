@@ -1,1 +1,26 @@
-<p>section-details works!</p>
+<div>
+    <h3><b>{{sectionPreview.name}} Settings:</b></h3>
+    <div>
+        <div class="submit-form">
+            <div class="form-group">
+
+                <div>
+                    <label>Section name</label>
+                    <input type="text" [(ngModel)]="this.sectionPreview.name" />
+                </div>
+
+                <div>
+                    <label>Section description</label>
+                    <input type="text" [(ngModel)]="this.sectionPreview.description" />
+                </div>
+
+            </div>
+
+            <div>
+                <button (click)="updateSection()" class="btn btn-success">Save</button>
+                <button (click)="deleteSection()" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+</div>

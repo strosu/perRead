@@ -16,6 +16,7 @@ namespace PerRead.Backend.Repositories
         Task<Section> CreateNewSection(string authorId, SectionCommand sectionCommand);
 
         Task<Section> UpdateSection(Section section, SectionCommand sectionCommand);
+        Task DeleteSection(Section section);
     }
 
     public class SectionRepository : ISectionRepository
@@ -73,6 +74,12 @@ namespace PerRead.Backend.Repositories
         public IQueryable<Section> GetAllSections()
         {
             return _context.Sections.AsNoTracking();
+        }
+
+        public async Task DeleteSection(Section section)
+        {
+            _context.Sections.Remove(section);
+            await _context.SaveChangesAsync();
         }
     }
 }

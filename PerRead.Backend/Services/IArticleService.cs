@@ -77,7 +77,7 @@ namespace PerRead.Backend.Services
 
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
-            var articles = _articleRepository.GetAll();
+            var articles = _articleRepository.GetAll().OrderByDescending(a => a.CreatedAt);
 
             var authorId = _httpContextAccessor.GetUserId();
             var requester = await _authorRepository.GetAuthorWithReadArticles(authorId).SingleAsync();

@@ -90,6 +90,12 @@ namespace PerRead.Backend.Repositories
                 .IncludeTags();
         }
 
+        public IQueryable<Article> GetLatestArticles(string authorId)
+        {
+            return GetAll().Where(x => x.ArticleAuthors.Any(a => a.AuthorId == authorId))
+                .OrderByDescending(x => x.CreatedAt).Take(20);
+        }
+
         public async Task<Article?> GetSimpleArticle(string id)
         {
             return await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
@@ -109,4 +115,6 @@ public interface IArticleRepository
     Task Delete(string id);
 
     Task<Article?> GetSimpleArticle(string id);
+
+    IQueryable<Article> GetLatestArticles(string authorId);
 }

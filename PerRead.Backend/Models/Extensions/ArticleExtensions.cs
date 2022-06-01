@@ -18,7 +18,7 @@ namespace PerRead.Backend.Models.Extensions
                 CreatedAt = articleModel.CreatedAt,
                 Price = articleModel.Price,
                 ArticleImageUrl = string.IsNullOrEmpty(articleModel.ImageUrl) ? "m7kgwe2gnrd81.jpg" : articleModel.ImageUrl,
-                SectionPreviews = articleModel.Sections?.Select(s => s.Section.ToFESectionPreview())
+                SectionPreviews = articleModel.Sections?.Select(s => s?.Section?.ToFESectionPreview())
             };
         }
 
