@@ -93,6 +93,8 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IFeedsService, FeedsService>();
     builder.Services.AddScoped<IRequesterGetter, RequesterGetter>();
     builder.Services.AddScoped<ISectionsService, SectionsService>();
+    builder.Services.AddScoped<IRequestsService, RequestsService>();
+    builder.Services.AddScoped<IPledgeService, PledgeService>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
@@ -101,6 +103,8 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
     builder.Services.AddScoped<IFeedRepository, FeedRepository>();
     builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+    builder.Services.AddScoped<IRequestsRepository, RequestsRepository>();
+    builder.Services.AddScoped<IPledgeRepository, PledgeRepository>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 

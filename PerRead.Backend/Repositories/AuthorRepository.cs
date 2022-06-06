@@ -187,6 +187,11 @@ namespace PerRead.Backend.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        async Task<Author> IAuthorRepository.GetAuthorAsync(string id)
+        {
+            return await GetAuthor(id).SingleOrDefaultAsync();
+        }
     }
 
     public interface IAuthorRepository
@@ -198,6 +203,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<Author> GetAuthorWithReadArticles(string id);
 
         IQueryable<Author> GetAuthor(string id);
+
+        Task<Author> GetAuthorAsync(string id);
 
         IQueryable<Author> GetAuthorByName(string name);
 

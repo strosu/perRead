@@ -44,5 +44,9 @@
         public int PublishedArticleCount { get; set; }
 
         public string About { get; set; }
+
+        public IEnumerable<RequestPledge> Pledges { get; set; }
+
+        public IEnumerable<ArticleRequest> Requests { get; set; }
     }
 }

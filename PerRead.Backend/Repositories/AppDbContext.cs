@@ -19,6 +19,10 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<Section> Sections { get; set; }
 
+        public DbSet<ArticleRequest> Requests { get; set; }
+
+        public DbSet<RequestPledge> Pledges { get; set; }
+
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +37,12 @@ namespace PerRead.Backend.Repositories
 
             modelBuilder.Entity<ArticleAuthor>()
                 .HasKey(x => new { x.ArticleId, x.AuthorId });
+
+            modelBuilder.Entity<Author>()
+                .HasMany(x => x.Requests).WithOne(x => x.TargetAuthor);
+
+            modelBuilder.Entity<Author>()
+                .HasMany(x => x.Pledges).WithOne(x => x.Pledger);
 
             modelBuilder.Entity<SectionArticle>()
                 .HasKey(x => new { x.ArticleId, x.SectionId });
@@ -52,6 +62,12 @@ namespace PerRead.Backend.Repositories
 
             modelBuilder.Entity<Feed>()
                 .HasOne(p => p.Owner);
+
+            modelBuilder.Entity<ArticleRequest>()
+                .HasOne(p => p.Initiator);
+
+            modelBuilder.Entity<ArticleRequest>()
+                .HasOne(p => p.TargetAuthor);
         }
     }
 }
