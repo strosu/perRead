@@ -9,7 +9,7 @@ import { ArticlePreview } from 'src/app/models/article/article-preview.model';
 export class ArticleListComponent implements OnInit {
 
   @Input()
-  articleDescriptions?: ArticlePreview[];
+  articleDescriptions: ArticlePreview[] = [];
   
   selectedArticle : ArticlePreview = <ArticlePreview>{};
   currentIndex = -1;

@@ -21,7 +21,7 @@ namespace PerRead.Backend.Models.FrontEnd
 
         public RequestPostPublishState PostPublishState { get; set; }
 
-        public Article ResultingArticle { get; set; }
+        public FEArticlePreview ResultingArticle { get; set; }
 
         public DateTime Deadline { get; set; }
     }

@@ -58,7 +58,8 @@ namespace PerRead.Backend.Services
 
         public async Task<IEnumerable<FERequestPreview>> GetRequestsForAuthor(string authorId)
         {
-            return await _requestsRepository.GetRequestsForAuthor(authorId).Select(x => x.ToFERequestPreview()).ToListAsync();
+            var requester = await _requesterGetter.GetRequester();
+            return await _requestsRepository.GetRequestsForAuthor(authorId).Select(x => x.ToFERequestPreview(requester)).ToListAsync();
         }
 
     }

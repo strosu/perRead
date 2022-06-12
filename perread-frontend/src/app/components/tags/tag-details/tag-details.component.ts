@@ -10,7 +10,7 @@ import { TagService } from 'src/app/services/tag.service';
 })
 export class TagDetailsComponent implements OnInit {
 
-  currentTag?: Tag;
+  currentTag: Tag = <Tag>{};
 
   constructor(
     private tagService: TagService, 

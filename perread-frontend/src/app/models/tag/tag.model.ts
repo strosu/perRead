@@ -4,5 +4,5 @@ export class Tag {
     id?: number;
     name?: string;
     firstUsage?: Date;
-    articlePreviews?: ArticlePreview[];
+    articlePreviews: ArticlePreview[] = [];
 }

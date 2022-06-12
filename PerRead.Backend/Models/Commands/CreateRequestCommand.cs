@@ -4,9 +4,9 @@ namespace PerRead.Backend.Models.Commands
 {
     public class CreateRequestCommand
     {
-        public RequestCommand Request { get; set; }
+        public RequestCommand RequestCommand { get; set; }
 
-        public PledgeCommand Pledge { get; set; }
+        public PledgeCommand PledgeCommand { get; set; }
     }
 
     public class PledgeCommand

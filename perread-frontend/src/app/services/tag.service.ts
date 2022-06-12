@@ -12,6 +12,6 @@ export class TagService {
   constructor(private httpclient: HttpClient) { }
 
   getTag(id: number): Observable<Tag> {
-    return this.httpclient.get(`${Constants.BACKENDURL}/tags/${id}`)
+    return this.httpclient.get<Tag>(`${Constants.BACKENDURL}/tags/${id}`)
   }
 }

@@ -56,7 +56,11 @@ import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/wi
 import { SectionCardComponent } from './components/sections/section-card/section-card.component';
 import { AuthorCardComponent } from './components/author/author-card/author-card.component';
 import { AuthorListComponent } from './components/author/author-list/author-list.component';
-import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component'; 
+import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component';
+import { RequestPreviewComponent } from './components/requests/request-preview/request-preview.component';
+import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
+import { RequestListComponent } from './components/requests/request-list/request-list.component';
+import { AuthorRequestsComponent } from './components/requests/author-requests/author-requests.component'; 
 
 @NgModule({
   declarations: [
@@ -99,7 +103,11 @@ import { AllAuthorsComponentComponent } from './components/author/all-authors-co
     AuthorCardComponent,
     AuthorListComponent,
     AllAuthorsComponentComponent,
-    SectionCardComponent
+    SectionCardComponent,
+    RequestPreviewComponent,
+    RequestDetailsComponent,
+    RequestListComponent,
+    AuthorRequestsComponent
   ],
   imports: [
     BrowserModule,

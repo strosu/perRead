@@ -22,7 +22,7 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FERequestPreview ToFERequestPreview(this ArticleRequest request)
+        public static FERequestPreview ToFERequestPreview(this ArticleRequest request, Author requester)
         {
             return new FERequestPreview
             {
@@ -35,7 +35,7 @@ namespace PerRead.Backend.Models.Extensions
                 Deadline = request.Deadline,
                 PostPublishState = request.PostPublishState,
                 RequestState = request.RequestState,
-                ResultingArticle = request.ResultingArticle
+                ResultingArticle = request.ResultingArticle.ToFEArticlePreview(requester)
             };
         }
     }

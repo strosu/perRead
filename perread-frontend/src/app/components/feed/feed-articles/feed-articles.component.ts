@@ -15,7 +15,7 @@ export class FeedArticlesComponent implements OnInit {
   feedPreview: FeedPreview = <FeedPreview>{};
   hasAnyArticles: boolean = false;
 
-  articles? : ArticlePreview[];
+  articles : ArticlePreview[] = [];
 
   constructor(private feedService: FeedService) { }
 

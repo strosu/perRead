@@ -9,7 +9,7 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class AllArticlesComponent implements OnInit {
 
-  articlePreviews?: ArticlePreview[];
+  articlePreviews: ArticlePreview[] = [];
 
   constructor(private articleSerivice: ArticlesService) { }
 

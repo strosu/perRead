@@ -2,7 +2,7 @@
 <h2>Total articles: {{author.articleCount}}</h2>
 <mat-tab-group dynamicHeight animationDuration="0ms">
     <mat-tab label="Home">
-        <div *ngIf="author.latestArticles.length > 0; else elseBlock">
+        <div *ngIf="author?.latestArticles && author.latestArticles.length > 0; else elseBlock">
             <h1>Latest articles from {{author.name}}</h1>
             <app-article-list [articleDescriptions]="author.latestArticles"></app-article-list>
         </div>
@@ -22,7 +22,9 @@
         <app-section-list [sectionPreviews]="author.sectionPreviews"></app-section-list>
     </mat-tab>
     <mat-tab label="Requests">
-
+        <ng-template matTabContent>
+            <app-author-requests [authorId]="author.id"></app-author-requests>
+        </ng-template>
     </mat-tab>
 </mat-tab-group>
 

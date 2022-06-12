@@ -2,7 +2,7 @@ import { ArticlePreview } from "../article/article-preview.model";
 import { SectionPreview } from "../section/section-preview.model";
 
 export class Author {
-    id?: number;
+    id: string = ``;
     name?: string;
     sectionPreviews: SectionPreview[] = [];
     authorImageUri?: string;
