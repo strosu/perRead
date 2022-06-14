@@ -31,7 +31,7 @@ namespace PerRead.Backend.Services
 
         public async Task<FERequest> CreateRequest(CreateRequestCommand createRequestCommand)
         {
-            var requestCommand = createRequestCommand.Request;
+            var requestCommand = createRequestCommand.RequestCommand;
 
             var requester = await _requesterGetter.GetRequester();
 
@@ -44,7 +44,7 @@ namespace PerRead.Backend.Services
 
             var request = await _requestsRepository.CreateRequest(requester, targetAuthor, requestCommand);
 
-            var pledgeCommand = createRequestCommand.Pledge;
+            var pledgeCommand = createRequestCommand.PledgeCommand;
 
             await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
 

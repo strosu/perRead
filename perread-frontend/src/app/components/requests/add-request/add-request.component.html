@@ -1,0 +1,41 @@
+<div>
+    <div class="submit-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" required [(ngModel)]="this.requestCommand.title" name="title" />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" required [(ngModel)]="this.requestCommand.description" name="description" />
+        </div>
+
+        <div class="form-group">
+            <label for="percent">Percent for pledgers</label>
+            <input type="number" class="form-control" id="percent" required [(ngModel)]="this.requestCommand.percentForPledgers" name="percent" />
+        </div>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Post publish state:</mat-label>
+            <mat-select [formControl]="selectedStatus">
+                <mat-option *ngFor="let status of statuses" [value]="status">{{status}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="form-group">
+            <label for="total">Total pledge amount</label>
+            <input class="form-control" id="total" required [(ngModel)]="this.pledgeCommand.totalPledgeAmount" name="total" />
+        </div>
+
+        <div class="form-group">
+            <label for="upfront">Upfront pledged</label>
+            <input class="form-control" id="upfront" required [(ngModel)]="this.pledgeCommand.upfrontPledgeAmount" name="upfront" />
+        </div>
+
+        <div class="form-group element-spacing">
+            <button (click)="sendRequest()" class="btn btn-success">Submit</button>
+        </div>
+
+
+    </div>
+</div>

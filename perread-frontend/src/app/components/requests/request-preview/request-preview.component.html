@@ -1,1 +1,18 @@
-<p>request-preview works!</p>
+<mat-card class="example-card mat-elevation-z4">
+    <mat-card-title-group routerLink="/requests/{{requestPreview.requestId}}">
+        <mat-card-title>{{requestPreview.title}}</mat-card-title>
+        <mat-card-subtitle>
+            <div id="block_container">
+                <app-author-preview [authorPreview]="requestPreview.targetAuthor"></app-author-preview>
+                <div>{{requestPreview.createdAt | date:'EEEE, MMMM d, y'}}</div>
+            </div>
+
+            <p>Total pledged: {{requestPreview.pledgeAmount}}</p>
+            <p>Pledge count: {{requestPreview.pledgeCount}}</p>
+
+        </mat-card-subtitle>
+    </mat-card-title-group>
+    <!-- <mat-card-content>
+        <p>{{articlePreview.articlePreview}}</p>
+    </mat-card-content> -->
+</mat-card>

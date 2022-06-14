@@ -60,7 +60,8 @@ import { AllAuthorsComponentComponent } from './components/author/all-authors-co
 import { RequestPreviewComponent } from './components/requests/request-preview/request-preview.component';
 import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
 import { RequestListComponent } from './components/requests/request-list/request-list.component';
-import { AuthorRequestsComponent } from './components/requests/author-requests/author-requests.component'; 
+import { AuthorRequestsComponent } from './components/requests/author-requests/author-requests.component';
+import { AddRequestComponent } from './components/requests/add-request/add-request.component'; 
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { AuthorRequestsComponent } from './components/requests/author-requests/a
     RequestPreviewComponent,
     RequestDetailsComponent,
     RequestListComponent,
-    AuthorRequestsComponent
+    AuthorRequestsComponent,
+    AddRequestComponent
   ],
   imports: [
     BrowserModule,

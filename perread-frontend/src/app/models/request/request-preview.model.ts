@@ -12,15 +12,16 @@ export class RequestPreview {
     postPublishState: RequestPostPublishState = <RequestPostPublishState>{};
     resultingArticle: ArticlePreview = <ArticlePreview>{};
     deadLine?: Date;
+    createdAt? : Date;
 }
 
-export enum RequestState {
-    Public, 
-    ProfitShare, 
-    Exclusive 
+export enum RequestPostPublishState {
+    Public = "Public",
+    ProfitShare = "Profit Share",
+    Exclusive = "Exclusive" 
   }
 
-  export enum RequestPostPublishState {
+  export enum RequestState {
     Created, 
     Accepted, 
     Completed, 

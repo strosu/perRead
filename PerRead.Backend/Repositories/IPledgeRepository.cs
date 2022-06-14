@@ -21,10 +21,12 @@ namespace PerRead.Backend.Repositories
         {
             var pledge = new RequestPledge
             {
+                RequestPledgeId = Guid.NewGuid().ToString(),
                 ParentRequest = request,
                 Pledger = pledger,
                 TokensOnAccept = pledgeCommand.UpfrontPledgeAmount,
                 TotalTokenSum = pledgeCommand.TotalPledgeAmount,
+                CreatedAt = DateTime.UtcNow
             };
 
             _context.Pledges.Add(pledge);

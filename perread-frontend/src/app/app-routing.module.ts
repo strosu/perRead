@@ -14,6 +14,8 @@ import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.c
 import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AddRequestComponent } from './components/requests/add-request/add-request.component';
+import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
 import { AddSectionComponent } from './components/sections/add-section/add-section.component';
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
 import { SectionManagementComponent } from './components/sections/section-management/section-management.component';
@@ -44,7 +46,9 @@ const routes: Routes = [
   { path: 'tokens', component: TokensPageComponent},
   { path: 'tokens/add', component: AddTokensComponent},
   { path: 'tokens/withdraw', component: WithdrawTokensComponent},
-  { path: 'sections/:id/edit', component: SectionDetailsComponent}
+  { path: 'sections/:id/edit', component: SectionDetailsComponent},
+  { path: 'requests/:authorId/new', component: AddRequestComponent},
+  { path: 'requests/:id', component: RequestDetailsComponent }
 ];
 
 @NgModule({

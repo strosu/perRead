@@ -11,7 +11,7 @@ namespace PerRead.Backend.Models.Commands
 
     public class PledgeCommand
     {
-        public string PledgeId { get; set; }
+        public string? PledgeId { get; set; }
 
         public uint TotalPledgeAmount { get; set; }
 
@@ -20,7 +20,7 @@ namespace PerRead.Backend.Models.Commands
 
     public class RequestCommand
     {
-        public string RequestId { get; set; }
+        public string? RequestId { get; set; }
 
         public string TargetAuthorId { get; set; }
 

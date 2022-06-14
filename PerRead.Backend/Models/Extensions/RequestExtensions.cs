@@ -35,7 +35,7 @@ namespace PerRead.Backend.Models.Extensions
                 Deadline = request.Deadline,
                 PostPublishState = request.PostPublishState,
                 RequestState = request.RequestState,
-                ResultingArticle = request.ResultingArticle.ToFEArticlePreview(requester)
+                ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester)
             };
         }
     }

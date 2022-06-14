@@ -22,9 +22,11 @@ namespace PerRead.Backend.Models.BackEnd
 
         public uint PercentForledgers { get; set; }
 
-        public Article ResultingArticle { get; set; }
+        public Article? ResultingArticle { get; set; }
 
         public DateTime Deadline { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 
     public class RequestPledge
@@ -38,6 +40,8 @@ namespace PerRead.Backend.Models.BackEnd
         public uint TotalTokenSum { get; set; }
 
         public uint TokensOnAccept { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 
     public enum RequestPostPublishState

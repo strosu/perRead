@@ -1,4 +1,5 @@
-﻿using PerRead.Backend.Models.BackEnd;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 
 namespace PerRead.Backend.Repositories
@@ -23,6 +24,7 @@ namespace PerRead.Backend.Repositories
         {
             var request = new ArticleRequest
             {
+                ArticleRequestId = Guid.NewGuid().ToString(),
                 TargetAuthor = targetAuthor,
                 Initiator = initiator,
                 Title = requestCommand.Title,
@@ -31,7 +33,8 @@ namespace PerRead.Backend.Repositories
                 PercentForledgers = requestCommand.PercentForPledgers,
                 PostPublishState = requestCommand.PostPublishState,
                 RequestState = RequestState.Created,
-                Pledges = new List<RequestPledge>()
+                Pledges = new List<RequestPledge>(),
+                CreatedAt = DateTime.UtcNow
             };
 
             _context.Requests.Add(request);
@@ -47,7 +50,8 @@ namespace PerRead.Backend.Repositories
 
         public IQueryable<ArticleRequest> GetRequestsForAuthor(string authorId)
         {
-            return _context.Requests.Where(x => x.TargetAuthor.AuthorId == authorId);
+            return _context.Requests.Where(x => x.TargetAuthor.AuthorId == authorId)
+                .Include(x => x.Pledges);
         }
     }
 }

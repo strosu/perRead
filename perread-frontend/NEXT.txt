@@ -45,6 +45,9 @@ TODO Sections:
 - UI for editing an article, associating it with a section
 
 
+- private requests: either a single pledge for a request, request hidden and resulting in a private article 
+    - alternatively, mechanism for sharing a private request (via a key?)
+
 BACKEND:
 
 TODO:
