@@ -5,7 +5,7 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class RequestExtensions
     {
-        public static FERequest ToFERequest(this ArticleRequest request)
+        public static FERequest ToFERequest(this ArticleRequest request, Author requester)
         {
             return new FERequest
             {
@@ -18,7 +18,9 @@ namespace PerRead.Backend.Models.Extensions
                 Deadline = request.Deadline,
                 PostPublishState = request.PostPublishState,
                 RequestState = request.RequestState,
-                ResultingArticle = request.ResultingArticle
+                ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
+                CreatedAt = request.CreatedAt,
+                PledgePreviews = request.Pledges.Select(x => x.ToFEPledgePreview())
             };
         }
 
@@ -35,7 +37,8 @@ namespace PerRead.Backend.Models.Extensions
                 Deadline = request.Deadline,
                 PostPublishState = request.PostPublishState,
                 RequestState = request.RequestState,
-                ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester)
+                ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
+                CreatedAt = request.CreatedAt
             };
         }
     }

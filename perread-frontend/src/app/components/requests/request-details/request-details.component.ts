@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { RequestPreview } from 'src/app/models/request/request-preview.model';
+import { Request } from 'src/app/models/request/request.model';
+import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-request-details',
@@ -7,9 +10,23 @@ import { RequestPreview } from 'src/app/models/request/request-preview.model';
   styleUrls: ['./request-details.component.css']
 })
 export class RequestDetailsComponent implements OnInit {
-  constructor() { }
+  
+  request: Request = <Request>{};
+
+  constructor(
+    private route: ActivatedRoute,
+    private requestService: RequestsService
+  ) { }
 
   ngOnInit(): void {
+    const id = String(this.route.snapshot.paramMap.get('id'));
+    this.requestService.getRequest(id).subscribe({
+      next: data => {
+        console.log(data);
+        this.request = data;
+      },
+      error: err => console.log(err)
+    });
   }
 
 }

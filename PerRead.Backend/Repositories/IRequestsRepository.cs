@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Repositories.Extensions;
 
 namespace PerRead.Backend.Repositories
 {
@@ -45,13 +46,15 @@ namespace PerRead.Backend.Repositories
 
         public IQueryable<ArticleRequest> GetRequest(string requestId)
         {
-            return _context.Requests.Where(x => x.ArticleRequestId == requestId);
+            return _context.Requests.Where(x => x.ArticleRequestId == requestId)
+                .WithPledges()
+                .WithTargetAuthor();
         }
 
         public IQueryable<ArticleRequest> GetRequestsForAuthor(string authorId)
         {
             return _context.Requests.Where(x => x.TargetAuthor.AuthorId == authorId)
-                .Include(x => x.Pledges);
+                .WithTargetAuthor();
         }
     }
 }

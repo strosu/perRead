@@ -23,6 +23,6 @@ export class RequestsService {
   }
 
   createRequest(requestCommand: CreateRequestCommand) : Observable<Request> {
-    return this.httpClient.post<RequestPreview>(`${Constants.BACKENDURL}/requests`, requestCommand);
+    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests`, requestCommand);
   }
 }

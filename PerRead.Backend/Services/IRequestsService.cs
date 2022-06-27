@@ -48,12 +48,13 @@ namespace PerRead.Backend.Services
 
             await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
 
-            return await _requestsRepository.GetRequest(request.ArticleRequestId).Select(x => x.ToFERequest()).SingleAsync();
+            return await _requestsRepository.GetRequest(request.ArticleRequestId).Select(x => x.ToFERequest(requester)).SingleAsync();
         }
 
         public async Task<FERequest> GetRequest(string requestId)
         {
-            return await _requestsRepository.GetRequest(requestId).Select(x => x.ToFERequest()).SingleAsync();
+            var requester = await _requesterGetter.GetRequester();
+            return await _requestsRepository.GetRequest(requestId).Select(x => x.ToFERequest(requester)).SingleAsync();
         }
 
         public async Task<IEnumerable<FERequestPreview>> GetRequestsForAuthor(string authorId)
