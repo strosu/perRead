@@ -1,1 +1,13 @@
-<p>request-details works!</p>
+<h1><b>{{request.title}}</b></h1>
+
+<div id="block_container">
+    <strong>Offered to: </strong>
+    <app-author-preview [authorPreview]="request.targetAuthor"></app-author-preview>
+</div>
+
+<br>
+
+Description:
+<br>
+<h2>{{request.description}}</h2>
+<h2></h2>

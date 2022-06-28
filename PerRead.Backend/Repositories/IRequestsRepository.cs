@@ -54,7 +54,8 @@ namespace PerRead.Backend.Repositories
         public IQueryable<ArticleRequest> GetRequestsForAuthor(string authorId)
         {
             return _context.Requests.Where(x => x.TargetAuthor.AuthorId == authorId)
-                .WithTargetAuthor();
+                .WithTargetAuthor()
+                .WithPledges();
         }
     }
 }
