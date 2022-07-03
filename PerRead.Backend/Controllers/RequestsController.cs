@@ -12,7 +12,7 @@ namespace PerRead.Backend.Controllers
     {
         private readonly IRequestsService _requestsService;
 
-        public RequestsController(IRequestsService requestsService)
+        public RequestsController(IRequestsService requestsService, IPledgeService pledgeService)
         {
             _requestsService = requestsService;
         }
@@ -31,16 +31,16 @@ namespace PerRead.Backend.Controllers
             return await _requestsService.GetRequest(requestId);
         }
 
-        [HttpPost("requests")]
+        [HttpPost("requests/add")]
         public async Task<FERequest> CreateRequest([FromBody] CreateRequestCommand createRequestCommand)
         {
             return await _requestsService.CreateRequest(createRequestCommand);
         }
 
-        [HttpPost("pledges/add")]
-        public async Task<FEPledge> AddPledge([FromBody] PledgeCommand pledgeCommand)
+        [HttpPost("requests/edit")]
+        public async Task<FERequest> EditRequest([FromBody] RequestCommand requestCommand)
         {
-            return await _requestsService.AddPledge(pledgeCommand);
+            return await _requestsService.EditRequest(requestCommand);
         }
     }
 }

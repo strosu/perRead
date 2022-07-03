@@ -10,6 +10,8 @@ namespace PerRead.Backend.Repositories
         IQueryable<ArticleRequest> GetRequestsForAuthor(string authorId);
         IQueryable<ArticleRequest> GetRequest(string requestId);
         Task<ArticleRequest> CreateRequest(Author initiator, Author targetAuthor, RequestCommand requestCommand);
+        Task<ArticleRequest> EditRequest(RequestCommand requestCommand);
+        Task RemoveRequest(ArticleRequest request);
     }
 
     public class RequestsRepository : IRequestsRepository
@@ -44,6 +46,21 @@ namespace PerRead.Backend.Repositories
             return request;
         }
 
+        public async Task<ArticleRequest> EditRequest(RequestCommand requestCommand)
+        {
+            var request = await _context.Requests.Where(x => x.ArticleRequestId == requestCommand.RequestId).FirstOrDefaultAsync();
+
+            request.Title = requestCommand.Title;
+            request.Description = requestCommand.Description;
+            request.Deadline = requestCommand.Deadline;
+            request.PostPublishState = requestCommand.PostPublishState;
+            request.PercentForledgers = requestCommand.PercentForPledgers;
+
+            await _context.SaveChangesAsync();
+
+            return request;
+        }
+
         public IQueryable<ArticleRequest> GetRequest(string requestId)
         {
             return _context.Requests.Where(x => x.ArticleRequestId == requestId)
@@ -56,6 +73,12 @@ namespace PerRead.Backend.Repositories
             return _context.Requests.Where(x => x.TargetAuthor.AuthorId == authorId)
                 .WithTargetAuthor()
                 .WithPledges();
+        }
+
+        public async Task RemoveRequest(ArticleRequest request)
+        {
+            _context.Requests.Remove(request);
+            await _context.SaveChangesAsync();
         }
     }
 }

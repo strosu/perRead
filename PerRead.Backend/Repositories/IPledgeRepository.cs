@@ -7,12 +7,11 @@ namespace PerRead.Backend.Repositories
     {
         Task<RequestPledge> CreatePledge(Author pledger, ArticleRequest request, PledgeCommand pledgeCommand);
 
-        Task<RequestPledge> UpdatePledge(Author pledger, PledgeCommand pledgeCommand);
+        Task<RequestPledge> UpdatePledge(PledgeCommand pledgeCommand);
 
         IQueryable<RequestPledge> GetPledge(string pledgeId);
 
         Task DeletePledge(RequestPledge pledge);
-
     }
 
     public class PledgeRepository : IPledgeRepository
@@ -53,7 +52,7 @@ namespace PerRead.Backend.Repositories
             return _context.Pledges.Where(x => x.RequestPledgeId == pledgeId);
         }
 
-        public Task<RequestPledge> UpdatePledge(Author pledger, PledgeCommand pledgeCommand)
+        public Task<RequestPledge> UpdatePledge(PledgeCommand pledgeCommand)
         {
             throw new NotImplementedException();
         }

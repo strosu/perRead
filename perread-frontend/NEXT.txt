@@ -4,31 +4,28 @@ P0 scenarios:
 User:
 - register
 - log in
-- browse all articles - DONE
-- browse all authors - DONE
 - allow subscribing to an author; needs feed to author mappings too
-- allow subscribing to a section - DONE
-- have the feed populated with articles by the subscribed authors - DONE
-- articles read are saved in the user profile - DONE
-
-Author:
-- Buy credits - DONE
-- reading an article transfers the correct amount of credits from the reader to the author - DONE
-- withdraw credits - DONE
-- create an article including images - DONE
 
 P1 scenarios:
 - search by titles
 - search by author
 
 TODO NEXT:
+
+TODO Pledges:
+- view pledge details
+- allow editing your pledges
+- allow deleting a pledge (and implicitly a request, when no pledges are left)
+
+TODO Requests:
+- allow editing a request
+
+MISC:
 - component for presenting an article in the list of read articles
     - for read articles, show something clickable. Display more information, e.g. acquire date
 - component for editing a feed's properties, authors etc
     - component for presenting an author in the list of authors included in a feed
-- component for "buying" tokens - DONE
-- component for adding a section to one of multiple feeds - DONE
-- show all authors - DONE
+
 - show subscribed authors (authors for which at least one section is subscribed). Do we need a section preview? Might look better as cards vs tabs
 - user/author preferences:
     - allow uploading an profile image
@@ -48,16 +45,11 @@ TODO Sections:
 - private requests: either a single pledge for a request, request hidden and resulting in a private article 
     - alternatively, mechanism for sharing a private request (via a key?)
 
-BACKEND:
+TODO BACKEND:
 
-TODO:
-- add reading tokens to the current user (requires signing in)
-    - page with "prices" and token amounts
 - REFRESH TOKEN mechanism
 - Add User managemenent
-    - new table for user history, preferences etc
-    - add reading tokens (under Account)
-    - show unlocked articles; for privacy reasons, maybe don't store the list? need an alrorithm that would hash and see if an article is already unlocked (similar to password checking)
+    - (DONE) show unlocked articles; for privacy reasons, maybe don't store the list? need an alrorithm that would hash and see if an article is already unlocked (similar to password checking)
         - alternatively, keep true to the name and don't store anything. Ask for tokens on every single read, since the probability of rereading an article is small.
         - offer both versions when the user registers? easier to not store anything at start, since storing them securely is more work (TBD)
         - offer 2 buttons near the article: Read vs Read and Remember(?)
@@ -88,37 +80,18 @@ TODO:
 
 - make image an optional part of the request; if not sent, use the author's profile pic 
 - when filtering by tag, return all tags as part of the articlePreview; this fixes articles with multiple tags
-
-DONE:
-- proper implementation for many to many - DONE
-- stop returning redirects to stuff that doesn't exist lol (register, login) - DONE
-- create new user - DONE
-- authenticate as user - DONE
-- restrict access; play with roles, i.e. don't allow any user to create new articles - DONE
-- add tags controller, operations on it (atm only getOne)
-- endpoint for uploading images; can the image be combined with the main article post request? Seems so, via form?
-
-FRONTEND:
-
-TODO:
+    
+TODO FRONTEND:
 
 Bugs:
 - figure out why cliking on a tag in an article preview takes me to the article itself; see http://localhost:4200/tags/14 - bad routing
 - somehow wrap titles with long words in the article preview
 
-- input form for creating new article
-    - add rest of fields
-    - add image upload for each article
-    - send image as part of the request
-    - redirect to list of articles; alternatively, redirect to list of articles for current user (might be better)
-- rework article presentation "page"
 - unlock article UI
-
 - do not load article if not enough money; show modal with the error in case of bad requests?
 - refactor event bring raised from article-details instead of the service (somehow, maybe via maps. see comments). Alternatively, return a tuple of article, userData, although both messy
 
 - add home page
-
 - present all authors nicely
 - user page
 - display the login error properly
@@ -137,3 +110,35 @@ DONE:
 - make intercepter look at 401s all the time and redirect to login with current page as an argument - DONE
 - UI for subscribing to a section from a feed - DONE
 - UI for editing sections: adding more, editing existing - DONE
+- component for "buying" tokens - DONE
+- component for adding a section to one of multiple feeds - DONE
+- show all authors - DONE
+
+- browse all articles - DONE
+- browse all authors - DONE
+- allow subscribing to a section - DONE
+- have the feed populated with articles by the subscribed authors - DONE
+- articles read are saved in the user profile - DONE
+- input form for creating new article
+    - add rest of fields
+    - add image upload for each article
+    - send image as part of the request
+    - redirect to list of articles; alternatively, redirect to list of articles for current user (might be better)
+- rework article presentation "page"
+- proper implementation for many to many - DONE
+- stop returning redirects to stuff that doesn't exist lol (register, login) - DONE
+- create new user - DONE
+- authenticate as user - DONE
+- restrict access; play with roles, i.e. don't allow any user to create new articles - DONE
+- add tags controller, operations on it (atm only getOne)
+- endpoint for uploading images; can the image be combined with the main article post request? Seems so, via form?
+- add reading tokens to the current user (requires signing in) - DONE
+    - page with "prices" and token amounts
+- new table for user history, preferences etc
+- add reading tokens (under Account) - DONE
+
+Author:
+- Buy credits - DONE
+- reading an article transfers the correct amount of credits from the reader to the author - DONE
+- withdraw credits - DONE
+- create an article including images - DONE

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
 import { CreateRequestCommand } from '../models/request/create-request-command.model';
+import { RequestCommand } from '../models/request/request-command.model';
 import { RequestPreview } from '../models/request/request-preview.model';
 import { Request } from '../models/request/request.model';
 
@@ -23,6 +24,10 @@ export class RequestsService {
   }
 
   createRequest(requestCommand: CreateRequestCommand) : Observable<Request> {
-    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests`, requestCommand);
+    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests/add`, requestCommand);
+  }
+
+  editRequest(requestCommand: RequestCommand) : Observable<Request> {
+    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests/edit`, requestCommand);
   }
 }
