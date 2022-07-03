@@ -4,7 +4,7 @@
     {
         public string RequestPledgeId { get; set; }
 
-        public FERequest ParentRequest { get; set; }
+        public FERequestPreview ParentRequest { get; set; }
 
         public FEAuthorPreview Pledger { get; set; }
 

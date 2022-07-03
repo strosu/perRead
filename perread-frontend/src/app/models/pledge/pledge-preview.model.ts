@@ -2,6 +2,6 @@ import { AuthorPreview } from "../author/author-preview.model";
 
 export class PledgePreview {
     requestPledgeId: string = '';
-    pledges: AuthorPreview = <AuthorPreview>{};
+    pledger: AuthorPreview = <AuthorPreview>{};
     totalTokenSum: number = 0;
 }

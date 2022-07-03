@@ -13,6 +13,8 @@ namespace PerRead.Backend.Models.Commands
     {
         public string? PledgeId { get; set; }
 
+        public string? RequestId { get; set; }
+
         public uint TotalPledgeAmount { get; set; }
 
         public uint UpfrontPledgeAmount { get; set; }

@@ -5,9 +5,16 @@
     <app-author-preview [authorPreview]="request.targetAuthor"></app-author-preview>
 </div>
 
-<br>
-
-Description:
+<br> Description:
 <br>
 <h2>{{request.description}}</h2>
 <h2></h2>
+
+<br>Request state: {{request.requestState}}
+
+<br> Publish state:
+<h2>{{request.postPublishState}}</h2>
+
+<a routerLink="/requests/{{request.requestId}}/pledges/add" mat-raised-button color="primary">Add new pledge</a>
+
+<app-pledge-list [pledgePreviews]="request.pledgePreviews"></app-pledge-list>

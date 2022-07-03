@@ -13,6 +13,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
 import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
+import { AddPledgeComponent } from './components/pledges/add-pledge/add-pledge.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddRequestComponent } from './components/requests/add-request/add-request.component';
 import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
@@ -48,7 +49,8 @@ const routes: Routes = [
   { path: 'tokens/withdraw', component: WithdrawTokensComponent},
   { path: 'sections/:id/edit', component: SectionDetailsComponent},
   { path: 'requests/:authorId/new', component: AddRequestComponent},
-  { path: 'requests/:id', component: RequestDetailsComponent }
+  { path: 'requests/:id', component: RequestDetailsComponent },
+  { path: 'requests/:id/pledges/add', component: AddPledgeComponent }
 ];
 
 @NgModule({

@@ -1,0 +1,22 @@
+<mat-card class="with-margin">
+    <mat-card-title-group routerLink="/pledges/{{pledgePreview.requestPledgeId}}">
+        <!-- <mat-card-title>{{requestPreview.title}}</mat-card-title> -->
+        <mat-card-subtitle>
+            <!-- <div id="block_container">
+                <app-author-preview [authorPreview]="requestPreview.targetAuthor"></app-author-preview>
+                <div>{{requestPreview.createdAt | date:'EEEE, MMMM d, y'}}</div>
+            </div>
+
+            <p>Total pledged: {{requestPreview.pledgeAmount}}</p>
+            <p>Pledge count: {{requestPreview.pledgeCount}}</p> -->
+            <div id="block_container">
+                Pledger:
+                <app-author-preview [authorPreview]="pledgePreview.pledger"></app-author-preview>
+            </div>
+            Pledge amount: {{pledgePreview.totalTokenSum}}
+        </mat-card-subtitle>
+    </mat-card-title-group>
+    <!-- <mat-card-content>
+        <p>{{articlePreview.articlePreview}}</p>
+    </mat-card-content> -->
+</mat-card>

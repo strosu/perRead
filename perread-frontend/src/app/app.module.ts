@@ -61,7 +61,11 @@ import { RequestPreviewComponent } from './components/requests/request-preview/r
 import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
 import { RequestListComponent } from './components/requests/request-list/request-list.component';
 import { AuthorRequestsComponent } from './components/requests/author-requests/author-requests.component';
-import { AddRequestComponent } from './components/requests/add-request/add-request.component'; 
+import { AddRequestComponent } from './components/requests/add-request/add-request.component';
+import { PledgePreviewComponent } from './components/pledges/pledge-preview/pledge-preview.component';
+import { PledgeDetailsComponent } from './components/pledges/pledge-details/pledge-details.component';
+import { PledgeListComponent } from './components/pledges/pledge-list/pledge-list.component';
+import { AddPledgeComponent } from './components/pledges/add-pledge/add-pledge.component'; 
 
 @NgModule({
   declarations: [
@@ -109,7 +113,11 @@ import { AddRequestComponent } from './components/requests/add-request/add-reque
     RequestDetailsComponent,
     RequestListComponent,
     AuthorRequestsComponent,
-    AddRequestComponent
+    AddRequestComponent,
+    PledgePreviewComponent,
+    PledgeDetailsComponent,
+    PledgeListComponent,
+    AddPledgeComponent
   ],
   imports: [
     BrowserModule,

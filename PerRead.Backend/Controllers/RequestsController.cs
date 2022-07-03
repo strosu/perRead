@@ -37,6 +37,11 @@ namespace PerRead.Backend.Controllers
             return await _requestsService.CreateRequest(createRequestCommand);
         }
 
+        [HttpPost("pledges/add")]
+        public async Task<FEPledge> AddPledge([FromBody] PledgeCommand pledgeCommand)
+        {
+            return await _requestsService.AddPledge(pledgeCommand);
+        }
     }
 }
 

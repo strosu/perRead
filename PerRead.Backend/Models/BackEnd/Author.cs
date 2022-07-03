@@ -30,6 +30,8 @@
 
         public long ReadingTokens { get; set; }
 
+        public long EscrowTokens { get; set; }
+
         /// <summary>
         /// DO NOT USE THIS. Here just for EF convenience
         /// TODO - configure it differently to get rid of this

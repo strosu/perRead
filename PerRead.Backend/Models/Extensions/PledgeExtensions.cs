@@ -15,6 +15,19 @@ namespace PerRead.Backend.Models.Extensions
                 TotalTokenSum = pledge.TotalTokenSum
             };
         }
+
+        public static FEPledge ToFEPledge(this RequestPledge pledge, Author requester)
+        {
+            return new FEPledge
+            {
+                CreatedAt = pledge.CreatedAt,
+                TotalTokenSum = pledge.TotalTokenSum,
+                TokensOnAccept = pledge.TokensOnAccept,
+                ParentRequest = pledge.ParentRequest.ToFERequestPreview(requester),
+                Pledger = pledge.Pledger.ToFEAuthorPreview(),
+                RequestPledgeId = pledge.RequestPledgeId
+            };
+        }
     }
 }
 

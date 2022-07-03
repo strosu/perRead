@@ -6,6 +6,13 @@ namespace PerRead.Backend.Repositories
     public interface IPledgeRepository
     {
         Task<RequestPledge> CreatePledge(Author pledger, ArticleRequest request, PledgeCommand pledgeCommand);
+
+        Task<RequestPledge> UpdatePledge(Author pledger, PledgeCommand pledgeCommand);
+
+        IQueryable<RequestPledge> GetPledge(string pledgeId);
+
+        Task DeletePledge(RequestPledge pledge);
+
     }
 
     public class PledgeRepository : IPledgeRepository
@@ -33,6 +40,22 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
 
             return pledge;
+        }
+
+        public async Task DeletePledge(RequestPledge pledge)
+        {
+            _context.Pledges.Remove(pledge);
+            await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<RequestPledge> GetPledge(string pledgeId)
+        {
+            return _context.Pledges.Where(x => x.RequestPledgeId == pledgeId);
+        }
+
+        public Task<RequestPledge> UpdatePledge(Author pledger, PledgeCommand pledgeCommand)
+        {
+            throw new NotImplementedException();
         }
     }
 }

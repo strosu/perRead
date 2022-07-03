@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Extensions;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -9,12 +10,45 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly IArticleRepository _articleRepository;
+        private IRequesterGetter _requesterGetter;
 
-        public PaymentService(IAuthorRepository authorRepository, IHttpContextAccessor accessor, IArticleRepository articleRepository)
+        public PaymentService(IAuthorRepository authorRepository, IHttpContextAccessor accessor, IArticleRepository articleRepository, IRequesterGetter requesterGetter)
         {
             _authorRepository = authorRepository;
             _accessor = accessor;
             _articleRepository = articleRepository;
+            _requesterGetter = requesterGetter;
+        }
+
+        public async Task<PaymentResult> MoveFromEscrow(long amount)
+        {
+            var validationResult = await TryValidateInput(amount, author => author.EscrowTokens);
+
+            if (!validationResult.opResult)
+            {
+                return validationResult.result;
+            }
+
+            var requester = await _requesterGetter.GetRequester();
+
+            await _authorRepository.MoveFromEscrow(requester, amount);
+
+            return PaymentResult.Success;
+        }
+
+        public async Task<PaymentResult> MoveToEscrow(long amount)
+        {
+            var validationResult = await TryValidateInput(amount, author => author.ReadingTokens);
+
+            if (!validationResult.opResult)
+            {
+                return validationResult.result;
+            }
+
+            var requester = await _requesterGetter.GetRequester();
+            await _authorRepository.MoveToEscrow(requester, amount);
+
+            return PaymentResult.Success;
         }
 
         public async Task<PaymentResult> Settle(string articleId, string to, long amount)
@@ -63,12 +97,42 @@ namespace PerRead.Backend.Services
                 Result = PaymentResultEnum.Success
             };
         }
+
+        private async Task<(bool opResult, PaymentResult result)> TryValidateInput(long amount, Func<Author, long> func)
+        {
+            if (amount < 0)
+            {
+                return (false, new PaymentResult
+                {
+                    Result = PaymentResultEnum.Failed,
+                    Reason = "Invalid amount"
+                });
+            }
+
+            var requester = _accessor.GetUserId();
+            var author = await _authorRepository.GetAuthorWithReadArticles(requester).SingleAsync();
+
+            if (func(author) < amount)
+            {
+                return (false, new PaymentResult
+                {
+                    Reason = $"Insufficient funds, please use a value no more than {author.ReadingTokens}",
+                    Result = PaymentResultEnum.Failed
+                });
+            }
+
+            return (true, PaymentResult.Success);
+        }
     }
 
     public interface IPaymentService
     {
         // TODO - the payments service should not be concerned with articleIds
         Task<PaymentResult> Settle(string articleId, string to, long amount);
+
+        Task<PaymentResult> MoveToEscrow(long amount);
+
+        Task<PaymentResult> MoveFromEscrow(long amount);
     }
 
     public class PaymentResult

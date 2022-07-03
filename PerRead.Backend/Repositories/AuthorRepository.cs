@@ -192,6 +192,24 @@ namespace PerRead.Backend.Repositories
         {
             return await GetAuthor(id).SingleOrDefaultAsync();
         }
+
+        public async Task MoveToEscrow(Author author, long amount)
+        {
+            //var author = await _context.Authors.Where(x => x.AuthorId == id).FirstAsync();
+            author.ReadingTokens -= amount;
+            author.EscrowTokens += amount;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MoveFromEscrow(Author author, long amount)
+        {
+            //var author = await _context.Authors.Where(x => x.AuthorId == id).FirstAsync();
+            author.ReadingTokens += amount;
+            author.EscrowTokens -= amount;
+
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface IAuthorRepository
@@ -227,6 +245,10 @@ namespace PerRead.Backend.Repositories
         Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds);
 
         Task IncrementPublishedArticleCount(string authorId);
+
+        Task MoveToEscrow(Author author, long amount);
+
+        Task MoveFromEscrow(Author author, long amount);
     }
 
     public class AuthorCommand
