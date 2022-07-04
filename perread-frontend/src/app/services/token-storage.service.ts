@@ -52,6 +52,11 @@ export class TokenStorageService {
     return {};
   }
 
+  getUserId() : string {
+    var json = this.getUser();
+    return json.sub;
+  }
+
   getRoles() : any {
     return {};
   }

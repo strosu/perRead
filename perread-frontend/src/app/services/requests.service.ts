@@ -5,7 +5,7 @@ import { Constants } from '../constants';
 import { CreateRequestCommand } from '../models/request/create-request-command.model';
 import { RequestCommand } from '../models/request/request-command.model';
 import { RequestPreview } from '../models/request/request-preview.model';
-import { Request } from '../models/request/request.model';
+import { ArticleRequest } from '../models/request/request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +19,15 @@ export class RequestsService {
     return this.httpClient.get<RequestPreview[]>(`${Constants.BACKENDURL}/author/${authorId}/requests`);
   }
 
-  getRequest(requestId: string) : Observable<Request> {
-    return this.httpClient.get<Request>(`${Constants.BACKENDURL}/requests/${requestId}`);
+  getRequest(requestId: string) : Observable<ArticleRequest> {
+    return this.httpClient.get<ArticleRequest>(`${Constants.BACKENDURL}/requests/${requestId}`);
   }
 
-  createRequest(requestCommand: CreateRequestCommand) : Observable<Request> {
-    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests/add`, requestCommand);
+  createRequest(requestCommand: CreateRequestCommand) : Observable<ArticleRequest> {
+    return this.httpClient.post<ArticleRequest>(`${Constants.BACKENDURL}/requests/add`, requestCommand);
   }
 
-  editRequest(requestCommand: RequestCommand) : Observable<Request> {
-    return this.httpClient.post<Request>(`${Constants.BACKENDURL}/requests/edit`, requestCommand);
+  editRequest(requestCommand: RequestCommand) : Observable<ArticleRequest> {
+    return this.httpClient.post<ArticleRequest>(`${Constants.BACKENDURL}/requests/edit`, requestCommand);
   }
 }

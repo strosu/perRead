@@ -23,7 +23,7 @@ export class AddRequestComponent implements OnInit {
   constructor(
     private requestService: RequestsService,
     private router: Router,
-    private route: ActivatedRoute,) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.requestCommand.targetAuthorId = String(this.route.snapshot.paramMap.get('authorId'));

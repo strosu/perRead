@@ -14,6 +14,7 @@ import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.c
 import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
 import { AddPledgeComponent } from './components/pledges/add-pledge/add-pledge.component';
+import { EditPledgeComponent } from './components/pledges/edit-pledge/edit-pledge.component';
 import { PledgeDetailsComponent } from './components/pledges/pledge-details/pledge-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddRequestComponent } from './components/requests/add-request/add-request.component';
@@ -51,8 +52,9 @@ const routes: Routes = [
   { path: 'sections/:id/edit', component: SectionDetailsComponent},
   { path: 'requests/:authorId/new', component: AddRequestComponent},
   { path: 'requests/:id', component: RequestDetailsComponent },
-  { path: 'requests/:id/pledges/add', component: AddPledgeComponent },
-  { path: 'pledges/:id', component: PledgeDetailsComponent }
+  { path: 'requests/:requestId/pledges/add', component: AddPledgeComponent },
+  { path: 'pledges/:id', component: PledgeDetailsComponent },
+  { path: 'pledges/:id/edit', component: EditPledgeComponent }
 ];
 
 @NgModule({

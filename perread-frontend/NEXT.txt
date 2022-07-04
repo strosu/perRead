@@ -19,6 +19,11 @@ TODO Pledges:
 
 TODO Requests:
 - allow editing a request
+- allow accepting a request
+- allow finishing a request and associating it with a new article (during article creation maybe)
+
+TODO Transactions:
+- each token move needs to be logged; users needs to be able to see their list of transactions
 
 MISC:
 - component for presenting an article in the list of read articles

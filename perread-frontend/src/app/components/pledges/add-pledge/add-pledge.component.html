@@ -1,1 +1,20 @@
-<p>add-pledge works!</p>
+<h1><b>Add new pledge</b></h1>
+
+<div>
+    <div class="submit-form">
+
+        <div class="form-group">
+            <label for="total">Total pledge amount</label>
+            <input type="number" class="form-control" id="total" required [(ngModel)]="this.pledgeCommand.totalPledgeAmount" name="total" />
+        </div>
+
+        <div class="form-group">
+            <label for="upfront">Upfront pledged</label>
+            <input type="number" class="form-control" id="upfront" required [(ngModel)]="this.pledgeCommand.upfrontPledgeAmount" name="upfront" />
+        </div>
+
+        <div class="form-group">
+            <button (click)="addPledge()" class="btn btn-success button-spacing">Submit</button>
+        </div>
+    </div>
+</div>

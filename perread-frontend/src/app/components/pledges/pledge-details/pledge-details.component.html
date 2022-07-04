@@ -1,1 +1,30 @@
-<p>pledge-details works!</p>
+<h1>
+    <div id="block_container">
+        Pledge for {{pledge.totalTokenSum}} towards
+        <a href="/requests/{{pledge.parentRequest.requestId}}}">
+            {{pledge.parentRequest.title}}
+        </a>
+    </div>
+</h1>
+
+<h2>
+    <div id="block_container">
+        Target author:
+        <app-author-preview [authorPreview]="pledge.parentRequest.targetAuthor"></app-author-preview>
+    </div>
+</h2>
+<div id="block_container">
+    Created at
+    <div>{{pledge.createdAt| date:'EEEE, MMMM d, y'}}</div>
+    by
+    <app-author-preview [authorPreview]="pledge.pledger"></app-author-preview>
+</div>
+
+Tokens on accept: {{pledge.tokensOnAccept}}
+<br> Total tokens: {{pledge.totalTokenSum}}
+
+<br>
+<br>
+<div *ngIf="editable">
+    <a routerLink="/pledges/{{pledge.requestPledgeId}}/edit" mat-raised-button color="primary">Edit pledge</a>
+</div>

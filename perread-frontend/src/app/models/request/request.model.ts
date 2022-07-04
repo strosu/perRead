@@ -3,7 +3,7 @@ import { AuthorPreview } from "../author/author-preview.model";
 import { PledgePreview } from "../pledge/pledge-preview.model";
 import { RequestPostPublishState, RequestState } from "./request-preview.model";
 
-export class Request {
+export class ArticleRequest {
     requestId : string = '';
     title: string = '';
     description: string = '';

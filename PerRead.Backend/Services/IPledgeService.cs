@@ -81,7 +81,7 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("You need an id to edit an existing pledge");
             }
 
-            var pledge = await _pledgeRepository.GetPledge(pledgeComand.PledgeId).FirstOrDefaultAsync();
+            var pledge = await GetPledge(pledgeComand.PledgeId);
 
             if (pledge == null)
             {
@@ -95,7 +95,9 @@ namespace PerRead.Backend.Services
         public async Task<FEPledge> GetPledge(string pledgeId)
         {
             var requester = await _requesterGetter.GetRequester();
-            return (await _pledgeRepository.GetPledge(pledgeId).FirstOrDefaultAsync())?.ToFEPledge(requester);
+            return (await _pledgeRepository.GetPledge(pledgeId)
+                .Include(x => x.ParentRequest)
+                .ThenInclude(x => x.TargetAuthor).FirstOrDefaultAsync())?.ToFEPledge(requester);
         }
     }
 }
