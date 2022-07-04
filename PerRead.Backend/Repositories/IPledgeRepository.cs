@@ -1,4 +1,5 @@
-﻿using PerRead.Backend.Models.BackEnd;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 
 namespace PerRead.Backend.Repositories
@@ -52,9 +53,15 @@ namespace PerRead.Backend.Repositories
             return _context.Pledges.Where(x => x.RequestPledgeId == pledgeId);
         }
 
-        public Task<RequestPledge> UpdatePledge(PledgeCommand pledgeCommand)
+        public async Task<RequestPledge> UpdatePledge(PledgeCommand pledgeCommand)
         {
-            throw new NotImplementedException();
+            var pledge = await _context.Pledges.FirstOrDefaultAsync(x => x.RequestPledgeId == pledgeCommand.PledgeId);
+            pledge.TokensOnAccept = pledgeCommand.UpfrontPledgeAmount;
+            pledge.TotalTokenSum = pledgeCommand.TotalPledgeAmount;
+
+            await _context.SaveChangesAsync();
+
+            return pledge;
         }
     }
 }

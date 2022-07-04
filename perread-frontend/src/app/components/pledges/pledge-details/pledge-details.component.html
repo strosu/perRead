@@ -1,7 +1,7 @@
 <h1>
     <div id="block_container">
         Pledge for {{pledge.totalTokenSum}} towards
-        <a href="/requests/{{pledge.parentRequest.requestId}}}">
+        <a href="/requests/{{pledge.parentRequest.requestId}}">
             {{pledge.parentRequest.title}}
         </a>
     </div>
@@ -15,7 +15,7 @@
 </h2>
 <div id="block_container">
     Created at
-    <div>{{pledge.createdAt| date:'EEEE, MMMM d, y'}}</div>
+    <div>{{pledge.createdAt| date:'EEEE, MMMM d, y HH:mm'}}</div>
     by
     <app-author-preview [authorPreview]="pledge.pledger"></app-author-preview>
 </div>
@@ -26,5 +26,8 @@ Tokens on accept: {{pledge.tokensOnAccept}}
 <br>
 <br>
 <div *ngIf="editable">
-    <a routerLink="/pledges/{{pledge.requestPledgeId}}/edit" mat-raised-button color="primary">Edit pledge</a>
+    <div id="block_container">
+        <a routerLink="/pledges/{{pledge.requestPledgeId}}/edit" mat-raised-button color="primary">Edit pledge</a>
+        <button (click)="deletePledge()" class="btn btn-danger with-margin">Delete</button>
+    </div>
 </div>

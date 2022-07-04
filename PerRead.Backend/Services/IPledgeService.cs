@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -48,7 +48,8 @@ namespace PerRead.Backend.Services
         public async Task<FERequest> RemovePledge(string pledgeId)
         {
             var pledge = await _pledgeRepository.GetPledge(pledgeId)
-                .Include(x => x.ParentRequest).FirstOrDefaultAsync();
+                .Include(x => x.ParentRequest)
+                .FirstOrDefaultAsync();
 
             if (pledge == null)
             {
@@ -62,6 +63,7 @@ namespace PerRead.Backend.Services
             }
 
             await _pledgeRepository.DeletePledge(pledge);
+            await _authorRepository.MoveFromEscrow(pledge.Pledger, pledge.TotalTokenSum);
 
             var request = await _requestsRepository.GetRequest(pledge.ParentRequest.ArticleRequestId).FirstOrDefaultAsync();
 
@@ -81,23 +83,42 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("You need an id to edit an existing pledge");
             }
 
-            var pledge = await GetPledge(pledgeComand.PledgeId);
+            var pledge = await GetPledgeObject(pledgeComand.PledgeId);
 
             if (pledge == null)
             {
                 throw new ArgumentException($"Could not find the targeted pledge {pledgeComand.PledgeId}");
             }
 
+            var initialAmount = pledge.TotalTokenSum;
+
+            var newPledge = await _pledgeRepository.UpdatePledge(pledgeComand);
+
+            if (newPledge.TotalTokenSum > initialAmount)
+            {
+                await _authorRepository.MoveToEscrow(pledge.Pledger, newPledge.TotalTokenSum - initialAmount);
+            }
+            else
+            {
+                await _authorRepository.MoveFromEscrow(pledge.Pledger, initialAmount - newPledge.TotalTokenSum);
+            }
+
             var requester = await _requesterGetter.GetRequester();
-            return (await _pledgeRepository.UpdatePledge(pledgeComand)).ToFEPledge(requester);
+            return newPledge.ToFEPledge(requester);
         }
 
         public async Task<FEPledge> GetPledge(string pledgeId)
         {
             var requester = await _requesterGetter.GetRequester();
+            return (await GetPledgeObject(pledgeId)).ToFEPledge(requester);
+        }
+
+        private async Task<RequestPledge> GetPledgeObject(string pledgeId)
+        {
             return (await _pledgeRepository.GetPledge(pledgeId)
                 .Include(x => x.ParentRequest)
-                .ThenInclude(x => x.TargetAuthor).FirstOrDefaultAsync())?.ToFEPledge(requester);
+                .ThenInclude(x => x.TargetAuthor)
+                .Include(x => x.Pledger).FirstOrDefaultAsync());
         }
     }
 }

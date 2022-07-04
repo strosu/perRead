@@ -25,6 +25,6 @@ export class PledgeService {
   }
 
   deletePledge(pledgeId: string) : Observable<Request> {
-    return this.httpClient.delete<Request>(`${Constants.BACKENDURL}/pledges/${pledgeId}}`);
+    return this.httpClient.delete<Request>(`${Constants.BACKENDURL}/pledges/${pledgeId}`);
   }
 }

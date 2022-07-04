@@ -48,7 +48,7 @@ namespace PerRead.Backend.Repositories
 
         public async Task<ArticleRequest> EditRequest(RequestCommand requestCommand)
         {
-            var request = await _context.Requests.Where(x => x.ArticleRequestId == requestCommand.RequestId).FirstOrDefaultAsync();
+            var request = await _context.Requests.FirstOrDefaultAsync(x => x.ArticleRequestId == requestCommand.RequestId);
 
             request.Title = requestCommand.Title;
             request.Description = requestCommand.Description;

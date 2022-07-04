@@ -1,1 +1,27 @@
-<p>edit-pledge works!</p>
+<h1>
+    <div id="block_container">
+        <b>Edit pledge</b>
+        <a href="/pledges/{{pledgeCommand.pledgeId}}">
+            {{pledge.parentRequest.title}}
+        </a>
+    </div>
+</h1>
+
+<div>
+    <div class="submit-form ">
+
+        <div class="form-group ">
+            <label for="total ">Total pledge amount</label>
+            <input type="number " class="form-control " id="total " required [(ngModel)]="this.pledgeCommand.totalPledgeAmount " name="total " />
+        </div>
+
+        <div class="form-group ">
+            <label for="upfront ">Upfront pledged</label>
+            <input type="number " class="form-control " id="upfront " required [(ngModel)]="this.pledgeCommand.upfrontPledgeAmount " name="upfront " />
+        </div>
+
+        <div class="form-group ">
+            <button (click)="savePledge() " class="btn btn-success button-spacing with-margin">Submit</button>
+        </div>
+    </div>
+</div>

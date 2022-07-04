@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PledgeCommand } from 'src/app/models/pledge/pledge--command.model';
+import { Pledge } from 'src/app/models/pledge/pledge.model';
 import { PledgeService } from 'src/app/services/pledge.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { PledgeService } from 'src/app/services/pledge.service';
 export class EditPledgeComponent implements OnInit {
 
   pledgeCommand: PledgeCommand = <PledgeCommand>{};
+  pledge: Pledge = <Pledge>{};
 
   constructor(private pledgeService : PledgeService,
     private route: ActivatedRoute,
@@ -22,9 +24,10 @@ export class EditPledgeComponent implements OnInit {
 
     this.pledgeService.getPledge(id).subscribe({
       next: data => {
-        this.pledgeCommand.requestId = data.parentRequest.requestId;
-        this.pledgeCommand.totalPledgeAmount = data.totalTokenSum;
-        this.pledgeCommand.upfrontPledgeAmount = data.tokensOnAccept;
+        this.pledge = data;
+        this.pledgeCommand.requestId = this.pledge.parentRequest.requestId;
+        this.pledgeCommand.totalPledgeAmount = this.pledge.totalTokenSum;
+        this.pledgeCommand.upfrontPledgeAmount = this.pledge.tokensOnAccept;
       }
     });
   }
