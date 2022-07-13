@@ -18,6 +18,7 @@ import { EditPledgeComponent } from './components/pledges/edit-pledge/edit-pledg
 import { PledgeDetailsComponent } from './components/pledges/pledge-details/pledge-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AddRequestComponent } from './components/requests/add-request/add-request.component';
+import { EditRequestComponent } from './components/requests/edit-request/edit-request.component';
 import { RequestDetailsComponent } from './components/requests/request-details/request-details.component';
 import { AddSectionComponent } from './components/sections/add-section/add-section.component';
 import { SectionDetailsComponent } from './components/sections/section-details/section-details.component';
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'sections/:id/edit', component: SectionDetailsComponent},
   { path: 'requests/:authorId/new', component: AddRequestComponent},
   { path: 'requests/:id', component: RequestDetailsComponent },
+  { path: 'requests/:id/edit', component: EditRequestComponent },
   { path: 'requests/:requestId/pledges/add', component: AddPledgeComponent },
   { path: 'pledges/:id', component: PledgeDetailsComponent },
   { path: 'pledges/:id/edit', component: EditPledgeComponent }

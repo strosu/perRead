@@ -27,6 +27,8 @@ namespace PerRead.Backend.Models.FrontEnd
         public DateTime CreatedAt { get; set; }
 
         public IEnumerable<FEPledgePreview> PledgePreviews { get; set; }
+
+        public bool EditableByCurrentUser { get; set; }
     }
 }
 

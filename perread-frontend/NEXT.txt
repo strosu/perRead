@@ -13,14 +13,16 @@ P1 scenarios:
 TODO NEXT:
 
 TODO Pledges:
-- view pledge details
-- allow editing your pledges
-- allow deleting a pledge (and implicitly a request, when no pledges are left)
+- view pledge details - DONE
+- allow editing your pledges - DONE
+- allow deleting a pledge (and implicitly a request, when no pledges are left) - DONE
+- see all pledges under user profile
 
 TODO Requests:
-- allow editing a request
+- allow editing a request, only if you're the only pledger
 - allow accepting a request
 - allow finishing a request and associating it with a new article (during article creation maybe)
+- properly set the type of request
 
 TODO Transactions:
 - each token move needs to be logged; users needs to be able to see their list of transactions

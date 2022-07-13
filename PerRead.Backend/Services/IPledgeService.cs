@@ -67,7 +67,7 @@ namespace PerRead.Backend.Services
 
             var request = await _requestsRepository.GetRequest(pledge.ParentRequest.ArticleRequestId).FirstOrDefaultAsync();
 
-            if (request.Pledges.Count == 1)
+            if (request.Pledges.Count == 0)
             {
                 await _requestsRepository.RemoveRequest(request);
                 return null;

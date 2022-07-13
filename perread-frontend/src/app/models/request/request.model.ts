@@ -16,4 +16,5 @@ export class ArticleRequest {
     deadLine?: Date;
     createdAt? : Date;
     pledgePreviews: PledgePreview[] = [];
+    editableByCurrentUser: boolean = false;
 }

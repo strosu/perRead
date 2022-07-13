@@ -17,6 +17,11 @@
 <br> Publish state:
 <h2>{{request.postPublishState}}</h2>
 
+<div *ngIf="request.editableByCurrentUser">
+    <button routerLink="/requests/{{request.requestId}/edit" mat-raised-button color="primary">Edit request</button>
+    <button (click)="deleteRequest()" mat-raised-button color="primary" class="with-margin">Delete</button>
+</div>
+
 <a routerLink="/requests/{{request.requestId}}/pledges/add" mat-raised-button color="primary">Add new pledge</a>
 
 <app-pledge-list [pledgePreviews]="request.pledgePreviews"></app-pledge-list>

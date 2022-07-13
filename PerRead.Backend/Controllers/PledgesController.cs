@@ -8,11 +8,11 @@ namespace PerRead.Backend.Controllers
 {
     [ApiController]
     [Authorize]
-    public class PledgeController : ControllerBase
+    public class PledgesController : ControllerBase
     {
         private readonly IPledgeService _pledgeService;
 
-        public PledgeController(IPledgeService pledgeService)
+        public PledgesController(IPledgeService pledgeService)
         {
             _pledgeService = pledgeService;
         }

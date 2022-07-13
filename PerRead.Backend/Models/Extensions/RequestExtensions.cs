@@ -1,4 +1,5 @@
 ﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.BusinessRules;
 using PerRead.Backend.Models.FrontEnd;
 
 namespace PerRead.Backend.Models.Extensions
@@ -20,7 +21,8 @@ namespace PerRead.Backend.Models.Extensions
                 RequestState = request.RequestState,
                 ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
                 CreatedAt = request.CreatedAt,
-                PledgePreviews = request.Pledges.Select(x => x.ToFEPledgePreview())
+                PledgePreviews = request.Pledges.Select(x => x.ToFEPledgePreview()),
+                EditableByCurrentUser = RequestRules.IsEditable(request, requester)
             };
         }
 
@@ -38,7 +40,7 @@ namespace PerRead.Backend.Models.Extensions
                 PostPublishState = request.PostPublishState,
                 RequestState = request.RequestState,
                 ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
-                CreatedAt = request.CreatedAt
+                CreatedAt = request.CreatedAt,
             };
         }
     }

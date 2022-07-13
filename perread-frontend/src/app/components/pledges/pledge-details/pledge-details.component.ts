@@ -35,7 +35,12 @@ export class PledgeDetailsComponent implements OnInit {
     this.pledgeService.deletePledge(this.pledge.requestPledgeId).subscribe({
       next: data => {
         console.log(data);
-        this.router.navigate([`/requests/${this.pledge.parentRequest.requestId}`], { replaceUrl: true });
+        if (data === null) {
+          this.router.navigate([`/authors/${this.pledge.parentRequest.targetAuthor.authorId}`], { replaceUrl: true });
+        }
+        else {
+          this.router.navigate([`/requests/${this.pledge.parentRequest.requestId}`], { replaceUrl: true });
+        }
       }
     });
   }

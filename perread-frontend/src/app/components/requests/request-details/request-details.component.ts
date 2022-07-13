@@ -29,4 +29,7 @@ export class RequestDetailsComponent implements OnInit {
     });
   }
 
+  deleteRequest() : void {
+  }
+
 }
