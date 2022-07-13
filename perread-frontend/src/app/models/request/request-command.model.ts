@@ -2,7 +2,6 @@ import { RequestPostPublishState } from "./request-preview.model";
 
 export class RequestCommand {
     requestId: string = '';
-    targetAuthorId: string = '';
     title: string = '';
     description: string = '';
     postPublishState: RequestPostPublishState = <RequestPostPublishState>{};

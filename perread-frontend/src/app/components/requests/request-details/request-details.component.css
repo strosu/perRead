@@ -3,4 +3,6 @@
     margin-bottom: 8px;
 }
 
-.danger {}
+.danger {
+    background-color: red;
+}

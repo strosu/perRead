@@ -10,6 +10,11 @@
 <h2>{{request.description}}</h2>
 <h2></h2>
 
+<div id="block_container">
+    <strong>Initiated by: </strong>
+    <app-author-preview [authorPreview]="request.initiator"></app-author-preview>
+</div>
+
 <h2>Total pledged so far: {{request.pledgeAmount}}</h2>
 
 <br>Request state: {{request.requestState}}
@@ -18,8 +23,8 @@
 <h2>{{request.postPublishState}}</h2>
 
 <div *ngIf="request.editableByCurrentUser">
-    <button routerLink="/requests/{{request.requestId}/edit" mat-raised-button color="primary">Edit request</button>
-    <button (click)="deleteRequest()" mat-raised-button color="primary" class="with-margin">Delete</button>
+    <button routerLink="/requests/{{request.requestId}}/edit" mat-raised-button color="primary">Edit request</button>
+    <button (click)="deleteRequest()" mat-raised-button color="primary" class="danger with-margin">Delete</button>
 </div>
 
 <a routerLink="/requests/{{request.requestId}}/pledges/add" mat-raised-button color="primary">Add new pledge</a>

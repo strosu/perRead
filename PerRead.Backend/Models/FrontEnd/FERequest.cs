@@ -12,6 +12,8 @@ namespace PerRead.Backend.Models.FrontEnd
 
         public FEAuthorPreview TargetAuthor { get; set; }
 
+        public FEAuthorPreview Initiator { get; set; }
+
         public int PledgeCount { get; set; }
 
         public long PledgeAmount { get; set; }
@@ -19,6 +21,7 @@ namespace PerRead.Backend.Models.FrontEnd
         public RequestState RequestState { get; set; }
 
         public RequestPostPublishState PostPublishState { get; set; }
+        public uint PercentForledgers { get; set; }
 
         public FEArticlePreview ResultingArticle { get; set; }
 

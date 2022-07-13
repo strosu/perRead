@@ -14,9 +14,10 @@ import { RequestsService } from 'src/app/services/requests.service';
 })
 export class AddRequestComponent implements OnInit {
 
-  requestCommand: RequestCommand = <RequestCommand>{};
-  pledgeCommand: PledgeCommand = <PledgeCommand>{};
-
+  createRequestCommand: CreateRequestCommand = <CreateRequestCommand>{};
+  // requestCommand: RequestCommand = <RequestCommand>{};
+  // pledgeCommand: PledgeCommand = <PledgeCommand>{};
+  
   statuses: RequestPostPublishState[] = [ RequestPostPublishState.Exclusive, RequestPostPublishState.ProfitShare, RequestPostPublishState.Public ];
   selectedStatus = new FormControl();
 
@@ -26,16 +27,16 @@ export class AddRequestComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.requestCommand.targetAuthorId = String(this.route.snapshot.paramMap.get('authorId'));
+    this.createRequestCommand.targetAuthorId = String(this.route.snapshot.paramMap.get('authorId'));
   }
 
   sendRequest() : void {
-    let createRequestCommand : CreateRequestCommand = {
-      requestCommand: this.requestCommand,
-      pledgeCommand : this.pledgeCommand
-    }
+    // let createRequestCommand : CreateRequestCommand = {
+    //   requestCommand: this.requestCommand,
+    //   pledgeCommand : this.pledgeCommand
+    // }
 
-    this.requestService.createRequest(createRequestCommand).subscribe({
+    this.requestService.createRequest(this.createRequestCommand).subscribe({
       next: data => {
         console.log(data);
         this.router.navigate([`/requests/${data.requestId}`], { replaceUrl: true });

@@ -5,7 +5,7 @@ import { Constants } from '../constants';
 import { CreateRequestCommand } from '../models/request/create-request-command.model';
 import { RequestCommand } from '../models/request/request-command.model';
 import { RequestPreview } from '../models/request/request-preview.model';
-import { ArticleRequest } from '../models/request/request.model';
+import { ArticleRequest } from '../models/request/article-request.model';
 
 @Injectable({
   providedIn: 'root'

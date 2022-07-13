@@ -1,5 +1,5 @@
 import { AuthorPreview } from "../author/author-preview.model";
-import { ArticleRequest } from "../request/request.model";
+import { ArticleRequest } from "../request/article-request.model";
 
 export class Pledge {
 

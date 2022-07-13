@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PledgePreview } from 'src/app/models/pledge/pledge-preview.model';
-import { ArticleRequest } from 'src/app/models/request/request.model';
+import { ArticleRequest } from 'src/app/models/request/article-request.model';
 
 @Component({
   selector: 'app-pledge-preview',

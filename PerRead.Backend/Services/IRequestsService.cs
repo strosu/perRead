@@ -36,7 +36,7 @@ namespace PerRead.Backend.Services
 
             var requester = await _requesterGetter.GetRequester();
 
-            var targetAuthor = await _authorRepository.GetAuthorAsync(requestCommand.TargetAuthorId);
+            var targetAuthor = await _authorRepository.GetAuthorAsync(createRequestCommand.TargetAuthorId);
 
             if (targetAuthor == null)
             {

@@ -14,15 +14,17 @@ namespace PerRead.Backend.Models.Extensions
                 Title = request.Title,
                 Description = request.Description,
                 TargetAuthor = request.TargetAuthor.ToFEAuthorPreview(),
+                Initiator = request.Initiator.ToFEAuthorPreview(),
                 PledgeCount = request.Pledges.Count,
                 PledgeAmount = request.Pledges.Sum(x => x.TotalTokenSum),
                 Deadline = request.Deadline,
                 PostPublishState = request.PostPublishState,
+                PercentForledgers = request.PercentForledgers,
                 RequestState = request.RequestState,
                 ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
                 CreatedAt = request.CreatedAt,
                 PledgePreviews = request.Pledges.Select(x => x.ToFEPledgePreview()),
-                EditableByCurrentUser = RequestRules.IsEditable(request, requester)
+                EditableByCurrentUser = RequestRules.IsEditable(request, requester),
             };
         }
 

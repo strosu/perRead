@@ -10,11 +10,13 @@ export class ArticleRequest {
     pledgeCount: number = 0;
     pledgeAmount: number = 0;
     targetAuthor: AuthorPreview = <AuthorPreview>{};
+    initiator: AuthorPreview = <AuthorPreview>{};
     requestState: RequestState = <RequestState>{};
     postPublishState: RequestPostPublishState = <RequestPostPublishState>{};
+    percentForledgers: number = 0;
     resultingArticle: ArticlePreview = <ArticlePreview>{};
-    deadLine?: Date;
-    createdAt? : Date;
+    deadLine: Date = <Date>{};
+    createdAt : Date = <Date>{};
     pledgePreviews: PledgePreview[] = [];
     editableByCurrentUser: boolean = false;
 }

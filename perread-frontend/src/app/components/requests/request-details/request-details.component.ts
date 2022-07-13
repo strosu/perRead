@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RequestPostPublishState, RequestPreview } from 'src/app/models/request/request-preview.model';
-import { ArticleRequest } from 'src/app/models/request/request.model';
+import { ArticleRequest } from 'src/app/models/request/article-request.model';
 import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({

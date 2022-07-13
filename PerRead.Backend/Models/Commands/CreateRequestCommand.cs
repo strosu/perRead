@@ -4,6 +4,8 @@ namespace PerRead.Backend.Models.Commands
 {
     public class CreateRequestCommand
     {
+        public string TargetAuthorId { get; set; }
+
         public RequestCommand RequestCommand { get; set; }
 
         public PledgeCommand PledgeCommand { get; set; }
@@ -23,8 +25,6 @@ namespace PerRead.Backend.Models.Commands
     public class RequestCommand
     {
         public string? RequestId { get; set; }
-
-        public string TargetAuthorId { get; set; }
 
         public string Title { get; set; }
 
