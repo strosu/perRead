@@ -8,6 +8,6 @@
 
         public string ProfileImageUri { get; set; }
 
-        public long ReadingTokens { get; set; }
+        public FEWalletPreview ReadingWallet { get; set; }
     }
 }

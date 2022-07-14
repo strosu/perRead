@@ -19,7 +19,7 @@ TODO Pledges:
 - see all pledges under user profile
 
 TODO Requests:
-- allow editing a request, only if you're the only pledger
+- allow editing a request, only if you're the only pledger - DONE
 - allow accepting a request
 - allow finishing a request and associating it with a new article (during article creation maybe)
 - properly set the type of request

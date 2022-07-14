@@ -10,7 +10,8 @@
             AuthorId = null,
             PublishSections = Enumerable.Empty<Section>(),
             Name = "Annonymous",
-            ReadingTokens = 0,
+            MainWallet = Wallet.EmptyWallet,
+            EscrowWallet = Wallet.EmptyWallet,
             RequireConfirmationAbove = 0,
             UnlockedArticles = new List<ArticleUnlock>()
         };
@@ -28,9 +29,13 @@
 
         public IEnumerable<Section> PublishSections { get; set; }
 
-        public long ReadingTokens { get; set; }
+        public Wallet MainWallet { get; set; }
 
-        public long EscrowTokens { get; set; }
+        public Wallet EscrowWallet { get; set; }
+
+        //public long ReadingTokens { get; set; }
+
+        //public long EscrowTokens { get; set; }
 
         /// <summary>
         /// DO NOT USE THIS. Here just for EF convenience

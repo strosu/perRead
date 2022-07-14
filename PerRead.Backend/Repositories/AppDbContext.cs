@@ -23,6 +23,10 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<RequestPledge> Pledges { get; set; }
 
+        public DbSet<Wallet> Wallets { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
+
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,6 +53,9 @@ namespace PerRead.Backend.Repositories
 
             modelBuilder.Entity<SectionFeedMapping>()
                 .HasKey(x => new { x.SectionId, x.FeedId });
+
+            modelBuilder.Entity<Wallet>()
+                .HasKey(x => x.WalledId);
 
             //modelBuilder.Entity<Author>()
             //    .HasMany(p => p.UnlockedArticles)
