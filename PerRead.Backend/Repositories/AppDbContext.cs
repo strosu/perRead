@@ -25,7 +25,7 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<Wallet> Wallets { get; set; }
 
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<PaymentTransaction> Transactions { get; set; }
 
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 

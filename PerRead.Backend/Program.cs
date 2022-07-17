@@ -89,12 +89,12 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IUserService, UserService>();
-    builder.Services.AddScoped<IPaymentService, PaymentService>();
     builder.Services.AddScoped<IFeedsService, FeedsService>();
     builder.Services.AddScoped<IRequesterGetter, RequesterGetter>();
     builder.Services.AddScoped<ISectionsService, SectionsService>();
     builder.Services.AddScoped<IRequestsService, RequestsService>();
     builder.Services.AddScoped<IPledgeService, PledgeService>();
+    builder.Services.AddScoped<IWalletService, WalletService>();
 
     // Repositories
     builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
@@ -105,6 +105,8 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ISectionRepository, SectionRepository>();
     builder.Services.AddScoped<IRequestsRepository, RequestsRepository>();
     builder.Services.AddScoped<IPledgeRepository, PledgeRepository>();
+    builder.Services.AddScoped<IWalletRepository, WalletRepository>();
+    builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 

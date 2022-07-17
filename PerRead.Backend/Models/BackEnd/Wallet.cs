@@ -15,8 +15,6 @@
 
         public long TokenAmount { get; set; }
 
-        public IList<Transaction> TransactionsTo { get; set; }
-        
-        public IList<Transaction> TransactionsFrom { get; set; }
+        public IList<PaymentTransaction> Transactions { get; set; }
     }
 }

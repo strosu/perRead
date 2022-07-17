@@ -35,7 +35,9 @@ namespace PerRead.Backend.Repositories
             }
 
             return _context.Authors
-                .Where(author => author.AuthorId == id);
+                .Where(author => author.AuthorId == id)
+                .Include(author => author.MainWallet)
+                .Include(author => author.EscrowWallet);
         }
 
         public IQueryable<Section> GetAuthorSections(string authorId)
@@ -83,56 +85,11 @@ namespace PerRead.Backend.Repositories
                     .ThenInclude(ar => ar.Tags);
         }
 
-        public async Task<long> AddMoreTokensAsync(string userId, int amount)
-        {
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == userId);
-
-            if (author == null)
-            {
-                throw new ArgumentException(nameof(userId));
-            }
-
-            author.ReadingTokens += amount;
-
-            await _context.SaveChangesAsync();
-
-            return author.ReadingTokens;
-        }
-
-        public async Task<long> WithdrawTokens(string authorId, int amount)
-        {
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
-
-            if (author == null)
-            {
-                throw new ArgumentException(nameof(authorId));
-            }
-
-            if (author.ReadingTokens < amount)
-            {
-                throw new ArgumentException("Insufficient tokens");
-            }
-
-            author.ReadingTokens -= amount;
-
-            await _context.SaveChangesAsync();
-
-            return author.ReadingTokens;
-        }
 
         public async Task IncrementPublishedArticleCount(string authorId)
         {
             var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
             author.PublishedArticleCount++;
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddTokens(string authorId, long amount)
-        {
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.AuthorId == authorId);
-
-            author.ReadingTokens += amount;
 
             await _context.SaveChangesAsync();
         }
@@ -151,7 +108,6 @@ namespace PerRead.Backend.Repositories
                 ArticleId = article.ArticleId,
                 AuthorId = authorId,
             });
-            author.ReadingTokens -= article.Price;
 
             await _context.SaveChangesAsync();
         }
@@ -188,27 +144,9 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        async Task<Author> IAuthorRepository.GetAuthorAsync(string id)
+        public async Task<Author> GetAuthorAsync(string id)
         {
             return await GetAuthor(id).SingleOrDefaultAsync();
-        }
-
-        public async Task MoveToEscrow(Author author, long amount)
-        {
-            //var author = await _context.Authors.Where(x => x.AuthorId == id).FirstAsync();
-            author.ReadingTokens -= amount;
-            author.EscrowTokens += amount;
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task MoveFromEscrow(Author author, long amount)
-        {
-            //var author = await _context.Authors.Where(x => x.AuthorId == id).FirstAsync();
-            author.ReadingTokens += amount;
-            author.EscrowTokens -= amount;
-
-            await _context.SaveChangesAsync();
         }
     }
 
@@ -230,12 +168,6 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Section> GetAuthorSections(string authorId);
 
-        Task<long> AddMoreTokensAsync(string usedId, int amount);
-
-        Task<long> WithdrawTokens(string authorId, int amount);
-
-        Task AddTokens(string authorId, long amount);
-
         Task MarkAsRead(string authorId, Article article);
 
         // TODO - rename userSettings object to something else;
@@ -245,10 +177,6 @@ namespace PerRead.Backend.Repositories
         Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds);
 
         Task IncrementPublishedArticleCount(string authorId);
-
-        Task MoveToEscrow(Author author, long amount);
-
-        Task MoveFromEscrow(Author author, long amount);
     }
 
     public class AuthorCommand

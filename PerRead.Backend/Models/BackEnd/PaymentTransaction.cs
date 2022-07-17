@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace PerRead.Backend.Models.BackEnd
 {
-    public class Transaction
+    public class PaymentTransaction
     {
         public string TransactionId { get; set; }
 
@@ -12,6 +12,8 @@ namespace PerRead.Backend.Models.BackEnd
         public Wallet Destination { get; set; }
 
         public TransactionType TransactionType { get; set; }
+
+        public long TokenAmount { get; set; }
 }
 
     public enum TransactionType {

@@ -21,7 +21,7 @@ namespace PerRead.Backend.Models.Helpers
 
             var articlePrice = articlePreview.ArticlePrice;
 
-            if (requester.ReadingTokens < articlePrice)
+            if (requester.MainWallet.TokenAmount < articlePrice)
             {
                 return ReadingState.Unaffordable;
             }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PerRead.Backend.Filters;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
+using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
 
 namespace PerRead.Controllers
@@ -13,12 +14,10 @@ namespace PerRead.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
-        private readonly IPaymentService _paymentService;
 
-        public ArticleController(IArticleService articleService, IPaymentService paymentService)
+        public ArticleController(IArticleService articleService)
         {
             _articleService = articleService;
-            _paymentService = paymentService;
         }
 
         [HttpGet("")]
@@ -41,7 +40,9 @@ namespace PerRead.Controllers
                 return NotFound();
             }
 
-            var paymentResult = await _paymentService.Settle(id, article.AuthorPreviews.First().AuthorId, article.Price);
+            //var paymentResult = await _paymentService.Settle(id, article.AuthorPreviews.First().AuthorId, article.Price);
+
+            var paymentResult = await _articleService.UnlockForCurrentUser(id);
 
             if (paymentResult.Result == PaymentResultEnum.Success)
             {

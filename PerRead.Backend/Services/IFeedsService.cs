@@ -165,7 +165,7 @@ namespace PerRead.Backend.Services
 
             if (!feed.ShowUnaffordableArticles)
             {
-                articles = articles.Where(x => x.Price <= requester.ReadingTokens);
+                articles = articles.Where(x => x.Price <= requester.MainWallet.TokenAmount);
             }
 
             return articles;

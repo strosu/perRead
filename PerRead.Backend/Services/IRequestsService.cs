@@ -17,17 +17,19 @@ namespace PerRead.Backend.Services
 
     public class RequestsService : IRequestsService
     {
+        private readonly IWalletService _walletService;
         private readonly IAuthorRepository _authorRepository;
         private readonly IRequestsRepository _requestsRepository;
         private readonly IPledgeRepository _pledgeRepository;
         private IRequesterGetter _requesterGetter;
 
-        public RequestsService(IAuthorRepository authorRepository, IRequestsRepository requestsRepository, IPledgeRepository pledgeRepository, IRequesterGetter requesterGetter)
+        public RequestsService(IAuthorRepository authorRepository, IRequestsRepository requestsRepository, IPledgeRepository pledgeRepository, IRequesterGetter requesterGetter, IWalletService walletService)
         {
             _authorRepository = authorRepository;
             _requestsRepository = requestsRepository;
             _pledgeRepository = pledgeRepository;
             _requesterGetter = requesterGetter;
+            _walletService = walletService;
         }
 
         public async Task<FERequest> CreateRequest(CreateRequestCommand createRequestCommand)
@@ -48,7 +50,7 @@ namespace PerRead.Backend.Services
             var pledgeCommand = createRequestCommand.PledgeCommand;
 
             await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
-            await _authorRepository.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount);
+            await _walletService.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount);
 
             return await _requestsRepository.GetRequest(request.ArticleRequestId).Select(x => x.ToFERequest(requester)).SingleAsync();
         }

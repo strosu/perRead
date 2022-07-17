@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Repositories;
+using System.Security.Claims;
 
 namespace PerRead.Backend.Extensions
 {

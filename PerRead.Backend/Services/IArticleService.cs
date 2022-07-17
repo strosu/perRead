@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PerRead.Backend.Extensions;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
-
 
 namespace PerRead.Backend.Services
 {
@@ -17,6 +16,8 @@ namespace PerRead.Backend.Services
         Task<FEArticle> Create(ArticleCommand article);
 
         Task Delete(string id);
+
+        Task<TransactionResult> UnlockForCurrentUser(string id);
     }
 
     public class ArticleService : IArticleService
@@ -25,32 +26,33 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly ITagRepository _tagRespository;
         private readonly IImageService _imageService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISectionRepository _sectionRepository;
+        private readonly IRequesterGetter _requesterGetter;
+        private readonly IWalletService _walletService;
 
         public ArticleService(
             IArticleRepository articleRepository,
             IAuthorRepository authorRepository,
             ITagRepository tagRespository,
             IImageService imageService,
-            IHttpContextAccessor httpContextAccessor,
-            ISectionRepository sectionRepository)
+            ISectionRepository sectionRepository,
+            IRequesterGetter requesterGetter,
+            IWalletService walletService)
         {
             _articleRepository = articleRepository;
             _authorRepository = authorRepository;
             _tagRespository = tagRespository;
             _imageService = imageService;
-            _httpContextAccessor = httpContextAccessor;
             _sectionRepository = sectionRepository;
+            _requesterGetter = requesterGetter;
+            _walletService = walletService;
         }
 
         public async Task<FEArticle> Create(ArticleCommand article)
         {
             article.CheckValid();
 
-            var authorId = _httpContextAccessor.GetUserId();
-
-            var author = await _authorRepository.GetAuthor(authorId).FirstOrDefaultAsync();
+            var author = await _requesterGetter.GetRequester();
 
             if (author == null)
             {
@@ -70,7 +72,7 @@ namespace PerRead.Backend.Services
             // Create the article itself
             var articleModel = await _articleRepository.Create(author, tagTasks.Select(tagTask => tagTask.Result), sections, path, article);
 
-            await _authorRepository.IncrementPublishedArticleCount(authorId);
+            await _authorRepository.IncrementPublishedArticleCount(author.AuthorId);
 
             return articleModel.ToFEArticle();
         }
@@ -79,8 +81,7 @@ namespace PerRead.Backend.Services
         {
             var articles = _articleRepository.GetAll().OrderByDescending(a => a.CreatedAt);
 
-            var authorId = _httpContextAccessor.GetUserId();
-            var requester = await _authorRepository.GetAuthorWithReadArticles(authorId).SingleAsync();
+            var requester = await _requesterGetter.GetRequesterWithArticles();
 
             return await articles.Select(article => article.ToFEArticlePreview(requester)).ToListAsync();
         }
@@ -101,6 +102,43 @@ namespace PerRead.Backend.Services
             }
 
             await _articleRepository.Delete(id);
+        }
+
+        public async Task<TransactionResult> UnlockForCurrentUser(string id)
+        {
+            // TODO - might want to move this, no idea where atm
+            var article = await _articleRepository.Get(id);
+            var requester = await _requesterGetter.GetRequesterWithArticles();
+
+            if (IsAlreadyUnlocked(requester, article))
+            {
+                // We don't need to add it anywhere
+                return TransactionResult.Success;
+            }
+
+            var price = ComputeArticleCost(requester, article);
+
+            return await _walletService.UnlockArticle(article.ArticleAuthors.First().Author, price);
+        }
+
+        private bool IsAlreadyUnlocked(Author requester, Article article)
+        {
+            if (requester.UnlockedArticles.Any(x => x.ArticleId == article.ArticleId))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private long ComputeArticleCost(Author requester, Article article)
+        {
+            if (article.ArticleAuthors.Any(x => x.AuthorId == requester.AuthorId))
+            {
+                return 0;
+            }
+
+            return article.Price;
         }
     }
 }

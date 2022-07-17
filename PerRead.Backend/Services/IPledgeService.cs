@@ -17,17 +17,19 @@ namespace PerRead.Backend.Services
 
     public class PledgeService : IPledgeService
     {
+        private readonly IWalletService _walletService;
         private readonly IPledgeRepository _pledgeRepository;
         private readonly IRequestsRepository _requestsRepository;
-        private IRequesterGetter _requesterGetter;
         private readonly IAuthorRepository _authorRepository;
+        private readonly IRequesterGetter _requesterGetter;
 
-        public PledgeService(IPledgeRepository pledgeRepository, IRequestsRepository requestsRepository, IRequesterGetter requesterGetter, IAuthorRepository authorRepository)
+        public PledgeService(IPledgeRepository pledgeRepository, IRequestsRepository requestsRepository, IRequesterGetter requesterGetter, IAuthorRepository authorRepository, IWalletService walletService)
         {
             _pledgeRepository = pledgeRepository;
             _requestsRepository = requestsRepository;
             _requesterGetter = requesterGetter;
             _authorRepository = authorRepository;
+            _walletService = walletService;
         }
 
         public async Task<FEPledge> AddPledge(PledgeCommand pledgeCommand)
@@ -41,7 +43,7 @@ namespace PerRead.Backend.Services
 
             var requester = await _requesterGetter.GetRequester();
             var pledge = await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
-            await _authorRepository.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount);
+            await _walletService.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount);
             return pledge.ToFEPledge(requester);
         }
 
@@ -63,7 +65,7 @@ namespace PerRead.Backend.Services
             }
 
             await _pledgeRepository.DeletePledge(pledge);
-            await _authorRepository.MoveFromEscrow(pledge.Pledger, pledge.TotalTokenSum);
+            await _walletService.MoveFromEscrow(requester, pledge.TotalTokenSum);
 
             var request = await _requestsRepository.GetRequest(pledge.ParentRequest.ArticleRequestId).FirstOrDefaultAsync();
 
@@ -96,11 +98,11 @@ namespace PerRead.Backend.Services
 
             if (newPledge.TotalTokenSum > initialAmount)
             {
-                await _authorRepository.MoveToEscrow(pledge.Pledger, newPledge.TotalTokenSum - initialAmount);
+                await _walletService.MoveToEscrow(pledge.Pledger, newPledge.TotalTokenSum - initialAmount);
             }
             else
             {
-                await _authorRepository.MoveFromEscrow(pledge.Pledger, initialAmount - newPledge.TotalTokenSum);
+                await _walletService.MoveFromEscrow(pledge.Pledger, initialAmount - newPledge.TotalTokenSum);
             }
 
             var requester = await _requesterGetter.GetRequester();

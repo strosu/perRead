@@ -10,10 +10,12 @@ namespace PerRead.Backend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IWalletService _walletService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IWalletService walletService)
         {
             _userService = userService;
+            _walletService = walletService;
         }
 
         [HttpGet("/user/preview")]
@@ -36,7 +38,7 @@ namespace PerRead.Backend.Controllers
         {
             try
             {
-                var currentTokenCount = await _userService.AddMoreTokens(amount);
+                var currentTokenCount = await _walletService.AddTokensForCurrentUser(amount);
                 return Ok(currentTokenCount);
             }
             catch
@@ -50,7 +52,7 @@ namespace PerRead.Backend.Controllers
         {
             try
             {
-                var currentTokenCount = await _userService.WithdrawTokens(amount);
+                var currentTokenCount = await _walletService.WithdrawTokensForCurrentUser(amount);
                 return Ok(currentTokenCount);
 
             }
