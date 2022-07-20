@@ -18,7 +18,7 @@ export class AddTokensComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getCurrentUserPreview().subscribe({
       next: data => {
-        this.currentTokens = data.readingTokens
+        this.currentTokens = data.readingWallet.tokenAmount
       }
     });
   }

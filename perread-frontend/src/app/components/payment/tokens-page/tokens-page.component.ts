@@ -15,7 +15,7 @@ export class TokensPageComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getCurrentUserPreview().subscribe({
       next: data => {
-        this.tokenAmount = data.readingTokens
+        this.tokenAmount = data.readingWallet?.tokenAmount
       }
     });
   }

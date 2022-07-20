@@ -20,7 +20,7 @@ export class WithdrawTokensComponent implements OnInit {
     this.userService.getCurrentUserPreview().subscribe({
       next: data => {
         console.log(data);
-        this.tokensInAccount = data.readingTokens;
+        this.tokensInAccount = data.readingWallet?.tokenAmount;
       }
     });
   }

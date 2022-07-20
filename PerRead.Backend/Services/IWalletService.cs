@@ -27,18 +27,6 @@ namespace PerRead.Backend.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly IRequesterGetter _requesterGetter;
 
-        //public async Task<long> AddMoreTokens(string authorId, long amount)
-        //{
-        //    var userId = _accessor.GetUserId();
-        //    return await _authorRepository.AddMoreTokensAsync(userId, amount);
-        //}
-
-        //public async Task<long> WithdrawTokens(int amount)
-        //{
-        //    var authorid = _accessor.GetUserId();
-        //    return await _authorRepository.WithdrawTokens(authorid, amount);
-        //}
-
         public WalletService(ITransactionRepository transactionRepository, IWalletRepository walletRepository, IRequesterGetter requesterGetter)
         {
             _transactionRepository = transactionRepository;
@@ -49,14 +37,18 @@ namespace PerRead.Backend.Services
         public async Task<long> AddTokensForCurrentUser(long amount)
         {
             var author = await _requesterGetter.GetRequester();
-            await Transact(ModelConstants.CompanyWallet, author.MainWallet, amount, TransactionType.TokenPurchase);
+            var companyWallet = await _walletRepository.GetWallet(ModelConstants.CompanyWalletId);
+
+            await Transact(companyWallet, author.MainWallet, amount, TransactionType.TokenPurchase);
             return author.MainWallet.TokenAmount; 
         }
 
         public async Task<long> WithdrawTokensForCurrentUser(long amount)
         {
             var author = await _requesterGetter.GetRequester();
-            await Transact(author.MainWallet, ModelConstants.CompanyWallet, amount, TransactionType.TokenWithdrawal);
+            var companyWallet = await _walletRepository.GetWallet(ModelConstants.CompanyWalletId);
+
+            await Transact(author.MainWallet, companyWallet, amount, TransactionType.TokenWithdrawal);
             return author.MainWallet.TokenAmount;
         }
 

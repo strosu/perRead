@@ -29,6 +29,11 @@ namespace PerRead.Backend.Repositories
 
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -78,12 +83,12 @@ namespace PerRead.Backend.Repositories
 
             modelBuilder.Entity<Author>().HasOne(x => x.MainWallet)
                 .WithOne()
-                .HasForeignKey<Author>(x => x.MainWalletId)
+                //.HasForeignKey<Author>(x => x.MainWalletId)
                 .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<Author>().HasOne(x => x.EscrowWallet)
                 .WithOne()
-                .HasForeignKey<Author>(x => x.EscrowWalletId)
+                //.HasForeignKey<Author>(x => x.EscrowWalletId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PaymentTransaction>()

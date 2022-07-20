@@ -1,6 +1,8 @@
+import { WalletPreview } from "../wallet/wallet-preview.model";
+
 export class UserPreview {
     userId: string = '';
     userName: string = '';
     profileImageUri: string = '';
-    readingTokens: number = 0;
+    readingWallet: WalletPreview = <WalletPreview>{};
 }

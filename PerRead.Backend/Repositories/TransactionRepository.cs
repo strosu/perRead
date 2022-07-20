@@ -23,6 +23,7 @@ namespace PerRead.Backend.Repositories
 
             var transaction = new PaymentTransaction
             {
+                PaymentTransactionId = Guid.NewGuid().ToString(),
                 SourceWalletId = from.WalledId,
                 DestinationWalletId = to.WalledId,
                 TransactionType = type,

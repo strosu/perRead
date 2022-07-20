@@ -78,6 +78,7 @@ app.UseCors();
 app.UseAuth();
 
 app.MapControllers();
+SeedCompanyEntities(app);
 
 app.Run();
 
@@ -143,6 +144,62 @@ static void AddExtraIdentityStuff(WebApplicationBuilder builder)
     builder.Services.TryAddScoped<UserManager<ApplicationUser>>();
     builder.Services.TryAddScoped<SignInManager<ApplicationUser>>();
     //builder.Services.TryAddScoped<RoleManager<TRole>>();
+}
+
+    static void SeedCompanyEntities(WebApplication app)
+{
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var appDB = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var companyUser = appDB.Authors.FirstOrDefault(x => x.AuthorId == ModelConstants.CompanyAuthorId);
+
+        if (companyUser == null)
+        {
+            var mainWallet = appDB.Wallets.FirstOrDefault(x => x.WalledId == ModelConstants.CompanyWalletId);
+
+            if (mainWallet == null)
+            {
+                mainWallet = new Wallet
+                {
+                    WalledId = ModelConstants.CompanyWalletId,
+                    TokenAmount = long.MaxValue
+                };
+                
+                appDB.Wallets.Add(mainWallet);
+            }
+
+            var escrowWallet = appDB.Wallets.FirstOrDefault(x => x.WalledId == ModelConstants.CompanyEscrowWalletId);
+
+            if (escrowWallet == null)
+            {
+                escrowWallet = new Wallet
+                {
+                    WalledId = ModelConstants.CompanyEscrowWalletId
+                };
+
+                appDB.Wallets.Add(escrowWallet);
+            }
+
+            appDB.SaveChanges();
+
+            var user = new Author
+            {
+                AuthorId = ModelConstants.CompanyAuthorId,
+                MainWallet = mainWallet,
+                EscrowWallet = escrowWallet,
+                Name = "PerRead company account"
+            };
+
+            user.MainWallet = mainWallet;
+            user.EscrowWallet = escrowWallet;
+            appDB.Authors.Add(user);
+
+            mainWallet.Owner = user;
+            escrowWallet.Owner = user;
+
+            appDB.SaveChanges();
+        }
+    }
 }
 
 static void SeedWallets(WebApplication app)

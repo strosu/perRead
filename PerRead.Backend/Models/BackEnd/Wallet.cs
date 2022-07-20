@@ -11,7 +11,7 @@
 
         public string WalledId { get; set; }
 
-        public Author Owner { get; set; }
+        public Author? Owner { get; set; }
 
         public long TokenAmount { get; set; }
 

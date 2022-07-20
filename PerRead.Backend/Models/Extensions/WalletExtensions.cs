@@ -9,15 +9,16 @@ namespace PerRead.Backend.Models.Extensions
         {
             return new FEWallet
             {
-
+                
             };
         }
 
-        public static FEWalletPreview TOFEWalletPreview(this Wallet wallet)
+        public static FEWalletPreview ToFEWalletPreview(this Wallet wallet)
         {
             return new FEWalletPreview
             {
-
+                WalletId = wallet.WalledId,
+                TokenAmount = wallet.TokenAmount
             };
         }
     }
