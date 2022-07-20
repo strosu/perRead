@@ -21,10 +21,10 @@ namespace PerRead.Backend.Models.Helpers
 
             var articlePrice = articlePreview.ArticlePrice;
 
-            if (requester.MainWallet.TokenAmount < articlePrice)
-            {
-                return ReadingState.Unaffordable;
-            }
+            //if (requester.MainWallet.TokenAmount < articlePrice)
+            //{
+            //    return ReadingState.Unaffordable;
+            //}
 
             if (articlePrice <= requester.RequireConfirmationAbove)
             {

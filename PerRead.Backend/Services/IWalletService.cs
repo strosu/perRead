@@ -49,27 +49,30 @@ namespace PerRead.Backend.Services
         public async Task<long> AddTokensForCurrentUser(long amount)
         {
             var author = await _requesterGetter.GetRequester();
-            await Transact(ModelConstants.CompanyWallet, author.MainWallet, amount, TransactionType.TokenPurchase);
-            return author.MainWallet.TokenAmount; 
+            //await Transact(ModelConstants.CompanyWallet, author.MainWallet, amount, TransactionType.TokenPurchase);
+            //return author.MainWallet.TokenAmount; 
+            return 0;
         }
 
         public async Task<long> WithdrawTokensForCurrentUser(long amount)
         {
             var author = await _requesterGetter.GetRequester();
-            await Transact(author.MainWallet, ModelConstants.CompanyWallet, amount, TransactionType.TokenWithdrawal);
-            return author.MainWallet.TokenAmount;
+            //await Transact(author.MainWallet, ModelConstants.CompanyWallet, amount, TransactionType.TokenWithdrawal);
+            //return author.MainWallet.TokenAmount;
+
+            return 0;
         }
 
         public async Task MoveToEscrow(Author author, long amount)
         {
             //var author = await _requesterGetter.GetRequester();
-            await Transact(author.MainWallet, author.EscrowWallet, amount, TransactionType.MoveToEscrow);
+            //await Transact(author.MainWallet, author.EscrowWallet, amount, TransactionType.MoveToEscrow);
         }
 
         public async Task MoveFromEscrow(Author author, long amount)
         {
             //var author = await _requesterGetter.GetRequester();
-            await Transact(author.EscrowWallet, author.MainWallet, amount, TransactionType.MoveFromEscrow);
+            //await Transact(author.EscrowWallet, author.MainWallet, amount, TransactionType.MoveFromEscrow);
         }
 
         public Task ReleaseInitialPledgeFunds(RequestPledge pledge)
@@ -85,7 +88,8 @@ namespace PerRead.Backend.Services
         public async Task<TransactionResult> UnlockArticle(Author owner, long amount)
         {
             var buyer = await _requesterGetter.GetRequester();
-            return await Transact(buyer.MainWallet, owner.MainWallet, amount, TransactionType.MoveFromEscrow);
+            //return await Transact(buyer.MainWallet, owner.MainWallet, amount, TransactionType.MoveFromEscrow);
+            return null;
         }
 
         private async Task<TransactionResult> Transact(Wallet from, Wallet to, long amount, TransactionType transactionType)

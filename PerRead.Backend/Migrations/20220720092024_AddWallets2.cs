@@ -4,7 +4,7 @@
 
 namespace PerRead.Backend.Migrations
 {
-    public partial class AddWallets : Migration
+    public partial class AddWallets2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,20 +15,6 @@ namespace PerRead.Backend.Migrations
             migrationBuilder.DropColumn(
                 name: "ReadingTokens",
                 table: "Authors");
-
-            migrationBuilder.AddColumn<string>(
-                name: "EscrowWalletId",
-                table: "Authors",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "MainWalletId",
-                table: "Authors",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: "");
 
             migrationBuilder.CreateTable(
                 name: "Wallets",
@@ -77,18 +63,6 @@ namespace PerRead.Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Authors_EscrowWalletId",
-                table: "Authors",
-                column: "EscrowWalletId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Authors_MainWalletId",
-                table: "Authors",
-                column: "MainWalletId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_DestinationWalletId",
                 table: "Transactions",
                 column: "DestinationWalletId");
@@ -102,55 +76,15 @@ namespace PerRead.Backend.Migrations
                 name: "IX_Wallets_OwnerAuthorId",
                 table: "Wallets",
                 column: "OwnerAuthorId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Authors_Wallets_EscrowWalletId",
-                table: "Authors",
-                column: "EscrowWalletId",
-                principalTable: "Wallets",
-                principalColumn: "WalledId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Authors_Wallets_MainWalletId",
-                table: "Authors",
-                column: "MainWalletId",
-                principalTable: "Wallets",
-                principalColumn: "WalledId",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Authors_Wallets_EscrowWalletId",
-                table: "Authors");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Authors_Wallets_MainWalletId",
-                table: "Authors");
-
             migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Wallets");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Authors_EscrowWalletId",
-                table: "Authors");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Authors_MainWalletId",
-                table: "Authors");
-
-            migrationBuilder.DropColumn(
-                name: "EscrowWalletId",
-                table: "Authors");
-
-            migrationBuilder.DropColumn(
-                name: "MainWalletId",
-                table: "Authors");
 
             migrationBuilder.AddColumn<long>(
                 name: "EscrowTokens",

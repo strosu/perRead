@@ -11,8 +11,8 @@ using PerRead.Backend.Repositories;
 namespace PerRead.Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220720065030_AddWallets")]
-    partial class AddWallets
+    [Migration("20220720092024_AddWallets2")]
+    partial class AddWallets2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -296,14 +296,6 @@ namespace PerRead.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EscrowWalletId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MainWalletId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -321,12 +313,6 @@ namespace PerRead.Backend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("AuthorId");
-
-                    b.HasIndex("EscrowWalletId")
-                        .IsUnique();
-
-                    b.HasIndex("MainWalletId")
-                        .IsUnique();
 
                     b.ToTable("Authors");
                 });
@@ -611,25 +597,6 @@ namespace PerRead.Backend.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("PerRead.Backend.Models.BackEnd.Author", b =>
-                {
-                    b.HasOne("PerRead.Backend.Models.BackEnd.Wallet", "EscrowWallet")
-                        .WithOne()
-                        .HasForeignKey("PerRead.Backend.Models.BackEnd.Author", "EscrowWalletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PerRead.Backend.Models.BackEnd.Wallet", "MainWallet")
-                        .WithOne()
-                        .HasForeignKey("PerRead.Backend.Models.BackEnd.Author", "MainWalletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EscrowWallet");
-
-                    b.Navigation("MainWallet");
                 });
 
             modelBuilder.Entity("PerRead.Backend.Models.BackEnd.Feed", b =>

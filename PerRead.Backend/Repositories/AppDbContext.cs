@@ -57,16 +57,6 @@ namespace PerRead.Backend.Repositories
             modelBuilder.Entity<Wallet>()
                 .HasKey(x => x.WalledId);
 
-            //modelBuilder.Entity<Author>()
-            //    .HasMany(p => p.UnlockedArticles)
-            //    .WithMany(p => p.Unlocked)
-            //    .UsingEntity(j => j.ToTable("UnlockedArticles"));
-
-            //modelBuilder.Entity<Feed>()
-            //    .HasMany(p => p.SubscribedSections)
-            //    .WithMany(p => p.SubscribedFeeds)
-            //    .UsingEntity(j => j.ToTable("FeedAuthors"));
-
             modelBuilder.Entity<Feed>()
                 .HasOne(p => p.Owner);
 
@@ -76,15 +66,20 @@ namespace PerRead.Backend.Repositories
             modelBuilder.Entity<ArticleRequest>()
                 .HasOne(p => p.TargetAuthor);
 
-            modelBuilder.Entity<Author>().HasOne(x => x.MainWallet)
-                .WithOne()
-                .HasForeignKey<Author>(x => x.MainWalletId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Author>().Property(x => x.MainWallet).IsRequired(false);
+            //modelBuilder.Entity<Author>().Property(x => x.MainWalletId).IsRequired(false);
+            //modelBuilder.Entity<Author>().Property(x => x.EscrowWallet).IsRequired(false);
+            //modelBuilder.Entity<Author>().Property(x => x.EscrowWalletId).IsRequired(false);
+
+            //modelBuilder.Entity<Author>().HasOne(x => x.MainWallet)
+            //    .WithOne()
+            //    .HasForeignKey<Author>(x => x.MainWalletId)
+            //    .OnDelete(DeleteBehavior.Cascade);
             
-            modelBuilder.Entity<Author>().HasOne(x => x.EscrowWallet)
-                .WithOne()
-                .HasForeignKey<Author>(x => x.EscrowWalletId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Author>().HasOne(x => x.EscrowWallet)
+            //    .WithOne()
+            //    .HasForeignKey<Author>(x => x.EscrowWalletId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PaymentTransaction>()
                 .HasOne(g => g.SourceWallet)
@@ -97,18 +92,6 @@ namespace PerRead.Backend.Repositories
                 .WithMany(t => t.IncomingTransactions)
                 .HasForeignKey(t => t.DestinationWalletId)
                 .HasPrincipalKey(t => t.WalledId);
-
-            //modelBuilder.Entity<PaymentTransaction>()
-            //    .HasOne(x => x.SourceWallet)
-            //    .WithOne()
-            //    .HasForeignKey<PaymentTransaction>(x => x.SourceWalletId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<PaymentTransaction>()
-            //    .HasOne(x => x.DestinationWallet)
-            //    .WithOne()
-            //    .HasForeignKey<PaymentTransaction>(x => x.DestinationWalletId)
-            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
