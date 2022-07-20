@@ -11,18 +11,25 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task AddTransaction(Wallet wallet, PaymentTransaction transaction)
+        public async Task AddIncomingTransaction(Wallet wallet, PaymentTransaction transaction)
         {
-            // If transactioning to, add the amount; otherwise deduct it
-            var amount = transaction.Destination == wallet ? transaction.TokenAmount : transaction.TokenAmount * -1;
-            wallet.TokenAmount += amount;
-            wallet.Transactions.Add(transaction);
+            wallet.TokenAmount += transaction.TokenAmount;
+            wallet.IncomingTransactions.Add(transaction);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddOutgoingTransaction(Wallet wallet, PaymentTransaction transaction)
+        {
+            wallet.TokenAmount += transaction.TokenAmount;
+            wallet.OutgoingTransactions.Add(transaction);
             await _context.SaveChangesAsync();
         }
     }
 
     public interface IWalletRepository
     {
-        Task AddTransaction(Wallet wallet, PaymentTransaction transaction);
+        Task AddIncomingTransaction(Wallet wallet, PaymentTransaction transaction);
+
+        Task AddOutgoingTransaction(Wallet wallet, PaymentTransaction transaction);
     }
 }

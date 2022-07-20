@@ -97,8 +97,8 @@ namespace PerRead.Backend.Services
                 return transactionResult;
             }
 
-            await _walletRepository.AddTransaction(from, transactionResult.Transaction);
-            await _walletRepository.AddTransaction(to, transactionResult.Transaction);
+            await _walletRepository.AddOutgoingTransaction(from, transactionResult.Transaction);
+            await _walletRepository.AddIncomingTransaction(to, transactionResult.Transaction);
             return transactionResult;
         }
     }

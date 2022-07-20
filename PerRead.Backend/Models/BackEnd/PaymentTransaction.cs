@@ -5,11 +5,15 @@ namespace PerRead.Backend.Models.BackEnd
 {
     public class PaymentTransaction
     {
-        public string TransactionId { get; set; }
+        public string PaymentTransactionId { get; set; }
 
-        public Wallet Source { get; set; }
+        public string SourceWalletId { get; set; }
 
-        public Wallet Destination { get; set; }
+        public Wallet SourceWallet { get; set; }
+
+        public string DestinationWalletId { get; set; }
+
+        public Wallet DestinationWallet { get; set; }
 
         public TransactionType TransactionType { get; set; }
 

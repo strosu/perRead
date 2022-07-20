@@ -4,17 +4,19 @@
     {
         public static Wallet EmptyWallet = new Wallet
         {
-            OwnerId = new Guid().ToString(),
+            Owner = new Author(),
             TokenAmount = 0,
             WalledId = new Guid().ToString()
         };
 
         public string WalledId { get; set; }
 
-        public string OwnerId { get; set; }
+        public Author Owner { get; set; }
 
         public long TokenAmount { get; set; }
 
-        public IList<PaymentTransaction> Transactions { get; set; }
+        public IList<PaymentTransaction> IncomingTransactions { get; set; }
+        
+        public IList<PaymentTransaction> OutgoingTransactions { get; set; }
     }
 }

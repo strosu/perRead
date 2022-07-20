@@ -29,7 +29,11 @@
 
         public IEnumerable<Section> PublishSections { get; set; }
 
+        public string MainWalletId { get; set; }
+
         public Wallet MainWallet { get; set; }
+
+        public string EscrowWalletId { get; set; }
 
         public Wallet EscrowWallet { get; set; }
 

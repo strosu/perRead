@@ -6,7 +6,7 @@ namespace PerRead.Backend.Models
     {
         public static readonly Wallet CompanyWallet = new Wallet
         {
-            OwnerId = "perPread",
+            //OwnerId = "perPread",
             WalledId = "firstWallet"
         };
     }

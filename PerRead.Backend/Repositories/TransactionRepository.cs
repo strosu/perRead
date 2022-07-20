@@ -23,8 +23,8 @@ namespace PerRead.Backend.Repositories
 
             var transaction = new PaymentTransaction
             {
-                Source = from,
-                Destination = to,
+                SourceWalletId = from.WalledId,
+                DestinationWalletId = to.WalledId,
                 TransactionType = type,
                 TokenAmount = amount
             };
