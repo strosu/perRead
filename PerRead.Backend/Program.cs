@@ -8,6 +8,10 @@ using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Reflection.Metadata;
+using PerRead.Backend.Models.BackEnd;
+using Microsoft.Extensions.DependencyInjection;
+using System.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -139,4 +143,41 @@ static void AddExtraIdentityStuff(WebApplicationBuilder builder)
     builder.Services.TryAddScoped<UserManager<ApplicationUser>>();
     builder.Services.TryAddScoped<SignInManager<ApplicationUser>>();
     //builder.Services.TryAddScoped<RoleManager<TRole>>();
+}
+
+static void SeedWallets(WebApplication app)
+{
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var appDB = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        foreach (var author in appDB.Authors)
+        {
+            if (string.IsNullOrEmpty(author.MainWalletId))
+            {
+                var wallet = new Wallet
+                {
+                    Owner = author,
+                    WalledId = Guid.NewGuid().ToString()
+                };
+
+                appDB.Wallets.Add(wallet);
+                author.MainWalletId = wallet.WalledId;
+            }
+
+            if (string.IsNullOrEmpty(author.EscrowWalletId))
+            {
+                var wallet = new Wallet
+                {
+                    Owner = author,
+                    WalledId = Guid.NewGuid().ToString()
+                };
+
+                appDB.Wallets.Add(wallet);
+                author.EscrowWalletId = wallet.WalledId;
+            }
+        }
+
+        appDB.SaveChanges();
+    }
 }

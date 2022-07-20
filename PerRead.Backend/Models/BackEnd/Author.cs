@@ -10,8 +10,8 @@
             AuthorId = null,
             PublishSections = Enumerable.Empty<Section>(),
             Name = "Annonymous",
-            //MainWallet = Wallet.EmptyWallet,
-            //EscrowWallet = Wallet.EmptyWallet,
+            MainWallet = Wallet.EmptyWallet,
+            EscrowWallet = Wallet.EmptyWallet,
             RequireConfirmationAbove = 0,
             UnlockedArticles = new List<ArticleUnlock>()
         };
@@ -29,13 +29,13 @@
 
         public IEnumerable<Section> PublishSections { get; set; }
 
-        //public string MainWalletId { get; set; }
+        public string MainWalletId { get; set; }
 
-        //public Wallet MainWallet { get; set; }
+        public Wallet MainWallet { get; set; }
 
-        //public string EscrowWalletId { get; set; }
+        public string EscrowWalletId { get; set; }
 
-        //public Wallet EscrowWallet { get; set; }
+        public Wallet EscrowWallet { get; set; }
 
         //public long ReadingTokens { get; set; }
 

@@ -35,9 +35,9 @@ namespace PerRead.Backend.Repositories
             }
 
             return _context.Authors
-                .Where(author => author.AuthorId == id);
-                //.Include(author => author.MainWallet)
-                //.Include(author => author.EscrowWallet);
+                .Where(author => author.AuthorId == id)
+                .Include(author => author.MainWallet)
+                .Include(author => author.EscrowWallet);
         }
 
         public IQueryable<Section> GetAuthorSections(string authorId)
