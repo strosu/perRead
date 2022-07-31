@@ -9,5 +9,7 @@
         public string ProfileImageUri { get; set; }
 
         public FEWalletPreview ReadingWallet { get; set; }
+
+        public FEWalletPreview EsccrowWallet { get; set; }
     }
 }

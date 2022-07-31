@@ -67,7 +67,7 @@ namespace PerRead.Backend.Services
             await _pledgeRepository.DeletePledge(pledge);
             await _walletService.MoveFromEscrow(requester, pledge.TotalTokenSum);
 
-            var request = await _requestsRepository.GetRequest(pledge.ParentRequest.ArticleRequestId).FirstOrDefaultAsync();
+            var request = await _requestsRepository.GetRequest(pledge.ParentRequest.ArticleRequestId).FirstAsync();
 
             if (request.Pledges.Count == 0)
             {

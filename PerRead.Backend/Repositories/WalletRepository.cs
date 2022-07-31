@@ -28,13 +28,20 @@ namespace PerRead.Backend.Repositories
 
         public async Task<Wallet> GetWallet(string walledId)
         {
-            return await _context.Wallets.SingleAsync(x => x.WalledId == walledId);
+            return await GetWalletQuery(walledId).SingleOrDefaultAsync();
+        }
+
+        public IQueryable<Wallet> GetWalletQuery(string walletId)
+        {
+            return _context.Wallets.Where(x => x.WalledId == walletId);
         }
     }
 
     public interface IWalletRepository
     {
         Task<Wallet> GetWallet(string walledId);
+
+        IQueryable<Wallet> GetWalletQuery(string walletId);
 
         Task AddIncomingTransaction(Wallet wallet, PaymentTransaction transaction);
 

@@ -8,9 +8,17 @@ namespace PerRead.Backend.Repositories
     public interface IRequestsRepository
     {
         IQueryable<ArticleRequest> GetRequestsForAuthor(string authorId);
+        
         IQueryable<ArticleRequest> GetRequest(string requestId);
+        
         Task<ArticleRequest> CreateRequest(Author initiator, Author targetAuthor, RequestCommand requestCommand);
+        
         Task<ArticleRequest> EditRequest(RequestCommand requestCommand);
+
+        Task<ArticleRequest> UpdateState(ArticleRequest request, RequestState targetRequestState);
+
+        Task CompleteRequest(ArticleRequest request, Article resultingArticle);
+
         Task RemoveRequest(ArticleRequest request);
     }
 
@@ -78,6 +86,23 @@ namespace PerRead.Backend.Repositories
         public async Task RemoveRequest(ArticleRequest request)
         {
             _context.Requests.Remove(request);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<ArticleRequest> UpdateState(ArticleRequest request, RequestState targetRequestState)
+        {
+            request.RequestState = targetRequestState;
+            await _context.SaveChangesAsync();
+
+            return request;
+        }
+
+
+        public async Task CompleteRequest(ArticleRequest request, Article resultingArticle)
+        {
+            request.RequestState = RequestState.Completed;
+            request.ResultingArticle = resultingArticle;
+
             await _context.SaveChangesAsync();
         }
     }

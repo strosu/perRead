@@ -13,9 +13,6 @@ P1 scenarios:
 TODO NEXT:
 
 TODO Pledges:
-- view pledge details - DONE
-- allow editing your pledges - DONE
-- allow deleting a pledge (and implicitly a request, when no pledges are left) - DONE
 - see all pledges under user profile
 
 TODO Requests:
@@ -149,3 +146,8 @@ Author:
 - reading an article transfers the correct amount of credits from the reader to the author - DONE
 - withdraw credits - DONE
 - create an article including images - DONE
+
+Pledges:
+- view pledge details - DONE
+- allow editing your pledges - DONE
+- allow deleting a pledge (and implicitly a request, when no pledges are left) - DONE

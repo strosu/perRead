@@ -9,7 +9,10 @@ namespace PerRead.Backend.Models.Extensions
         {
             return new FEWallet
             {
-                
+                WalletId = wallet.WalledId,
+                TokenAmount = wallet.TokenAmount,
+                IncomingTransactions = wallet.IncomingTransactions.Select(x => x.ToFETransactionPreview()),
+                OutgoingTransactions = wallet.OutgoingTransactions.Select(x => x.ToFETransactionPreview())
             };
         }
 
@@ -19,6 +22,29 @@ namespace PerRead.Backend.Models.Extensions
             {
                 WalletId = wallet.WalledId,
                 TokenAmount = wallet.TokenAmount
+            };
+        }
+    }
+
+    public static class TransactionExtensions 
+    { 
+        public static FETransaction TOFETransaction(this PaymentTransaction transaction)
+        {
+            return new FETransaction()
+            {
+
+            };
+        }
+
+        public static FETransactionPreview ToFETransactionPreview(this PaymentTransaction transaction)
+        {
+            return new FETransactionPreview
+            {
+             TransactionId = transaction.PaymentTransactionId,
+             DestinationWalletId = transaction.DestinationWalletId,
+             SourceWalletId = transaction.SourceWalletId,
+             TokenAmount = transaction.TokenAmount,
+             TransactionType = transaction.TransactionType
             };
         }
     }

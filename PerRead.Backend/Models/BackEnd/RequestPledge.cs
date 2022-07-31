@@ -13,6 +13,8 @@
         public uint TokensOnAccept { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        // TODO - should the pledge have a status? ALlow rejecting individual pledges? Too early for that, maybe later
     }
 }
 

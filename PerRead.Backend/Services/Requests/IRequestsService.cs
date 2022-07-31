@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -10,9 +11,18 @@ namespace PerRead.Backend.Services
     public interface IRequestsService
     {
         Task<IEnumerable<FERequestPreview>> GetRequestsForAuthor(string authorId);
+
         Task<FERequest> GetRequest(string requestId);
+
         Task<FERequest> CreateRequest(CreateRequestCommand createRequestCommand);
+
         Task<FERequest> EditRequest(RequestCommand requestCommand);
+
+        Task<FERequest> AcceptRequest(string requestId);
+
+        Task<FERequest> CompleteRequest(CompleteRequestCommand completeRequestCommand);
+
+        Task<FERequest> AbandonRequest(AbandonRequestCommand abandonRequestCommand);
     }
 
     public class RequestsService : IRequestsService
@@ -21,15 +31,17 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IRequestsRepository _requestsRepository;
         private readonly IPledgeRepository _pledgeRepository;
+        private readonly IArticleRepository _articleRepository;
         private IRequesterGetter _requesterGetter;
 
-        public RequestsService(IAuthorRepository authorRepository, IRequestsRepository requestsRepository, IPledgeRepository pledgeRepository, IRequesterGetter requesterGetter, IWalletService walletService)
+        public RequestsService(IAuthorRepository authorRepository, IRequestsRepository requestsRepository, IPledgeRepository pledgeRepository, IRequesterGetter requesterGetter, IWalletService walletService, IArticleRepository articleRepository)
         {
             _authorRepository = authorRepository;
             _requestsRepository = requestsRepository;
             _pledgeRepository = pledgeRepository;
             _requesterGetter = requesterGetter;
             _walletService = walletService;
+            _articleRepository = articleRepository;
         }
 
         public async Task<FERequest> CreateRequest(CreateRequestCommand createRequestCommand)
@@ -86,6 +98,74 @@ namespace PerRead.Backend.Services
             var requester = await _requesterGetter.GetRequester();
 
             return (await _requestsRepository.EditRequest(requestCommand)).ToFERequest(requester);
+        }
+
+        public async Task<FERequest> AcceptRequest(string requestId)
+        {
+            var request = await ValidateUsersMatch(requestId);
+
+            await _requestsRepository.UpdateState(request, RequestState.Accepted);
+
+            foreach (var pledge in request.Pledges)
+            {
+                await _walletService.ReleaseInitialPledgeFunds(pledge);
+            }
+
+            return request.ToFERequest(request.TargetAuthor);
+        }
+
+        public async Task<FERequest> CompleteRequest(CompleteRequestCommand completeRequestCommand)
+        {
+            var request = await ValidateUsersMatch(completeRequestCommand.RequestId);
+
+            var resultingArticle = await _articleRepository.GetSimpleArticle(completeRequestCommand.ResultingArticleId);
+;
+            if (resultingArticle == null) 
+            {
+                throw new ArgumentException("Invalid article ID");
+            }
+
+            await _requestsRepository.CompleteRequest(request, resultingArticle);
+
+            foreach (var pledge in request.Pledges)
+            {
+                await _walletService.ReleaseInitialPledgeFunds(pledge);
+            }
+
+            return request.ToFERequest(request.TargetAuthor);
+        }
+
+        public async Task<FERequest> AbandonRequest(AbandonRequestCommand abandonRequestCommand)
+        {
+            var request = await ValidateUsersMatch(abandonRequestCommand.RequestId);
+
+            await _requestsRepository.UpdateState(request, RequestState.Cancelled);
+
+            foreach (var pledge in request.Pledges)
+            {
+                await _walletService.ReleaseBackToPledger(pledge);
+            }
+
+            return request.ToFERequest(request.TargetAuthor);
+        }
+
+        private async Task<ArticleRequest> ValidateUsersMatch(string requestId)
+        {
+            var request = await _requestsRepository.GetRequest(requestId).FirstOrDefaultAsync();
+
+            if (request == null)
+            {
+                throw new ArgumentException("Could not find the request");
+            }
+
+            var currentUser = await _requesterGetter.GetRequester();
+
+            if (request.TargetAuthor != currentUser)
+            {
+                throw new ArgumentException("You can only accept requests where you are the target author");
+            }
+
+            return request;
         }
     }
 }

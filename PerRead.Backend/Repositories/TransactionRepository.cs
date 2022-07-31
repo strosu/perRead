@@ -12,7 +12,7 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<TransactionResult> AddTransaction(Wallet from, Wallet to, long amount, TransactionType type)
+        public async Task<TransactionResult> AddTransaction(Wallet from, Wallet to, long amount, TransactionType type, string? comment = null)
         {
             var validation = Validate(from, amount);
 
@@ -66,7 +66,7 @@ namespace PerRead.Backend.Repositories
 
     public interface ITransactionRepository 
     {
-        Task<TransactionResult> AddTransaction(Wallet from, Wallet to, long amount, TransactionType type);
+        Task<TransactionResult> AddTransaction(Wallet from, Wallet to, long amount, TransactionType type, string? comment = null);
     }
 
     public class TransactionResult

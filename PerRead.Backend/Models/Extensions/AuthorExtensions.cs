@@ -58,7 +58,8 @@ namespace PerRead.Backend.Models.Extensions
                 UserId = author.AuthorId,
                 UserName = author.Name,
                 ProfileImageUri = string.IsNullOrEmpty(author.ProfileImageUri) ? "m7kgwe2gnrd81.jpg" : author.ProfileImageUri,
-                ReadingWallet = author.MainWallet.ToFEWalletPreview()
+                ReadingWallet = author.MainWallet.ToFEWalletPreview(),
+                EsccrowWallet = author.EscrowWallet.ToFEWalletPreview(),
             };
         }
     }

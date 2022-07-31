@@ -93,5 +93,11 @@ namespace PerRead.Backend.Controllers
         {
             await _userService.UpdateUnlockedArticles(articleInfos);
         }
+
+        [HttpGet("/user/wallet/{walletId}")]
+        public async Task<FEWallet> GetWallet(string walletId)
+        {
+            return await _walletService.GetWallet(walletId);
+        }
     }
 }

@@ -36,5 +36,19 @@ namespace PerRead.Backend.Models.Commands
 
         public DateTime Deadline { get; set; }
     }
+
+    public class CompleteRequestCommand
+    {
+        public string RequestId { get; set; }
+
+        public string ResultingArticleId { get; set; }
+    }
+
+    public class AbandonRequestCommand
+    {
+        public string RequestId { get; set; }
+
+        public string Reason { get; set; }
+    }
 }
 

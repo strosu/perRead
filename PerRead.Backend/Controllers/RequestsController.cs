@@ -12,7 +12,7 @@ namespace PerRead.Backend.Controllers
     {
         private readonly IRequestsService _requestsService;
 
-        public RequestsController(IRequestsService requestsService, IPledgeService pledgeService)
+        public RequestsController(IRequestsService requestsService)
         {
             _requestsService = requestsService;
         }
@@ -32,15 +32,33 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpPost("requests/add")]
-        public async Task<FERequest> CreateRequest([FromBody] CreateRequestCommand createRequestCommand)
+        public async Task<FERequest> CreateRequest([FromBody]CreateRequestCommand createRequestCommand)
         {
             return await _requestsService.CreateRequest(createRequestCommand);
         }
 
         [HttpPost("requests/edit")]
-        public async Task<FERequest> EditRequest([FromBody] RequestCommand requestCommand)
+        public async Task<FERequest> EditRequest([FromBody]RequestCommand requestCommand)
         {
             return await _requestsService.EditRequest(requestCommand);
+        }
+
+        [HttpPost("requests/{requestId}/accept")]
+        public async Task<FERequest> AcceptRequest(string requestId)
+        {
+            return await _requestsService.AcceptRequest(requestId);
+        }
+
+        [HttpPost("requests/complete")]
+        public async Task<FERequest> CompleteRequest([FromBody]CompleteRequestCommand completeRequestCommand)
+        {
+            return await _requestsService.CompleteRequest(completeRequestCommand);
+        }
+
+        [HttpPost("requests/abandon")]
+        public async Task<FERequest> AbandonRequest([FromBody]AbandonRequestCommand abandonRequestCommand)
+        {
+            return await _requestsService.AbandonRequest(abandonRequestCommand);
         }
     }
 }

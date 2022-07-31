@@ -18,6 +18,8 @@ namespace PerRead.Backend.Models.BackEnd
         public TransactionType TransactionType { get; set; }
 
         public long TokenAmount { get; set; }
+
+        public string Comment { get; set; }
 }
 
     public enum TransactionType {
@@ -27,10 +29,22 @@ namespace PerRead.Backend.Models.BackEnd
         [EnumMember(Value = nameof(TokenWithdrawal))]
         TokenWithdrawal,
 
+        [EnumMember(Value = nameof(ArticleRead))]
+        ArticleRead,
+
         [EnumMember(Value = nameof(MoveToEscrow))]
         MoveToEscrow,
 
         [EnumMember(Value = nameof(MoveFromEscrow))]
-        MoveFromEscrow
+        MoveFromEscrow,
+
+        [EnumMember(Value = nameof(ReleaseInitialPledgeAmount))]
+        ReleaseInitialPledgeAmount,
+
+        [EnumMember(Value = nameof(ReleaseInitialPledgeAmount))]
+        ReleaseRemainingPledgeAmount,
+
+        [EnumMember(Value = nameof(RleaseFromEscrowForCancelled))]
+        RleaseFromEscrowForCancelled
     }
 }

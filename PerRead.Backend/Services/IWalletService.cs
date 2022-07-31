@@ -1,5 +1,8 @@
-﻿using PerRead.Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Models;
 using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.Extensions;
+using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -19,6 +22,10 @@ namespace PerRead.Backend.Services
         Task ReleaseInitialPledgeFunds(RequestPledge pledge);
 
         Task ReleaseRemainingPledgeFunds(RequestPledge pledge);
+
+        Task ReleaseBackToPledger(RequestPledge pledge);
+
+        Task<FEWallet> GetWallet(string walletId);
     }
 
     public class WalletService : IWalletService
@@ -64,25 +71,39 @@ namespace PerRead.Backend.Services
             await Transact(author.EscrowWallet, author.MainWallet, amount, TransactionType.MoveFromEscrow);
         }
 
-        public Task ReleaseInitialPledgeFunds(RequestPledge pledge)
+        public async Task ReleaseInitialPledgeFunds(RequestPledge pledge)
         {
-            throw new NotImplementedException();
+            await ReleasePledge(pledge, pledge.TokensOnAccept, TransactionType.ReleaseInitialPledgeAmount);
         }
 
-        public Task ReleaseRemainingPledgeFunds(RequestPledge pledge)
+        public async Task ReleaseRemainingPledgeFunds(RequestPledge pledge)
         {
-            throw new NotImplementedException();
+            await ReleasePledge(pledge, pledge.TotalTokenSum - pledge.TokensOnAccept, TransactionType.ReleaseRemainingPledgeAmount);
         }
 
         public async Task<TransactionResult> UnlockArticle(Author owner, long amount)
         {
             var buyer = await _requesterGetter.GetRequester();
-            return await Transact(buyer.MainWallet, owner.MainWallet, amount, TransactionType.MoveFromEscrow);
+            return await Transact(buyer.MainWallet, owner.MainWallet, amount, TransactionType.ArticleRead);
         }
 
-        private async Task<TransactionResult> Transact(Wallet from, Wallet to, long amount, TransactionType transactionType)
+        public async Task ReleaseBackToPledger(RequestPledge pledge)
         {
-            var transactionResult = await _transactionRepository.AddTransaction(from, to, amount, transactionType);
+            await Transact(pledge.Pledger.EscrowWallet, pledge.Pledger.MainWallet, pledge.TotalTokenSum - pledge.TokensOnAccept, TransactionType.RleaseFromEscrowForCancelled, 
+                $"Request {pledge.ParentRequest.ArticleRequestId} was cancelled and the remaining funds were returned.");
+        }
+
+        private async Task<TransactionResult> ReleasePledge(RequestPledge pledge, long amount, TransactionType transactionType)
+        {
+            var funderWallet = pledge.Pledger.EscrowWallet;
+            var receiverWallet = pledge.ParentRequest.TargetAuthor.MainWallet;
+
+            return await Transact(funderWallet, receiverWallet, amount, transactionType);
+        }
+
+        private async Task<TransactionResult> Transact(Wallet from, Wallet to, long amount, TransactionType transactionType, string? comment = null)
+        {
+            var transactionResult = await _transactionRepository.AddTransaction(from, to, amount, transactionType, comment);
 
             if (transactionResult.Result == PaymentResultEnum.Failed)
             {
@@ -92,6 +113,11 @@ namespace PerRead.Backend.Services
             await _walletRepository.AddOutgoingTransaction(from, transactionResult.Transaction);
             await _walletRepository.AddIncomingTransaction(to, transactionResult.Transaction);
             return transactionResult;
+        }
+
+        public async Task<FEWallet> GetWallet(string walletId)
+        {
+            return await _walletRepository.GetWalletQuery(walletId).Select(x => x.ToFEWallet()).FirstOrDefaultAsync();
         }
     }
 }
