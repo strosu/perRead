@@ -1,1 +1,17 @@
-<p>main-wallet-details works!</p>
+<h1>Your main wallet</h1>
+
+<b>
+    Current tokens: {{mainWallet.tokenAmount}}
+</b>
+
+<div>
+    Incoming transactions:
+</div>
+
+<app-transactions-list [transactionList]="mainWallet.incomingTransactions"></app-transactions-list>
+
+<div>
+    Outoing transactions: 
+</div>
+
+<app-transactions-list [transactionList]="mainWallet.outgoingTransactions"></app-transactions-list>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Wallet } from 'src/app/models/wallet/wallet.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-main-wallet-details',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainWalletDetailsComponent implements OnInit {
 
-  constructor() { }
+  mainWallet: Wallet = <Wallet>{};
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.userService.getCurrentUserMainWallet().subscribe({
+      next: data => {
+        console.log(data);
+        this.mainWallet = data;
+      },
+      error: err => console.log(err)
+    });
   }
 
 }

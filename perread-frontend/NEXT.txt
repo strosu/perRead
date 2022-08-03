@@ -11,6 +11,7 @@ P1 scenarios:
 - search by author
 
 TODO NEXT:
+- pagination for all lists: articles, authors, tags, requests, pledges, transactions
 
 TODO Pledges:
 - see all pledges under user profile

@@ -36,7 +36,7 @@ import { UserPreferencesComponent } from './components/user/user-preferences/use
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; 
 import { MatCardModule } from '@angular/material/card'; 
-import {MatFormFieldModule} from '@angular/material/form-field'; 
+import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { UnlockedArticleComponent } from './components/user/unlocked-article/unlocked-article.component';
 import { FeedManagementComponent } from './components/feed/feed-management/feed-management.component';
 import { FeedDetailsComponent } from './components/feed/feed-details/feed-details.component';
@@ -47,10 +47,11 @@ import { SectionDetailsComponent } from './components/sections/section-details/s
 import { SectionArticlesComponent } from './components/sections/section-articles/section-articles.component';
 import { SectionListComponent } from './components/sections/section-list/section-list.component';
 import { SectionPreviewComponent } from './components/sections/section-preview/section-preview.component';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table'; 
+import { MatGridListModule } from '@angular/material/grid-list';
 import { SectionPageComponent } from './components/sections/section-page/section-page.component';
 import { TokensPageComponent } from './components/payment/tokens-page/tokens-page.component'; 
-import {MatGridListModule} from '@angular/material/grid-list';
 import { AddTokensComponent } from './components/payment/add-tokens/add-tokens.component';
 import { WithdrawTokensComponent } from './components/payment/withdraw-tokens/withdraw-tokens.component';
 import { SectionCardComponent } from './components/sections/section-card/section-card.component';
@@ -69,7 +70,8 @@ import { AddPledgeComponent } from './components/pledges/add-pledge/add-pledge.c
 import { EditPledgeComponent } from './components/pledges/edit-pledge/edit-pledge.component';
 import { EditRequestComponent } from './components/requests/edit-request/edit-request.component';
 import { MainWalletDetailsComponent } from './components/wallet/main-wallet-details/main-wallet-details.component';
-import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-details/escrow-wallet-details.component'; 
+import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-details/escrow-wallet-details.component';
+import { TransactionsListComponent } from './components/wallet/transactions-list/transactions-list.component'; 
 
 @NgModule({
   declarations: [
@@ -125,7 +127,8 @@ import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-
     EditPledgeComponent,
     EditRequestComponent,
     MainWalletDetailsComponent,
-    EscrowWalletDetailsComponent
+    EscrowWalletDetailsComponent,
+    TransactionsListComponent
   ],
   imports: [
     BrowserModule,
@@ -141,7 +144,8 @@ import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-
     MatCardModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

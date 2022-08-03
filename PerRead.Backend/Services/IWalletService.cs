@@ -125,7 +125,8 @@ namespace PerRead.Backend.Services
         public async Task<FEWallet> GetCurrentUserMainWallet()
         {
             var curentUser = await _requesterGetter.GetRequester();
-            return curentUser.MainWallet.ToFEWallet();
+            var wallet = await _walletRepository.GetWalletWithTransactions(curentUser.MainWalletId);
+            return wallet.ToFEWallet();
         }
     }
 }

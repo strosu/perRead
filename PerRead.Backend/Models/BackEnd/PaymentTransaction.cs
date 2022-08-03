@@ -21,7 +21,7 @@ namespace PerRead.Backend.Models.BackEnd
 
         public long TokenAmount { get; set; }
 
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
     }
 
     public enum TransactionType
