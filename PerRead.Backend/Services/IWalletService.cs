@@ -86,7 +86,10 @@ namespace PerRead.Backend.Services
         public async Task<TransactionResult> UnlockArticle(Author owner, long amount)
         {
             var buyer = await _requesterGetter.GetRequester();
-            return await Transact(buyer.MainWallet, owner.MainWallet, amount, TransactionType.ArticleRead);
+
+            var ownerWallet = await _walletRepository.GetWalletWithTransactions(owner.MainWalletId);
+
+            return await Transact(buyer.MainWallet, ownerWallet, amount, TransactionType.ArticleRead);
         }
 
         public async Task ReleaseBackToPledger(RequestPledge pledge)
