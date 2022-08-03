@@ -31,10 +31,26 @@ namespace PerRead.Backend.Models.FrontEnd
         public TransactionType TransactionType { get; set; }
 
         public long TokenAmount { get; set; }
+
+        public DateTime TransactionDate { get; set; }
     }
 
     public class FETransaction
     {
+        public string TransactionId { get; set; }
 
+        public string SourceWalletId { get; set; }
+
+        public string DestinationWalletId { get; set; }
+
+        public TransactionType TransactionType { get; set; }
+
+        public long TokenAmount { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public FEAuthorPreview Sender { get; set; }
+
+        public FEAuthorPreview Receiver { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace PerRead.Backend.Services
         Task ReleaseBackToPledger(RequestPledge pledge);
 
         Task<FEWallet> GetWallet(string walletId);
+
+        Task<FEWallet> GetCurrentUserMainWallet();
     }
 
     public class WalletService : IWalletService
@@ -47,7 +49,7 @@ namespace PerRead.Backend.Services
             var companyWallet = await _walletRepository.GetWallet(ModelConstants.CompanyWalletId);
 
             await Transact(companyWallet, author.MainWallet, amount, TransactionType.TokenPurchase);
-            return author.MainWallet.TokenAmount; 
+            return author.MainWallet.TokenAmount;
         }
 
         public async Task<long> WithdrawTokensForCurrentUser(long amount)
@@ -89,7 +91,7 @@ namespace PerRead.Backend.Services
 
         public async Task ReleaseBackToPledger(RequestPledge pledge)
         {
-            await Transact(pledge.Pledger.EscrowWallet, pledge.Pledger.MainWallet, pledge.TotalTokenSum - pledge.TokensOnAccept, TransactionType.RleaseFromEscrowForCancelled, 
+            await Transact(pledge.Pledger.EscrowWallet, pledge.Pledger.MainWallet, pledge.TotalTokenSum - pledge.TokensOnAccept, TransactionType.RleaseFromEscrowForCancelled,
                 $"Request {pledge.ParentRequest.ArticleRequestId} was cancelled and the remaining funds were returned.");
         }
 
@@ -118,6 +120,12 @@ namespace PerRead.Backend.Services
         public async Task<FEWallet> GetWallet(string walletId)
         {
             return await _walletRepository.GetWalletQuery(walletId).Select(x => x.ToFEWallet()).FirstOrDefaultAsync();
+        }
+
+        public async Task<FEWallet> GetCurrentUserMainWallet()
+        {
+            var curentUser = await _requesterGetter.GetRequester();
+            return curentUser.MainWallet.ToFEWallet();
         }
     }
 }

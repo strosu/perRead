@@ -88,6 +88,11 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Could not find the request");
             }
 
+            if (request.RequestState != RequestState.Created)
+            {
+                throw new ArgumentException("Request has already been accepted.");
+            }
+
             var pledgingUserCount = request.Pledges.Select(x => x.Pledger.AuthorId).Distinct().Count();
 
             if (pledgingUserCount > 1)
@@ -104,6 +109,11 @@ namespace PerRead.Backend.Services
         {
             var request = await ValidateUsersMatch(requestId);
 
+            if (request.RequestState != RequestState.Created)
+            {
+                throw new ArgumentException("Request cannot be accepted");
+            }
+
             await _requestsRepository.UpdateState(request, RequestState.Accepted);
 
             foreach (var pledge in request.Pledges)
@@ -118,9 +128,14 @@ namespace PerRead.Backend.Services
         {
             var request = await ValidateUsersMatch(completeRequestCommand.RequestId);
 
+            if (request.RequestState != RequestState.Accepted)
+            {
+                throw new ArgumentException("A request can only be accepted if it's state is Created.");
+            }
+
             var resultingArticle = await _articleRepository.GetSimpleArticle(completeRequestCommand.ResultingArticleId);
-;
-            if (resultingArticle == null) 
+            ;
+            if (resultingArticle == null)
             {
                 throw new ArgumentException("Invalid article ID");
             }
@@ -138,6 +153,11 @@ namespace PerRead.Backend.Services
         public async Task<FERequest> AbandonRequest(AbandonRequestCommand abandonRequestCommand)
         {
             var request = await ValidateUsersMatch(abandonRequestCommand.RequestId);
+
+            if (request.RequestState != RequestState.Accepted)
+            {
+                throw new ArgumentException("You can only abandon requests that are active and accepted");
+            }
 
             await _requestsRepository.UpdateState(request, RequestState.Cancelled);
 

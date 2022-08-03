@@ -27,6 +27,7 @@ import { SectionPageComponent } from './components/sections/section-page/section
 import { TagDetailsComponent } from './components/tags/tag-details/tag-details.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
+import { MainWalletDetailsComponent } from './components/wallet/main-wallet-details/main-wallet-details.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -56,7 +57,8 @@ const routes: Routes = [
   { path: 'requests/:id/edit', component: EditRequestComponent },
   { path: 'requests/:requestId/pledges/add', component: AddPledgeComponent },
   { path: 'pledges/:id', component: PledgeDetailsComponent },
-  { path: 'pledges/:id/edit', component: EditPledgeComponent }
+  { path: 'pledges/:id/edit', component: EditPledgeComponent },
+  { path: 'main-wallet', component: MainWalletDetailsComponent }
 ];
 
 @NgModule({

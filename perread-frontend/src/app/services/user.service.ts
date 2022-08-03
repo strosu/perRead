@@ -5,6 +5,7 @@ import { Constants } from '../constants';
 import { ArticleUnlockInfo } from '../models/user/article-unlock-info';
 import { UserPreview } from '../models/user/user-preview.model';
 import { UserSettings } from '../models/user/user-settings.model';
+import { Wallet } from '../models/wallet/wallet.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,9 @@ export class UserService {
 
   updateCurrentUserUnlockedArticles(articles: number[]) : Observable<any> {
     return this.httpClient.post<number[]>(`${Constants.BACKENDURL}/user/acquired`, articles);
+  }
+
+  getCurrentUserMainWallet() : Observable<Wallet> {
+    return this.httpClient.get<Wallet>(`${Constants.BACKENDURL}/user/wallet`);
   }
 }

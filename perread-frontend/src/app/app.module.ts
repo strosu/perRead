@@ -67,7 +67,9 @@ import { PledgeDetailsComponent } from './components/pledges/pledge-details/pled
 import { PledgeListComponent } from './components/pledges/pledge-list/pledge-list.component';
 import { AddPledgeComponent } from './components/pledges/add-pledge/add-pledge.component';
 import { EditPledgeComponent } from './components/pledges/edit-pledge/edit-pledge.component';
-import { EditRequestComponent } from './components/requests/edit-request/edit-request.component'; 
+import { EditRequestComponent } from './components/requests/edit-request/edit-request.component';
+import { MainWalletDetailsComponent } from './components/wallet/main-wallet-details/main-wallet-details.component';
+import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-details/escrow-wallet-details.component'; 
 
 @NgModule({
   declarations: [
@@ -121,7 +123,9 @@ import { EditRequestComponent } from './components/requests/edit-request/edit-re
     PledgeListComponent,
     AddPledgeComponent,
     EditPledgeComponent,
-    EditRequestComponent
+    EditRequestComponent,
+    MainWalletDetailsComponent,
+    EscrowWalletDetailsComponent
   ],
   imports: [
     BrowserModule,

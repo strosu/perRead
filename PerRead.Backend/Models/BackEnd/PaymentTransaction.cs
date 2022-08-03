@@ -17,12 +17,15 @@ namespace PerRead.Backend.Models.BackEnd
 
         public TransactionType TransactionType { get; set; }
 
+        public DateTime TransactionDate { get; set; }
+
         public long TokenAmount { get; set; }
 
         public string Comment { get; set; }
-}
+    }
 
-    public enum TransactionType {
+    public enum TransactionType
+    {
         [EnumMember(Value = nameof(TokenPurchase))]
         TokenPurchase,
 

@@ -99,5 +99,11 @@ namespace PerRead.Backend.Controllers
         {
             return await _walletService.GetWallet(walletId);
         }
+
+        [HttpGet("/user/wallet")]
+        public async Task<FEWallet> GetMainWallet()
+        {
+            return await _walletService.GetCurrentUserMainWallet();
+        }
     }
 }
