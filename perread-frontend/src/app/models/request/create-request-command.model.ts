@@ -6,3 +6,8 @@ export class CreateRequestCommand {
     requestCommand: RequestCommand = <RequestCommand>{};
     pledgeCommand: PledgeCommand = <PledgeCommand>{};
 }
+
+export class CompleteRequestCommand {
+    requestId: string = '';
+    resultingArticleId: string = '';
+}

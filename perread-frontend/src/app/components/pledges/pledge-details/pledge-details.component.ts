@@ -16,7 +16,6 @@ export class PledgeDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private pledgeService: PledgeService,
-    private tokenService: TokenStorageService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -25,7 +24,6 @@ export class PledgeDetailsComponent implements OnInit {
       next: data => {
         console.log(data);
         this.pledge = data
-        this.editable = this.pledge.pledger.authorId === this.tokenService.getUserId()
       },
       error: err => console.log(err)
     });

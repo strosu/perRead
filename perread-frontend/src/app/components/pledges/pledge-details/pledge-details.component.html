@@ -25,7 +25,7 @@ Tokens on accept: {{pledge.tokensOnAccept}}
 
 <br>
 <br>
-<div *ngIf="editable">
+<div *ngIf="this.pledge.editableByCurrentUser">
     <div id="block_container">
         <a routerLink="/pledges/{{pledge.requestPledgeId}}/edit" mat-raised-button color="primary">Edit pledge</a>
         <button (click)="deletePledge()" class="btn btn-danger with-margin">Delete</button>

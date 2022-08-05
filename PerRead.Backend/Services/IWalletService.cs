@@ -100,8 +100,8 @@ namespace PerRead.Backend.Services
 
         private async Task<TransactionResult> ReleasePledge(RequestPledge pledge, long amount, TransactionType transactionType)
         {
-            var funderWallet = pledge.Pledger.EscrowWallet;
-            var receiverWallet = pledge.ParentRequest.TargetAuthor.MainWallet;
+            var funderWallet = await _walletRepository.GetWallet(pledge.Pledger.EscrowWalletId);
+            var receiverWallet = await _walletRepository.GetWallet(pledge.ParentRequest.TargetAuthor.MainWalletId);
 
             return await Transact(funderWallet, receiverWallet, amount, transactionType);
         }

@@ -19,11 +19,19 @@
 
 <br> Publish state: {{mapping[request.postPublishState]}}
 
-<div *ngIf="request.editableByCurrentUser">
+<br>
+
+<div *ngIf="request.editableByCurrentUser" class="with-margin">
     <button routerLink="/requests/{{request.requestId}}/edit" mat-raised-button color="primary">Edit request</button>
-    <button (click)="deleteRequest()" mat-raised-button color="primary" class="danger with-margin">Delete</button>
+    <!-- <button (click)="deleteRequest()" mat-raised-button color="primary" class="danger with-margin">Delete</button> -->
 </div>
 
-<a routerLink="/requests/{{request.requestId}}/pledges/add" mat-raised-button color="primary">Add new pledge</a>
+<button (click)="acceptRequest()" *ngIf="this.canBeAccepted" mat-raised-button class="with-margin" color="primary">Accept request</button>
+<button (click)="acceptRequest()" *ngIf="this.canBeCompleted" mat-raised-button class="with-margin" color="primary">Complete request</button>
+<button (click)="acceptRequest()" *ngIf="this.canBeAbandoned" mat-raised-button class="with-margin" color="primary">Abandon request</button>
+
+<div>
+    <a class="with-margin" *ngIf="this.request.acceptsNewPledges" routerLink="/requests/{{request.requestId}}/pledges/add" mat-raised-button color="primary">Add new pledge</a>
+</div>
 
 <app-pledge-list [pledgePreviews]="request.pledgePreviews"></app-pledge-list>

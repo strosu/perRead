@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.BusinessRules;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -93,14 +94,13 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException("Request has already been accepted.");
             }
 
-            var pledgingUserCount = request.Pledges.Select(x => x.Pledger.AuthorId).Distinct().Count();
+            var requester = await _requesterGetter.GetRequester();
 
-            if (pledgingUserCount > 1)
+            if (!RequestRules.IsEditable(request, requester))
             {
-                throw new ArgumentException("Other people have already pledged");
+                throw new ArgumentException("Request is not editable by the current user.");
             }
 
-            var requester = await _requesterGetter.GetRequester();
 
             return (await _requestsRepository.EditRequest(requestCommand)).ToFERequest(requester);
         }

@@ -28,10 +28,10 @@ export const RequestPostPublishStateToLabelMapping: Record<RequestPostPublishSta
 };
 
   export enum RequestState {
-    Created, 
-    Accepted, 
-    Completed, 
-    Rejected,
-    Expired,
-    Cancelled
+    Created = "Created", 
+    Accepted = "Accepted", 
+    Completed = "Completed", 
+    Rejected = "Rejected",
+    Expired = "Expired",
+    Cancelled = "Cancelled"
   }

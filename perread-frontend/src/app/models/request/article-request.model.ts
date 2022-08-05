@@ -19,4 +19,5 @@ export class ArticleRequest {
     createdAt : Date = <Date>{};
     pledgePreviews: PledgePreview[] = [];
     editableByCurrentUser: boolean = false;
+    acceptsNewPledges: boolean = false;
 }

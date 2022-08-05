@@ -32,6 +32,8 @@ namespace PerRead.Backend.Models.FrontEnd
         public IEnumerable<FEPledgePreview> PledgePreviews { get; set; }
 
         public bool EditableByCurrentUser { get; set; }
+
+        public bool AcceptsNewPledges { get; set; }
     }
 }
 

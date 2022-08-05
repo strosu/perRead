@@ -1,5 +1,5 @@
-﻿using System;
-using PerRead.Backend.Models.BackEnd;
+﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.BusinessRules;
 using PerRead.Backend.Models.FrontEnd;
 
 namespace PerRead.Backend.Models.Extensions
@@ -25,7 +25,8 @@ namespace PerRead.Backend.Models.Extensions
                 TokensOnAccept = pledge.TokensOnAccept,
                 ParentRequest = pledge.ParentRequest.ToFERequestPreview(requester),
                 Pledger = pledge.Pledger.ToFEAuthorPreview(),
-                RequestPledgeId = pledge.RequestPledgeId
+                RequestPledgeId = pledge.RequestPledgeId,
+                EditableByCurrentUser = RequestRules.IsEditableByCurrentUser(pledge, requester)
             };
         }
     }

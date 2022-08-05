@@ -13,6 +13,8 @@
         public uint TokensOnAccept { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public bool EditableByCurrentUser { get; set; }
     }
 }
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../constants';
-import { CreateRequestCommand } from '../models/request/create-request-command.model';
+import { CompleteRequestCommand, CreateRequestCommand } from '../models/request/create-request-command.model';
 import { RequestCommand } from '../models/request/request-command.model';
 import { RequestPreview } from '../models/request/request-preview.model';
 import { ArticleRequest } from '../models/request/article-request.model';
@@ -29,5 +29,13 @@ export class RequestsService {
 
   editRequest(requestCommand: RequestCommand) : Observable<ArticleRequest> {
     return this.httpClient.post<ArticleRequest>(`${Constants.BACKENDURL}/requests/edit`, requestCommand);
+  }
+
+  acceptRequest(requestId: string) : Observable<ArticleRequest> {
+    return this.httpClient.post<ArticleRequest>(`${Constants.BACKENDURL}/requests/${requestId}/accept`, null);
+  }
+
+  completeRequest(completeRequestCommand: CompleteRequestCommand) : Observable<ArticleRequest> {
+    return this.httpClient.post<ArticleRequest>(`${Constants.BACKENDURL}/requests/complete`, completeRequestCommand);
   }
 }

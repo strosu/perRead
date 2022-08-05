@@ -9,4 +9,5 @@ export class Pledge {
     totalTokenSum: number = 0;
     tokensOnAccept: number = 0;
     createdAt: Date = <Date>{};
+    editableByCurrentUser: boolean = false;
 }
