@@ -17,9 +17,15 @@ export class RequestPreview {
 
 export enum RequestPostPublishState {
     Public = "Public",
-    ProfitShare = "Profit Share",
-    Exclusive = "Exclusive" 
+    ProfitShare = "ProfitShare",
+    Exclusive = "Exclusive"
   }
+
+export const RequestPostPublishStateToLabelMapping: Record<RequestPostPublishState, string> = {
+    [RequestPostPublishState.Public]: "Public",
+    [RequestPostPublishState.ProfitShare]: "Profit Share",
+    [RequestPostPublishState.Exclusive]: "Exclusive",
+};
 
   export enum RequestState {
     Created, 

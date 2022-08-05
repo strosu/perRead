@@ -28,7 +28,7 @@ namespace PerRead.Backend.Models.BackEnd
 
         public DateTime CreatedAt { get; set; }
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
     }
 
     public enum RequestPostPublishState

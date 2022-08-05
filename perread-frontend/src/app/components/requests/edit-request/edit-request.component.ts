@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RequestCommand } from 'src/app/models/request/request-command.model';
-import { RequestPostPublishState } from 'src/app/models/request/request-preview.model';
+import { RequestPostPublishState, RequestPostPublishStateToLabelMapping } from 'src/app/models/request/request-preview.model';
 import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
@@ -13,7 +13,8 @@ import { RequestsService } from 'src/app/services/requests.service';
 export class EditRequestComponent implements OnInit {
 
   requestCommand: RequestCommand = <RequestCommand>{};
-  statuses: RequestPostPublishState[] = [ RequestPostPublishState.Exclusive, RequestPostPublishState.ProfitShare, RequestPostPublishState.Public ];
+  public mapping = RequestPostPublishStateToLabelMapping;
+  public statuses = Object.values(RequestPostPublishState);
   selectedStatus = new FormControl();
   
   constructor(private requestService: RequestsService,
@@ -31,6 +32,7 @@ export class EditRequestComponent implements OnInit {
         this.requestCommand.description = data.description;
         this.requestCommand.percentForPledgers = data.percentForledgers;
         this.requestCommand.postPublishState = data.postPublishState;
+        this.selectedStatus.setValue(data.postPublishState);
         // Probably don't allow targetting another authoer when editing a request
       },
       error: err => console.log(err)
@@ -38,6 +40,7 @@ export class EditRequestComponent implements OnInit {
   }
 
   saveRequest() : void {
+    this.requestCommand.postPublishState = this.selectedStatus.value;
     this.requestService.editRequest(this.requestCommand).subscribe({
       next: data => {
         console.log(data);

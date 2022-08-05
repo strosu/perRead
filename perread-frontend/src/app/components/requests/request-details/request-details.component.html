@@ -5,10 +5,8 @@
     <app-author-preview [authorPreview]="request.targetAuthor"></app-author-preview>
 </div>
 
-<br> Description:
-<br>
-<h2>{{request.description}}</h2>
-<h2></h2>
+<h2>Description:</h2>
+{{request.description}}
 
 <div id="block_container">
     <strong>Initiated by: </strong>
@@ -19,8 +17,7 @@
 
 <br>Request state: {{request.requestState}}
 
-<br> Publish state:
-<h2>{{request.postPublishState}}</h2>
+<br> Publish state: {{mapping[request.postPublishState]}}
 
 <div *ngIf="request.editableByCurrentUser">
     <button routerLink="/requests/{{request.requestId}}/edit" mat-raised-button color="primary">Edit request</button>

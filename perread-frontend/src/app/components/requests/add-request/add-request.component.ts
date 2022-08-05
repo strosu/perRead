@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PledgeCommand } from 'src/app/models/pledge/pledge--command.model';
 import { CreateRequestCommand } from 'src/app/models/request/create-request-command.model';
-import { RequestCommand } from 'src/app/models/request/request-command.model';
-import { RequestPostPublishState } from 'src/app/models/request/request-preview.model';
+import { RequestPostPublishState, RequestPostPublishStateToLabelMapping } from 'src/app/models/request/request-preview.model';
 import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
@@ -14,11 +12,10 @@ import { RequestsService } from 'src/app/services/requests.service';
 })
 export class AddRequestComponent implements OnInit {
 
-  createRequestCommand: CreateRequestCommand = <CreateRequestCommand>{};
-  // requestCommand: RequestCommand = <RequestCommand>{};
-  // pledgeCommand: PledgeCommand = <PledgeCommand>{};
+  createRequestCommand: CreateRequestCommand = new CreateRequestCommand();
   
-  statuses: RequestPostPublishState[] = [ RequestPostPublishState.Exclusive, RequestPostPublishState.ProfitShare, RequestPostPublishState.Public ];
+  public mapping = RequestPostPublishStateToLabelMapping;
+  public statuses = Object.values(RequestPostPublishState);
   selectedStatus = new FormControl();
 
   constructor(
@@ -31,10 +28,7 @@ export class AddRequestComponent implements OnInit {
   }
 
   sendRequest() : void {
-    // let createRequestCommand : CreateRequestCommand = {
-    //   requestCommand: this.requestCommand,
-    //   pledgeCommand : this.pledgeCommand
-    // }
+    this.createRequestCommand.requestCommand.postPublishState = this.selectedStatus.value;
 
     this.requestService.createRequest(this.createRequestCommand).subscribe({
       next: data => {
