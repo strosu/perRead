@@ -44,7 +44,7 @@ namespace PerRead.Backend.Models.BackEnd
         [EnumMember(Value = nameof(ReleaseInitialPledgeAmount))]
         ReleaseInitialPledgeAmount,
 
-        [EnumMember(Value = nameof(ReleaseInitialPledgeAmount))]
+        [EnumMember(Value = nameof(ReleaseRemainingPledgeAmount))]
         ReleaseRemainingPledgeAmount,
 
         [EnumMember(Value = nameof(RleaseFromEscrowForCancelled))]

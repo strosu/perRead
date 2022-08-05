@@ -1,17 +1,16 @@
-﻿using PerRead.Backend.Repositories;
-using PerRead.Backend.Services;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using PerRead.Backend.Extensions;
 using PerRead.Backend.Filters;
-using Microsoft.AspNetCore.Identity;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
-using PerRead.Backend.Extensions;
-using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Reflection.Metadata;
 using PerRead.Backend.Models.BackEnd;
-using Microsoft.Extensions.DependencyInjection;
-using System.Xml;
+using PerRead.Backend.Repositories;
+using PerRead.Backend.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +26,9 @@ builder.Services.AddCors(
 
 builder.Services.AddControllers(
     options => options.Filters.Add<LogAsyncResourceFilter>()) // Add a global filter to all controllers
-    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+    .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
+;
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
