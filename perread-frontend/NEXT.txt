@@ -14,16 +14,13 @@ TODO NEXT:
 - pagination for all lists: articles, authors, tags, requests, pledges, transactions
 
 TODO Pledges:
-- see all pledges under user profile
+- see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
 
 TODO Requests:
-- allow editing a request, only if you're the only pledger - DONE
-- allow accepting a request
 - allow finishing a request and associating it with a new article (during article creation maybe)
-- properly set the type of request
-
-TODO Transactions:
-- each token move needs to be logged; users needs to be able to see their list of transactions
+- use the type of request later on (concept of exclusives, profit sharing)
+- private requests: either a single pledge for a request, request hidden and resulting in a private article 
+    - alternatively, mechanism for sharing a private request (via a key?)
 
 MISC:
 - component for presenting an article in the list of read articles
@@ -46,9 +43,6 @@ TODO Sections:
 - add list of sections when creating an article, require at least one
 - UI for editing an article, associating it with a section
 
-
-- private requests: either a single pledge for a request, request hidden and resulting in a private article 
-    - alternatively, mechanism for sharing a private request (via a key?)
 
 TODO BACKEND:
 
@@ -107,6 +101,8 @@ Image upload for new articles:
 - restrict button to the right on the new article form
 - extract image upload form to separate component, need to use it for authors as well
 
+
+
 DONE:
 - present all articles nicely - SOMEWHAT
 - fix concurrency issue when submitting new article and redirecting quickly via Link - see if Angular has the same problem (prob not, wait for request to finish)
@@ -152,3 +148,11 @@ Pledges:
 - view pledge details - DONE
 - allow editing your pledges - DONE
 - allow deleting a pledge (and implicitly a request, when no pledges are left) - DONE
+
+TODO Transactions:
+- each token move needs to be logged; users needs to be able to see their list of transactions - DONE
+
+Requests:
+- allow editing a request, only if you're the only pledger - DONE
+- allow accepting a request - DONE
+- properly set the type of request - DONE
