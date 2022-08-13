@@ -42,7 +42,7 @@ namespace PerRead.Backend.Repositories
                 {
                     Article = newArticle,
                     Author = author,
-                    CanBeRemoved = false, // The initial author cannot be removed
+                    CanBeEdited = false, // The initial author cannot be removed
                     IsUserFacing = true,
                     OwningPercentage = 1 // Initially the main author owns the article in its entirety
                 }
@@ -112,6 +112,42 @@ namespace PerRead.Backend.Repositories
                 .IncludeOwners()
                 .SingleAsync();
         }
+
+        public async Task<Article> UpdateOwners(string id, UpdateOwnershipCommand ownershipCommand)
+        {
+            var article = await GetWithOwners(id); // should already be cached
+
+            var ownersToRemove = article.ArticleOwners.Where(x => !ownershipCommand.Owners.Any(y => y.AuthorId == x.AuthorId));
+
+            foreach (var toRemove in ownersToRemove)
+            {
+                article.ArticleOwners.Remove(toRemove);
+            }
+
+            foreach (var owner in ownershipCommand.Owners)
+            {
+                var previousValue = article.ArticleOwners.FirstOrDefault(x => x.AuthorId == owner.AuthorId);
+                if (previousValue == null)
+                {
+                    article.ArticleOwners.Add(new ArticleOwner
+                    {
+                        AuthorId = owner.AuthorId,
+                        ArticleId = id,
+                        CanBeEdited = true,
+                        IsUserFacing = true,
+                        OwningPercentage = owner.OwnershipPercent
+                    });
+                }
+                else
+                {
+                    previousValue.OwningPercentage = owner.OwnershipPercent;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return article;
+        }
     }
 }
 
@@ -131,4 +167,6 @@ public interface IArticleRepository
     Task<Article?> GetSimpleArticle(string id);
 
     IQueryable<Article> GetLatestArticles(string authorId);
+
+    Task<Article> UpdateOwners(string id, UpdateOwnershipCommand ownershipCommand);
 }

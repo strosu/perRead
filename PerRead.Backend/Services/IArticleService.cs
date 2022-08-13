@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
@@ -18,6 +19,10 @@ namespace PerRead.Backend.Services
         Task Delete(string id);
 
         Task<TransactionResult> UnlockForCurrentUser(string id);
+
+        Task<FEArticleOwnership> GetOwnership(string id);
+
+        Task<FEArticleOwnership> SetOwnership(string id, UpdateOwnershipCommand ownership);
     }
 
     public class ArticleService : IArticleService
@@ -182,6 +187,66 @@ namespace PerRead.Backend.Services
             }
 
             return TransactionResult.Success;
+        }
+
+        public async Task<FEArticleOwnership> GetOwnership(string id)
+        {
+            var article = await _articleRepository.Get(id);
+            var requester = await _requesterGetter.GetRequester();
+
+            if (!article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
+            {
+                throw new ArgumentException("You're not an owner");
+            }
+
+            return article.ToFEArticleOwnership();
+        }
+
+        // TODO - probably take another type here
+        public async Task<FEArticleOwnership> SetOwnership(string id, UpdateOwnershipCommand ownershipCommand)
+        {
+            var currentArticle = await _articleRepository.GetWithOwners(id);
+
+            if (ownershipCommand.Owners.GroupBy(x => x.AuthorId).Any(x => x.Count() > 1))
+            {
+                throw new ArgumentException("An author can only appear once");
+            }
+
+            // Firat, check that none of the required authors were edited
+            var notEditableList = currentArticle.ArticleOwners.Where(x => !x.CanBeEdited);
+            foreach (var notEditable in notEditableList)
+            {
+                var updated = ownershipCommand.Owners.FirstOrDefault(x => x.AuthorId == notEditable.AuthorId);
+
+                if (updated == null)
+                {
+                    throw new ArgumentException($"You removed author {updated.AuthorId} which cannot be edited");
+                }
+
+                if (updated.OwnershipPercent != notEditable.OwningPercentage * 100)
+                {
+                    throw new ArgumentException($"You cannot edit user {updated.AuthorId}'s percentage");
+                }
+            }
+
+            // Then compute what's available once the required users take their stake
+            var reserved = currentArticle.ArticleOwners.Sum(x => x.OwningPercentage) * 100;
+            if (reserved > 100)
+            {
+                throw new ArgumentException("Somehow we ended up with more than 100% ownership, better call someone");
+            }
+
+            var available = 100 - reserved;
+            var requetedEditable = ownershipCommand.Owners.Where(x => !notEditableList.Any(y => y.AuthorId == x.AuthorId));
+            var requtedEditableSum = requetedEditable.Sum(x => x.OwnershipPercent);
+            if (available != requtedEditableSum)
+            {
+                throw new ArgumentException($"There is {available} available, but you requeted {requetedEditable}");
+            }
+
+            await _articleRepository.UpdateOwners(id, ownershipCommand);
+
+            return currentArticle.ToFEArticleOwnership();
         }
     }
 }

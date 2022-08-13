@@ -10,7 +10,7 @@ namespace PerRead.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("[controller]")]
+    //[Route("[controller]")]
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
@@ -20,7 +20,7 @@ namespace PerRead.Controllers
             _articleService = articleService;
         }
 
-        [HttpGet("")]
+        [HttpGet("articles")]
         [ResponseHeader("Filter-Header", "Filter Value")]
         [AllowAnonymous]
         //[Route("")]
@@ -29,7 +29,7 @@ namespace PerRead.Controllers
             return await _articleService.GetAll();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("articles/{id}")]
         public async Task<IActionResult> Get(string id)
         {
             var article = await _articleService.Get(id);
@@ -51,7 +51,7 @@ namespace PerRead.Controllers
             return BadRequest(paymentResult.Reason);
         }
 
-        [HttpPost("")]
+        [HttpPost("articles")]
         public async Task<IActionResult> Post([FromBody] CreateArticleCommand articleCommand)
         {
             try
@@ -65,7 +65,7 @@ namespace PerRead.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("articles/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             try
@@ -80,7 +80,30 @@ namespace PerRead.Controllers
             }
         }
 
-        //[HttpGet("{id}/owners")]
-        //public async Task<>
+        [HttpGet("articles/{id}/owners")]
+        public async Task<IActionResult> GetOwners(string id)
+        {
+            var article = await _articleService.Get(id);
+
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                return Ok(await _articleService.GetOwnership(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("articles/{id}/owners")]
+        public async Task<IActionResult> UpdateOwners(string id, [FromBody] UpdateOwnershipCommand ownership)
+        {
+            return Ok(await _articleService.SetOwnership(id, ownership));
+        }
     }
 }

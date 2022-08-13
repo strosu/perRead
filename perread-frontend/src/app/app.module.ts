@@ -71,7 +71,11 @@ import { EditPledgeComponent } from './components/pledges/edit-pledge/edit-pledg
 import { EditRequestComponent } from './components/requests/edit-request/edit-request.component';
 import { MainWalletDetailsComponent } from './components/wallet/main-wallet-details/main-wallet-details.component';
 import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-details/escrow-wallet-details.component';
-import { TransactionsListComponent } from './components/wallet/transactions-list/transactions-list.component'; 
+import { TransactionsListComponent } from './components/wallet/transactions-list/transactions-list.component';
+import { ArticleOwnersComponent } from './components/article/article-owners/article-owners.component'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   declarations: [
@@ -128,7 +132,8 @@ import { TransactionsListComponent } from './components/wallet/transactions-list
     EditRequestComponent,
     MainWalletDetailsComponent,
     EscrowWalletDetailsComponent,
-    TransactionsListComponent
+    TransactionsListComponent,
+    ArticleOwnersComponent
   ],
   imports: [
     BrowserModule,
@@ -145,7 +150,13 @@ import { TransactionsListComponent } from './components/wallet/transactions-list
     MatFormFieldModule,
     MatSelectModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

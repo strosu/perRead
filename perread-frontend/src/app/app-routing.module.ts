@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddArticleComponent } from './components/article/add-article/add-article.component';
 import { AllArticlesComponent } from './components/article/all-articles/all-articles.component';
 import { ArticleDetailsComponent } from './components/article/article-details/article-details.component';
+import { ArticleOwnersComponent } from './components/article/article-owners/article-owners.component';
 import { AllAuthorsComponentComponent } from './components/author/all-authors-component/all-authors-component.component';
 import { AuthorDetailsComponent } from './components/author/author-details/author-details.component';
 import { AddFeedComponent } from './components/feed/add-feed/add-feed.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'articles', component: AllArticlesComponent },
   { path: 'article/:id', component: ArticleDetailsComponent},
+  { path: 'article/:id/owners', component: ArticleOwnersComponent},
   { path: 'articles/new', component: AddArticleComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},

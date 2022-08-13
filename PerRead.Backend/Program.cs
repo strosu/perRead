@@ -215,7 +215,7 @@ static void SeedArticleOwnership(WebApplication app)
         {
             foreach (var owner in article.ArticleOwners)
             {
-                owner.CanBeRemoved = false;
+                owner.CanBeEdited = false;
                 owner.IsUserFacing = true;
                 owner.OwningPercentage = 1;
             }

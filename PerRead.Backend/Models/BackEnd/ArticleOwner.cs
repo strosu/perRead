@@ -13,7 +13,7 @@ namespace PerRead.Backend.Models.BackEnd
 
         public double OwningPercentage { get; set; }
 
-        public bool CanBeRemoved { get; set; }
+        public bool CanBeEdited { get; set; }
 
         public bool IsUserFacing { get; set; }
     }

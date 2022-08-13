@@ -6,6 +6,7 @@ import { ArticlePreview } from '../models/article/article-preview.model';
 import { Article } from '../models/article/article.model';
 import { ArticleCommand } from '../models/article/article-command.model';
 import { concatMap } from 'rxjs';
+import { ArticleOwnership } from '../models/author/article-ownership.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,14 +38,18 @@ export class ArticlesService {
   }
 
   create(data: ArticleCommand): Observable<Article> {
-    return this.httpClient.post<Article>(`${Constants.BACKENDURL}/article`, data);
+    return this.httpClient.post<Article>(`${Constants.BACKENDURL}/articles`, data);
   }
 
   delete(id: any) : Observable<any> {
-    return this.httpClient.delete(`${Constants.BACKENDURL}/article/${id}`);
+    return this.httpClient.delete(`${Constants.BACKENDURL}/articles/${id}`);
   }
 
   findByTitle(title: string) : Observable<ArticlePreview[]> {
-    return this.httpClient.get<ArticlePreview[]>(`${Constants.BACKENDURL}/article?title=${title}`);
+    return this.httpClient.get<ArticlePreview[]>(`${Constants.BACKENDURL}/articles?title=${title}`);
+  }
+
+  getOwners(id: string) : Observable<ArticleOwnership> {
+    return this.httpClient.get<ArticleOwnership>(`${Constants.BACKENDURL}/articles/${id}/owners`)
   }
 }
