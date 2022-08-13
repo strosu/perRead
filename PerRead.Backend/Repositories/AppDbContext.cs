@@ -27,6 +27,8 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<PaymentTransaction> Transactions { get; set; }
 
+        public DbSet<ArticleOwner> ArticleOwners { get; set; }
+
         //public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -45,6 +47,9 @@ namespace PerRead.Backend.Repositories
                 .UsingEntity(j => j.ToTable("ArticleTag"));
 
             modelBuilder.Entity<ArticleAuthor>()
+                .HasKey(x => new { x.ArticleId, x.AuthorId });
+
+            modelBuilder.Entity<ArticleOwner>()
                 .HasKey(x => new { x.ArticleId, x.AuthorId });
 
             modelBuilder.Entity<Author>()
@@ -85,7 +90,7 @@ namespace PerRead.Backend.Repositories
                 .WithOne()
                 //.HasForeignKey<Author>(x => x.MainWalletId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             modelBuilder.Entity<Author>().HasOne(x => x.EscrowWallet)
                 .WithOne()
                 //.HasForeignKey<Author>(x => x.EscrowWalletId)

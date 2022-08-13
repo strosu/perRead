@@ -79,8 +79,8 @@ app.UseCors();
 app.UseAuth();
 
 app.MapControllers();
-SeedCompanyEntities(app);
-
+//SeedCompanyEntities(app);
+//SeedArticleOwnership(app);
 app.Run();
 
 static void AddServices(WebApplicationBuilder builder)
@@ -147,7 +147,7 @@ static void AddExtraIdentityStuff(WebApplicationBuilder builder)
     //builder.Services.TryAddScoped<RoleManager<TRole>>();
 }
 
-    static void SeedCompanyEntities(WebApplication app)
+static void SeedCompanyEntities(WebApplication app)
 {
     using (var serviceScope = app.Services.CreateScope())
     {
@@ -165,7 +165,7 @@ static void AddExtraIdentityStuff(WebApplicationBuilder builder)
                     WalledId = ModelConstants.CompanyWalletId,
                     TokenAmount = long.MaxValue
                 };
-                
+
                 appDB.Wallets.Add(mainWallet);
             }
 
@@ -200,6 +200,36 @@ static void AddExtraIdentityStuff(WebApplicationBuilder builder)
 
             appDB.SaveChanges();
         }
+    }
+}
+
+static void SeedArticleOwnership(WebApplication app)
+{
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var appDB = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var articles = appDB.Articles.Include(x => x.ArticleAuthors)
+            .ThenInclude(x => x.Author);
+
+        foreach (var article in articles)
+        {
+            var authorCount = article.ArticleAuthors.Count();
+
+            foreach (var author in article.ArticleAuthors)
+            {
+                var articleOwner = new ArticleOwner
+                {
+                    ArticleId = article.ArticleId,
+                    AuthorId = author.AuthorId,
+                    OwningPercentage = 1 / authorCount
+                };
+
+                appDB.ArticleOwners.Add(articleOwner);
+            }
+        }
+
+        appDB.SaveChanges();
     }
 }
 
