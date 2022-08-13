@@ -10,7 +10,6 @@ using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -209,23 +208,16 @@ static void SeedArticleOwnership(WebApplication app)
     {
         var appDB = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        var articles = appDB.Articles.Include(x => x.ArticleAuthors)
+        var articles = appDB.Articles.Include(x => x.ArticleOwners)
             .ThenInclude(x => x.Author);
 
         foreach (var article in articles)
         {
-            var authorCount = article.ArticleAuthors.Count();
-
-            foreach (var author in article.ArticleAuthors)
+            foreach (var owner in article.ArticleOwners)
             {
-                var articleOwner = new ArticleOwner
-                {
-                    ArticleId = article.ArticleId,
-                    AuthorId = author.AuthorId,
-                    OwningPercentage = 1 / authorCount
-                };
-
-                appDB.ArticleOwners.Add(articleOwner);
+                owner.CanBeRemoved = false;
+                owner.IsUserFacing = true;
+                owner.OwningPercentage = 1;
             }
         }
 

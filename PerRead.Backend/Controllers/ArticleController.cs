@@ -30,7 +30,6 @@ namespace PerRead.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Route("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             var article = await _articleService.Get(id);
@@ -53,8 +52,7 @@ namespace PerRead.Controllers
         }
 
         [HttpPost("")]
-        //[Route("create")]
-        public async Task<IActionResult> Post([FromBody] ArticleCommand articleCommand)
+        public async Task<IActionResult> Post([FromBody] CreateArticleCommand articleCommand)
         {
             try
             {
@@ -81,5 +79,8 @@ namespace PerRead.Controllers
                 return NotFound();
             }
         }
+
+        //[HttpGet("{id}/owners")]
+        //public async Task<>
     }
 }

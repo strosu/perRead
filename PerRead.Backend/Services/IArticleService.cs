@@ -13,7 +13,7 @@ namespace PerRead.Backend.Services
 
         Task<FEArticle?> Get(string id);
 
-        Task<FEArticle> Create(ArticleCommand article);
+        Task<FEArticle> Create(CreateArticleCommand article);
 
         Task Delete(string id);
 
@@ -48,7 +48,7 @@ namespace PerRead.Backend.Services
             _walletService = walletService;
         }
 
-        public async Task<FEArticle> Create(ArticleCommand article)
+        public async Task<FEArticle> Create(CreateArticleCommand article)
         {
             article.CheckValid();
 
@@ -107,7 +107,7 @@ namespace PerRead.Backend.Services
         public async Task<TransactionResult> UnlockForCurrentUser(string id)
         {
             // TODO - might want to move this, no idea where atm
-            var article = await _articleRepository.Get(id);
+            var article = await _articleRepository.GetWithOwners(id);
             var requester = await _requesterGetter.GetRequesterWithArticles();
 
             if (IsAlreadyUnlocked(requester, article))
@@ -116,9 +116,11 @@ namespace PerRead.Backend.Services
                 return TransactionResult.Success;
             }
 
-            var price = ComputeArticleCost(requester, article);
 
-            return await _walletService.UnlockArticle(article.ArticleAuthors.First().Author, price);
+            return await PayOwners(requester, article);
+
+            //var price = ComputeArticleCost(requester, article);
+            //return await _walletService.UnlockArticle(article.ArticleAuthors.First().Author, price);
         }
 
         private bool IsAlreadyUnlocked(Author requester, Article article)
@@ -133,12 +135,53 @@ namespace PerRead.Backend.Services
 
         private long ComputeArticleCost(Author requester, Article article)
         {
-            if (article.ArticleAuthors.Any(x => x.AuthorId == requester.AuthorId))
+            if (article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
             {
                 return 0;
             }
 
             return article.Price;
+        }
+
+        private async Task<TransactionResult> PayOwners(Author requester, Article article)
+        {
+            // If you already have an ownership stake in the article, you're not charged for reading it
+            if (article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
+            {
+                return TransactionResult.Success;
+            }
+
+            // TODO - this needs to be a single transaction for the consumer, while still splitting the momey between different authors.
+            // Either transact once from the reader and then split somehow (intermediate company wallet?)
+            // Or do as is, but somehow group the transactions when returning to the user
+            var paymentTasks = new List<Task<TransactionResult>>();
+            foreach (var owner in article.ArticleOwners)
+            {
+                var amount = article.Price * owner.OwningPercentage;
+
+                // TODO - need a better algorithm for splitting the money; probably a round robin kind of deal between owners if they wouldn't all get something out of every read
+                // E.g. you own 1% of an article, but its price is 5, you should only get 1 token every 2 reads.
+                // Need to also persist the "latest head" of the RR
+                // For now, just do some basic stuff for demo purposes
+                if (amount < 1)
+                {
+                    continue;
+                }
+
+                var uIntAmount = (uint)amount;
+                paymentTasks.Add(_walletService.UnlockArticle(owner.Author, uIntAmount));
+            }
+
+            var listResult = await Task.WhenAll(paymentTasks);
+
+            var firstFailed = listResult.FirstOrDefault(x => x.Result == PaymentResultEnum.Failed);
+
+            if (firstFailed != null)
+            {
+                return firstFailed;
+            }
+
+            return TransactionResult.Success;
         }
     }
 }

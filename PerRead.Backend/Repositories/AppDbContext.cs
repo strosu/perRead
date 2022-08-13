@@ -46,9 +46,6 @@ namespace PerRead.Backend.Repositories
                 .WithMany(p => p.Articles)
                 .UsingEntity(j => j.ToTable("ArticleTag"));
 
-            modelBuilder.Entity<ArticleAuthor>()
-                .HasKey(x => new { x.ArticleId, x.AuthorId });
-
             modelBuilder.Entity<ArticleOwner>()
                 .HasKey(x => new { x.ArticleId, x.AuthorId });
 

@@ -2,7 +2,7 @@
 
 namespace PerRead.Backend.Models.Commands
 {
-    public class ArticleCommand
+    public class CreateArticleCommand
     {
         public string Title { get; set; }
 
@@ -28,7 +28,7 @@ namespace PerRead.Backend.Models.Commands
 
     internal static class ArticleCommandExtensions
     {
-        public static void CheckValid(this ArticleCommand article)
+        public static void CheckValid(this CreateArticleCommand article)
         {
             if (article == null)
             {

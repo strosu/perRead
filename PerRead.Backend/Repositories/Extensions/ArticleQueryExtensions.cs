@@ -6,11 +6,11 @@ namespace PerRead.Backend.Repositories.Extensions
 {
     public static class ArticleQueryExtensions
     {
-        public static IQueryable<Article> IncludeAuthors(this IQueryable<Article> query)
-        {
-            return query.Include(article => article.ArticleAuthors)
-                    .ThenInclude(articleAuthor => articleAuthor.Author);
-        }
+        //public static IQueryable<Article> IncludeAuthors(this IQueryable<Article> query)
+        //{
+        //    return query.Include(article => article.ArticleAuthors)
+        //            .ThenInclude(articleAuthor => articleAuthor.Author);
+        //}
 
         public static IQueryable<Article> IncludeTags(this IQueryable<Article> query)
         {
@@ -21,6 +21,12 @@ namespace PerRead.Backend.Repositories.Extensions
         {
             return query.Include(a => a.Sections)
                     .ThenInclude(s => s.Section);
+        }
+
+        public static IQueryable<Article> IncludeOwners(this IQueryable<Article> query)
+        {
+            return query.Include(x => x.ArticleOwners)
+                .ThenInclude(x => x.Author);
         }
     }
 }

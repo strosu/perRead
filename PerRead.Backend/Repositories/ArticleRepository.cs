@@ -14,7 +14,7 @@ namespace PerRead.Backend.Repositories
             _context = context;
         }
 
-        public async Task<Article> Create(Author author, IEnumerable<Tag> tags, IEnumerable<Section> sections, string articleImagePath, ArticleCommand article)
+        public async Task<Article> Create(Author author, IEnumerable<Tag> tags, IEnumerable<Section> sections, string articleImagePath, CreateArticleCommand article)
         {
             var now = DateTime.UtcNow;
 
@@ -35,13 +35,16 @@ namespace PerRead.Backend.Repositories
                 SectionId = section.SectionId
             }).ToList();
 
-            newArticle.ArticleAuthors = new List<ArticleAuthor>
+
+            newArticle.ArticleOwners = new List<ArticleOwner>
             {
-                new ArticleAuthor
+                new ArticleOwner
                 {
                     Article = newArticle,
                     Author = author,
-                    Order = 1
+                    CanBeRemoved = false, // The initial author cannot be removed
+                    IsUserFacing = true,
+                    OwningPercentage = 1 // Initially the main author owns the article in its entirety
                 }
             };
 
@@ -75,7 +78,7 @@ namespace PerRead.Backend.Repositories
             return await _context.Articles
                 .AsNoTracking()
                 .Where(x => x.ArticleId == id)
-                .IncludeAuthors()
+                .IncludeOwners()
                 .IncludeTags()
                 .IncludeSections()
                 .SingleOrDefaultAsync();
@@ -85,14 +88,14 @@ namespace PerRead.Backend.Repositories
         {
             return _context.Articles
                 .AsNoTracking()
-                .IncludeAuthors()
+                .IncludeOwners()
                 .IncludeSections()
                 .IncludeTags();
         }
 
         public IQueryable<Article> GetLatestArticles(string authorId)
         {
-            return GetAll().Where(x => x.ArticleAuthors.Any(a => a.AuthorId == authorId))
+            return GetAll().Where(x => x.PublicAuthors.Any(a => a.AuthorId == authorId))
                 .OrderByDescending(x => x.CreatedAt).Take(20);
         }
 
@@ -100,17 +103,28 @@ namespace PerRead.Backend.Repositories
         {
             return await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
         }
+
+        public async Task<Article?> GetWithOwners(string id)
+        {
+            return await _context.Articles.
+                AsNoTracking()
+                .Where(x => x.ArticleId == id)
+                .IncludeOwners()
+                .SingleAsync();
+        }
     }
 }
 
 public interface IArticleRepository
 {
     // TODO - extract parameters to something else
-    Task<Article> Create(Author author, IEnumerable<Tag> tags, IEnumerable<Section> sections, string articleImagePath, ArticleCommand article);
+    Task<Article> Create(Author author, IEnumerable<Tag> tags, IEnumerable<Section> sections, string articleImagePath, CreateArticleCommand article);
 
     IQueryable<Article> GetAll();
 
     Task<Article?> Get(string id);
+
+    Task<Article?> GetWithOwners(string id);
 
     Task Delete(string id);
 

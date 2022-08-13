@@ -61,7 +61,7 @@ namespace PerRead.Backend.Repositories
             return GetAuthor(id)
                 .Include(author => author.UnlockedArticles)
                 .ThenInclude(articleUnlock => articleUnlock.Article)
-                .ThenInclude(article => article.ArticleAuthors)
+                .ThenInclude(article => article.ArticleOwners)
                 .ThenInclude(aa => aa.Author);
         }
 

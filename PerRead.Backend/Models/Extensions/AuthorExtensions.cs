@@ -18,11 +18,10 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink)
-        {
-            return articleAuthorLink.Author.ToFEAuthor();
-        }
-
+        //public static FEAuthor ToFEAuthor(this ArticleAuthor articleAuthorLink)
+        //{
+        //    return articleAuthorLink.Author.ToFEAuthor();
+        //}
 
         public static FEAuthorPreview ToFEAuthorPreview(this Author authorModel)
         {
@@ -35,10 +34,10 @@ namespace PerRead.Backend.Models.Extensions
             };
         }
 
-        public static FEAuthorPreview ToFEAuthorPreview(this ArticleAuthor articleAuthorLink)
-        {
-            return articleAuthorLink.Author.ToFEAuthorPreview();
-        }
+        //public static FEAuthorPreview ToFEAuthorPreview(this ArticleAuthor articleAuthorLink)
+        //{
+        //    return articleAuthorLink.Author.ToFEAuthorPreview();
+        //}
 
         public static FEUserSettings ToFEUserSettings(this Author authorModel)
         {

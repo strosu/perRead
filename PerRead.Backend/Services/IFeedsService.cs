@@ -103,7 +103,7 @@ namespace PerRead.Backend.Services
                 .Include(x => x.Article.Sections)
                 .ThenInclude(x => x.Section)
                 .Include(x => x.Article.Tags)
-                .Include(x => x.Article.ArticleAuthors)
+                .Include(x => x.Article.ArticleOwners)
                 .ThenInclude(x => x.Author)
                 .Select(x => x.Article);
 

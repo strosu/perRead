@@ -1,4 +1,6 @@
-﻿namespace PerRead.Backend.Models.BackEnd
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PerRead.Backend.Models.BackEnd
 {
     /// <summary>
     /// Article as loaded from the Database
@@ -6,8 +8,6 @@
     public class Article
     {
         public string ArticleId { get; set; }
-
-        public ICollection<ArticleAuthor> ArticleAuthors { get; set; }
 
         public string Title { get; set; }
 
@@ -22,21 +22,10 @@
         public string ImageUrl { get; set; }
 
         public IEnumerable<SectionArticle> Sections { get; set; }
-    }
 
-    /// <summary>
-    /// Connection between Article and Authors, as loaded from the DB
-    /// </summary>
-    public class ArticleAuthor
-    {
-        public Article Article { get; set; }
+        public ICollection<ArticleOwner> ArticleOwners { get; set; }
 
-        public string ArticleId { get; set; }
-
-        public Author Author { get; set; }
-
-        public string AuthorId { get; set; }
-
-        public int Order { get; set; }
+        [NotMapped]
+        public IEnumerable<ArticleOwner> PublicAuthors => ArticleOwners.Where(x => x.IsUserFacing);
     }
 }
