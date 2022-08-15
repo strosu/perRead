@@ -79,7 +79,7 @@ app.UseAuth();
 
 app.MapControllers();
 //SeedCompanyEntities(app);
-SeedArticleOwnership(app);
+//SeedArticleOwnership(app);
 app.Run();
 
 static void AddServices(WebApplicationBuilder builder)

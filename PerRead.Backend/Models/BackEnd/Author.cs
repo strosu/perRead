@@ -59,5 +59,7 @@
         public IEnumerable<RequestPledge> Pledges { get; set; }
 
         public IEnumerable<ArticleRequest> Requests { get; set; }
+
+        public ICollection<ArticleOwner> OwnedArticles { get; set; }
     }
 }

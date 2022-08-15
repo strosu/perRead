@@ -138,16 +138,6 @@ namespace PerRead.Backend.Services
             return false;
         }
 
-        private long ComputeArticleCost(Author requester, Article article)
-        {
-            if (article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
-            {
-                return 0;
-            }
-
-            return article.Price;
-        }
-
         private async Task<TransactionResult> PayOwners(Author requester, Article article)
         {
             // If you already have an ownership stake in the article, you're not charged for reading it
@@ -242,7 +232,7 @@ namespace PerRead.Backend.Services
             }
 
             var authorOwnerships = ownershipCommand.Owners.Select(x => (authors.First(y => y.AuthorId == x.AuthorId), x.OwnershipPercent));
-            return (await _articleRepository.UpdateOwners(id, authorOwnerships)).ToFEArticleOwnership();
+            return (await _articleRepository.UpdateOwners(currentArticle, authorOwnerships)).ToFEArticleOwnership();
 
         }
 

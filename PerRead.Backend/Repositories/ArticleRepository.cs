@@ -101,22 +101,26 @@ namespace PerRead.Backend.Repositories
 
         public async Task<Article?> GetSimpleArticle(string id)
         {
-            return await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
+            return await _context.Articles
+                .AsNoTracking().FirstOrDefaultAsync(x => x.ArticleId == id);
         }
 
-        public async Task<Article?> GetWithOwners(string id)
+        public async Task<Article?> GetWithOwners(string id, bool withTracking = false)
         {
-            return await _context.Articles.
-                AsNoTracking()
-                .Where(x => x.ArticleId == id)
-                .IncludeOwners()
+            var query = _context.Articles
+                .Where(x => x.ArticleId == id);
+
+            if (!withTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query.IncludeOwners()
                 .SingleAsync();
         }
 
-        public async Task<Article> UpdateOwners(string id, IEnumerable<(Author author, double ownership)> owners)
+        public async Task<Article> UpdateOwners(Article article, IEnumerable<(Author author, double ownership)> owners)
         {
-            var article = await GetWithOwners(id); // should already be cached
-
             var ownersToRemove = article.ArticleOwners.Where(x => !owners.Any(y => y.author.AuthorId == x.AuthorId));
 
             foreach (var toRemove in ownersToRemove)
@@ -124,15 +128,17 @@ namespace PerRead.Backend.Repositories
                 article.ArticleOwners.Remove(toRemove);
             }
 
+            var newOwners = new List<ArticleOwner>();
+
             foreach (var owner in owners)
             {
                 var previousValue = article.ArticleOwners.FirstOrDefault(x => x.AuthorId == owner.author.AuthorId);
                 if (previousValue == null)
                 {
-                    article.ArticleOwners.Add(new ArticleOwner
+                    newOwners.Add(new ArticleOwner
                     {
                         Author = owner.author,
-                        ArticleId = id,
+                        Article = article,
                         CanBeEdited = true,
                         IsUserFacing = true,
                         OwningPercentage = owner.ownership / 100
@@ -141,8 +147,11 @@ namespace PerRead.Backend.Repositories
                 else
                 {
                     previousValue.OwningPercentage = owner.ownership / 100;
+                    newOwners.Add(previousValue);
                 }
             }
+
+            article.ArticleOwners = newOwners;
 
             await _context.SaveChangesAsync();
 
@@ -160,7 +169,7 @@ public interface IArticleRepository
 
     Task<Article?> Get(string id);
 
-    Task<Article?> GetWithOwners(string id);
+    Task<Article?> GetWithOwners(string id, bool withTracking = false);
 
     Task Delete(string id);
 
@@ -168,5 +177,5 @@ public interface IArticleRepository
 
     IQueryable<Article> GetLatestArticles(string authorId);
 
-    Task<Article> UpdateOwners(string id, IEnumerable<(Author author, double ownership)> owners);
+    Task<Article> UpdateOwners(Article article, IEnumerable<(Author author, double ownership)> owners);
 }

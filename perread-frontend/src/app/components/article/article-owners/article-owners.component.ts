@@ -23,7 +23,7 @@ export class ArticleOwnersComponent implements OnInit {
     private articleService: ArticlesService,
   ) { }
 
-  displayedColumns = ['name', 'id', 'percent', 'editable', 'visible'];
+  displayedColumns = ['name', 'id', 'percent', 'editable', 'visible', 'action'];
   dataSource = new MatTableDataSource(this.ownerCollection.owners);
 
   ngOnInit(): void {
@@ -64,6 +64,11 @@ export class ArticleOwnersComponent implements OnInit {
     newRow.canBeEdited = true;
     newRow.isUserFacing = true;
     this.ownerCollection.owners.push(newRow);
+    this.dataSource = new MatTableDataSource(this.ownerCollection.owners);
+  }
+
+  deleteTicket(index: number) : void {
+    this.ownerCollection.owners.splice(index, 1);
     this.dataSource = new MatTableDataSource(this.ownerCollection.owners);
   }
 }
