@@ -113,34 +113,34 @@ namespace PerRead.Backend.Repositories
                 .SingleAsync();
         }
 
-        public async Task<Article> UpdateOwners(string id, UpdateOwnershipCommand ownershipCommand)
+        public async Task<Article> UpdateOwners(string id, IEnumerable<(Author author, double ownership)> owners)
         {
             var article = await GetWithOwners(id); // should already be cached
 
-            var ownersToRemove = article.ArticleOwners.Where(x => !ownershipCommand.Owners.Any(y => y.AuthorId == x.AuthorId));
+            var ownersToRemove = article.ArticleOwners.Where(x => !owners.Any(y => y.author.AuthorId == x.AuthorId));
 
             foreach (var toRemove in ownersToRemove)
             {
                 article.ArticleOwners.Remove(toRemove);
             }
 
-            foreach (var owner in ownershipCommand.Owners)
+            foreach (var owner in owners)
             {
-                var previousValue = article.ArticleOwners.FirstOrDefault(x => x.AuthorId == owner.AuthorId);
+                var previousValue = article.ArticleOwners.FirstOrDefault(x => x.AuthorId == owner.author.AuthorId);
                 if (previousValue == null)
                 {
                     article.ArticleOwners.Add(new ArticleOwner
                     {
-                        AuthorId = owner.AuthorId,
+                        Author = owner.author,
                         ArticleId = id,
                         CanBeEdited = true,
                         IsUserFacing = true,
-                        OwningPercentage = owner.OwnershipPercent
+                        OwningPercentage = owner.ownership / 100
                     });
                 }
                 else
                 {
-                    previousValue.OwningPercentage = owner.OwnershipPercent;
+                    previousValue.OwningPercentage = owner.ownership / 100;
                 }
             }
 
@@ -168,5 +168,5 @@ public interface IArticleRepository
 
     IQueryable<Article> GetLatestArticles(string authorId);
 
-    Task<Article> UpdateOwners(string id, UpdateOwnershipCommand ownershipCommand);
+    Task<Article> UpdateOwners(string id, IEnumerable<(Author author, double ownership)> owners);
 }

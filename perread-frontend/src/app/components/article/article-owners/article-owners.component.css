@@ -20,3 +20,11 @@
     overflow: auto;
     max-height: 750px;
 }
+
+.mat-cell {
+    padding-right: 4px;
+}
+
+.with-margin {
+    margin-top: 8px
+}

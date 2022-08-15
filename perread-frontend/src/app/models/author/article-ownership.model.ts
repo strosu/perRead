@@ -1,5 +1,5 @@
 import { ArticleOwner } from "./article-owner.model";
 
-export class ArticleOwnership {
+export class OwnerCollection {
     owners: ArticleOwner[] = [];
 }

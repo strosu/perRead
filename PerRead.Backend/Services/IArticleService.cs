@@ -205,12 +205,9 @@ namespace PerRead.Backend.Services
         // TODO - probably take another type here
         public async Task<FEArticleOwnership> SetOwnership(string id, UpdateOwnershipCommand ownershipCommand)
         {
-            var currentArticle = await _articleRepository.GetWithOwners(id);
+            var authors = await ValidateOwnersCommand(ownershipCommand);
 
-            if (ownershipCommand.Owners.GroupBy(x => x.AuthorId).Any(x => x.Count() > 1))
-            {
-                throw new ArgumentException("An author can only appear once");
-            }
+            var currentArticle = await _articleRepository.GetWithOwners(id);
 
             // Firat, check that none of the required authors were edited
             var notEditableList = currentArticle.ArticleOwners.Where(x => !x.CanBeEdited);
@@ -230,7 +227,7 @@ namespace PerRead.Backend.Services
             }
 
             // Then compute what's available once the required users take their stake
-            var reserved = currentArticle.ArticleOwners.Sum(x => x.OwningPercentage) * 100;
+            var reserved = notEditableList.Sum(x => x.OwningPercentage) * 100;
             if (reserved > 100)
             {
                 throw new ArgumentException("Somehow we ended up with more than 100% ownership, better call someone");
@@ -241,12 +238,42 @@ namespace PerRead.Backend.Services
             var requtedEditableSum = requetedEditable.Sum(x => x.OwnershipPercent);
             if (available != requtedEditableSum)
             {
-                throw new ArgumentException($"There is {available} available, but you requeted {requetedEditable}");
+                throw new ArgumentException($"There is {available} available, but you requeted {requtedEditableSum}");
             }
 
-            await _articleRepository.UpdateOwners(id, ownershipCommand);
+            var authorOwnerships = ownershipCommand.Owners.Select(x => (authors.First(y => y.AuthorId == x.AuthorId), x.OwnershipPercent));
+            return (await _articleRepository.UpdateOwners(id, authorOwnerships)).ToFEArticleOwnership();
 
-            return currentArticle.ToFEArticleOwnership();
+        }
+
+        private async Task<IEnumerable<Author>> ValidateOwnersCommand(UpdateOwnershipCommand command)
+        {
+            if (command.Owners.GroupBy(x => x.AuthorId).Any(x => x.Count() > 1))
+            {
+                throw new ArgumentException("An author can only appear once");
+            }
+
+
+            foreach (var owner in command.Owners)
+            {
+                if (owner.OwnershipPercent > 100)
+                {
+                    throw new ArgumentException("An ownership percentage cannot exceed 100");
+                }
+            }
+
+            var requestedAuthorIds = command.Owners.Select(x => x.AuthorId);
+
+            var existingAuthors = await _authorRepository.GetAuthors()
+                .Where(x => requestedAuthorIds.Contains(x.AuthorId)).ToListAsync();
+
+            var nonExistingAuthorIds = requestedAuthorIds.Where(x => !existingAuthors.Any(y => x == y.AuthorId));
+            if (nonExistingAuthorIds.Any())
+            {
+                throw new ArgumentException($"Could not find the following authorIds: {string.Join(' ', nonExistingAuthorIds)}");
+            }
+
+            return existingAuthors;
         }
     }
 }

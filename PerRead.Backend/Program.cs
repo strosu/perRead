@@ -79,7 +79,7 @@ app.UseAuth();
 
 app.MapControllers();
 //SeedCompanyEntities(app);
-//SeedArticleOwnership(app);
+SeedArticleOwnership(app);
 app.Run();
 
 static void AddServices(WebApplicationBuilder builder)
@@ -215,7 +215,7 @@ static void SeedArticleOwnership(WebApplication app)
         {
             foreach (var owner in article.ArticleOwners)
             {
-                owner.CanBeEdited = false;
+                owner.CanBeEdited = true;
                 owner.IsUserFacing = true;
                 owner.OwningPercentage = 1;
             }

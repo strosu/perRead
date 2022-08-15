@@ -103,7 +103,15 @@ namespace PerRead.Controllers
         [HttpPost("articles/{id}/owners")]
         public async Task<IActionResult> UpdateOwners(string id, [FromBody] UpdateOwnershipCommand ownership)
         {
-            return Ok(await _articleService.SetOwnership(id, ownership));
+            try
+            {
+                var result = await _articleService.SetOwnership(id, ownership);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
