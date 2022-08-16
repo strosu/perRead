@@ -36,7 +36,6 @@ namespace PerRead.Backend.Repositories
                 SectionId = section.SectionId
             }).ToList();
 
-
             newArticle.AuthorsLink = new List<ArticleOwner>
             {
                 new ArticleOwner
@@ -45,7 +44,8 @@ namespace PerRead.Backend.Repositories
                     Author = author,
                     CanBeEdited = true, // The initial author cannot be removed
                     IsUserFacing = true,
-                    OwningPercentage = 1 // Initially the main author owns the article in its entirety
+                    OwningPercentage = 1, // Initially the main author owns the article in its entirety
+                    IsPublisher = true
                 }
             };
 

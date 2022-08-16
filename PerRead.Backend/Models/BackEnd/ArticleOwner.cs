@@ -16,6 +16,7 @@ namespace PerRead.Backend.Models.BackEnd
         public bool CanBeEdited { get; set; }
 
         public bool IsUserFacing { get; set; }
+
+        public bool IsPublisher { get; set; }
     }
 }
-

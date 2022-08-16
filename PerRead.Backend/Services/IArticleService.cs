@@ -151,7 +151,8 @@ namespace PerRead.Backend.Services
             // Either transact once from the reader and then split somehow (intermediate company wallet?)
             // Or do as is, but somehow group the transactions when returning to the user
             var paymentTasks = new List<Task<TransactionResult>>();
-            foreach (var owner in article.AuthorsLink)
+            uint sumToBePaid = 0;
+            foreach (var owner in article.AuthorsLink.Where(x => !x.IsPublisher))
             {
                 var amount = article.Price * owner.OwningPercentage;
 
@@ -165,7 +166,15 @@ namespace PerRead.Backend.Services
                 }
 
                 var uIntAmount = (uint)amount;
+                sumToBePaid += uIntAmount;
                 paymentTasks.Add(_walletService.UnlockArticle(owner.Author, uIntAmount, article.ArticleId));
+            }
+
+            // Add the final task, to the original publisher. We do this at the end in order to round up the value
+            var publisher = article.AuthorsLink.FirstOrDefault(x => x.IsPublisher);
+            if (publisher != null)
+            {
+                paymentTasks.Add(_walletService.UnlockArticle(publisher.Author, article.Price - sumToBePaid, article.ArticleId));
             }
 
             var listResult = await Task.WhenAll(paymentTasks);
