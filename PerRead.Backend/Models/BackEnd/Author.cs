@@ -60,6 +60,6 @@
 
         public IEnumerable<ArticleRequest> Requests { get; set; }
 
-        public ICollection<ArticleOwner> OwnedArticles { get; set; }
+        public ICollection<ArticleOwner> ArticlesLink { get; set; }
     }
 }

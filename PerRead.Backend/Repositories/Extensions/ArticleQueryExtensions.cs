@@ -25,7 +25,7 @@ namespace PerRead.Backend.Repositories.Extensions
 
         public static IQueryable<Article> IncludeOwners(this IQueryable<Article> query)
         {
-            return query.Include(x => x.ArticleOwners)
+            return query.Include(x => x.AuthorsLink)
                 .ThenInclude(x => x.Author);
         }
     }

@@ -61,7 +61,7 @@ namespace PerRead.Backend.Repositories
             return GetAuthor(id)
                 .Include(author => author.UnlockedArticles)
                 .ThenInclude(articleUnlock => articleUnlock.Article)
-                .ThenInclude(article => article.ArticleOwners)
+                .ThenInclude(article => article.AuthorsLink)
                 .ThenInclude(aa => aa.Author);
         }
 
@@ -76,13 +76,19 @@ namespace PerRead.Backend.Repositories
                 .Where(x => x.Name == name);
         }
 
-        public IQueryable<Author> GetAuthors()
+        public IQueryable<Author> GetAuthors(bool withTracking = false)
         {
-            return _context.Authors.AsNoTracking()
+            var initialQuery = _context.Authors
                 .Include(x => x.PublishSections)
                 .ThenInclude(x => x.Articles)
                     .ThenInclude(al => al.Article)
                     .ThenInclude(ar => ar.Tags);
+            
+            if (withTracking)
+            {
+                return initialQuery.AsNoTracking();
+            }
+            return initialQuery;
         }
 
 
@@ -164,7 +170,7 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Author> GetAuthorByName(string name);
 
-        IQueryable<Author> GetAuthors();
+        IQueryable<Author> GetAuthors(bool withTracking = false);
 
         IQueryable<Section> GetAuthorSections(string authorId);
 

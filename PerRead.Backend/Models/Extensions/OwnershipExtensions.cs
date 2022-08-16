@@ -21,7 +21,7 @@ namespace PerRead.Backend.Models.Extensions
         {
             return new FEArticleOwnership
             {
-                Owners = article.ArticleOwners.Select(x => x.ToFEArticleOwner())
+                Owners = article.AuthorsLink.Select(x => x.ToFEArticleOwner())
             };
         }
     }

@@ -141,7 +141,7 @@ namespace PerRead.Backend.Services
         private async Task<TransactionResult> PayOwners(Author requester, Article article)
         {
             // If you already have an ownership stake in the article, you're not charged for reading it
-            if (article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
+            if (article.AuthorsLink.Any(x => x.AuthorId == requester.AuthorId))
             {
                 return TransactionResult.Success;
             }
@@ -150,7 +150,7 @@ namespace PerRead.Backend.Services
             // Either transact once from the reader and then split somehow (intermediate company wallet?)
             // Or do as is, but somehow group the transactions when returning to the user
             var paymentTasks = new List<Task<TransactionResult>>();
-            foreach (var owner in article.ArticleOwners)
+            foreach (var owner in article.AuthorsLink)
             {
                 var amount = article.Price * owner.OwningPercentage;
 
@@ -184,7 +184,7 @@ namespace PerRead.Backend.Services
             var article = await _articleRepository.Get(id);
             var requester = await _requesterGetter.GetRequester();
 
-            if (!article.ArticleOwners.Any(x => x.AuthorId == requester.AuthorId))
+            if (!article.AuthorsLink.Any(x => x.AuthorId == requester.AuthorId))
             {
                 throw new ArgumentException("You're not an owner");
             }
@@ -197,10 +197,10 @@ namespace PerRead.Backend.Services
         {
             var authors = await ValidateOwnersCommand(ownershipCommand);
 
-            var currentArticle = await _articleRepository.GetWithOwners(id);
+            var currentArticle = await _articleRepository.GetWithOwners(id, true);
 
             // Firat, check that none of the required authors were edited
-            var notEditableList = currentArticle.ArticleOwners.Where(x => !x.CanBeEdited);
+            var notEditableList = currentArticle.AuthorsLink.Where(x => !x.CanBeEdited);
             foreach (var notEditable in notEditableList)
             {
                 var updated = ownershipCommand.Owners.FirstOrDefault(x => x.AuthorId == notEditable.AuthorId);
@@ -255,7 +255,8 @@ namespace PerRead.Backend.Services
             var requestedAuthorIds = command.Owners.Select(x => x.AuthorId);
 
             var existingAuthors = await _authorRepository.GetAuthors()
-                .Where(x => requestedAuthorIds.Contains(x.AuthorId)).ToListAsync();
+                .Where(x => requestedAuthorIds.Contains(x.AuthorId))
+                .Include(x => x.ArticlesLink).ToListAsync();
 
             var nonExistingAuthorIds = requestedAuthorIds.Where(x => !existingAuthors.Any(y => x == y.AuthorId));
             if (nonExistingAuthorIds.Any())

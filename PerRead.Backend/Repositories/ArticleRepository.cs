@@ -36,7 +36,7 @@ namespace PerRead.Backend.Repositories
             }).ToList();
 
 
-            newArticle.ArticleOwners = new List<ArticleOwner>
+            newArticle.AuthorsLink = new List<ArticleOwner>
             {
                 new ArticleOwner
                 {
@@ -121,24 +121,24 @@ namespace PerRead.Backend.Repositories
 
         public async Task<Article> UpdateOwners(Article article, IEnumerable<(Author author, double ownership)> owners)
         {
-            var ownersToRemove = article.ArticleOwners.Where(x => !owners.Any(y => y.author.AuthorId == x.AuthorId));
+            var ownersToRemove = article.AuthorsLink.Where(x => !owners.Any(y => y.author.AuthorId == x.AuthorId));
 
             foreach (var toRemove in ownersToRemove)
             {
-                article.ArticleOwners.Remove(toRemove);
+                article.AuthorsLink.Remove(toRemove);
             }
 
             var newOwners = new List<ArticleOwner>();
 
             foreach (var owner in owners)
             {
-                var previousValue = article.ArticleOwners.FirstOrDefault(x => x.AuthorId == owner.author.AuthorId);
+                var previousValue = article.AuthorsLink.FirstOrDefault(x => x.AuthorId == owner.author.AuthorId);
                 if (previousValue == null)
                 {
-                    newOwners.Add(new ArticleOwner
+                    article.AuthorsLink.Add(new ArticleOwner
                     {
-                        Author = owner.author,
-                        Article = article,
+                        AuthorId = owner.author.AuthorId,
+                        ArticleId = article.ArticleId,
                         CanBeEdited = true,
                         IsUserFacing = true,
                         OwningPercentage = owner.ownership / 100
@@ -147,15 +147,13 @@ namespace PerRead.Backend.Repositories
                 else
                 {
                     previousValue.OwningPercentage = owner.ownership / 100;
-                    newOwners.Add(previousValue);
                 }
             }
 
-            article.ArticleOwners = newOwners;
-
             await _context.SaveChangesAsync();
 
-            return article;
+            return await _context.Articles
+                .Include(x => x.AuthorsLink).FirstAsync(x => x.ArticleId == article.ArticleId);
         }
     }
 }

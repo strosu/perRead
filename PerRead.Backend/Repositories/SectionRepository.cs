@@ -38,7 +38,7 @@ namespace PerRead.Backend.Repositories
             return _context.Sections.Where(x => x.SectionId == sectionId)
                 .Include(x => x.Articles)
                 .ThenInclude(x => x.Article)
-                .ThenInclude(x => x.ArticleOwners)
+                .ThenInclude(x => x.AuthorsLink)
                 .ThenInclude(x => x.Author)
                 .Include(x => x.Articles)
                 .ThenInclude(x => x.Article)

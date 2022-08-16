@@ -54,7 +54,7 @@ namespace PerRead.Backend.Repositories
             return _dbContext.Tags.AsNoTracking()
                 .Where(expression)
                 .Include(x => x.Articles)
-                    .ThenInclude(art => art.ArticleOwners)
+                    .ThenInclude(art => art.AuthorsLink)
                     .ThenInclude(aa => aa.Author);
         }
     }

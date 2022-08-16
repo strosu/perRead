@@ -23,9 +23,9 @@ namespace PerRead.Backend.Models.BackEnd
 
         public IEnumerable<SectionArticle> Sections { get; set; }
 
-        public ICollection<ArticleOwner> ArticleOwners { get; set; }
+        public ICollection<ArticleOwner> AuthorsLink { get; set; }
 
         [NotMapped]
-        public IEnumerable<ArticleOwner> PublicAuthors => ArticleOwners.Where(x => x.IsUserFacing);
+        public IEnumerable<ArticleOwner> PublicAuthors => AuthorsLink.Where(x => x.IsUserFacing);
     }
 }

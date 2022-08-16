@@ -5,9 +5,9 @@ namespace PerRead.Backend.Models.BackEnd
     {
         public string ArticleId { get; set; }
 
-        public Article Article { get; set; }
-
         public string AuthorId { get; set; }
+
+        public Article Article { get; set; }
 
         public Author Author { get; set; }
 

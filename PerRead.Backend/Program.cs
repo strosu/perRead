@@ -208,12 +208,12 @@ static void SeedArticleOwnership(WebApplication app)
     {
         var appDB = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        var articles = appDB.Articles.Include(x => x.ArticleOwners)
+        var articles = appDB.Articles.Include(x => x.AuthorsLink)
             .ThenInclude(x => x.Author);
 
         foreach (var article in articles)
         {
-            foreach (var owner in article.ArticleOwners)
+            foreach (var owner in article.AuthorsLink)
             {
                 owner.CanBeEdited = true;
                 owner.IsUserFacing = true;
