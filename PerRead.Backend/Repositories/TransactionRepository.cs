@@ -28,7 +28,8 @@ namespace PerRead.Backend.Repositories
                 DestinationWalletId = to.WalledId,
                 TransactionType = type,
                 TokenAmount = amount,
-                TransactionDate =  DateTime.UtcNow
+                TransactionDate =  DateTime.UtcNow,
+                Comment = comment
             };
 
             _context.Transactions.Add(transaction);

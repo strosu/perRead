@@ -6,4 +6,5 @@ export class TransactionPreview {
     transactionType: number = 0; // TODO - this should be an enum
     tokenAmount: number = 0;
     transactionDate: Date = <Date>{};
+    comment: string = '';
 }

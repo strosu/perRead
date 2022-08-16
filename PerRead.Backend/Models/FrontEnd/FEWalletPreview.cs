@@ -33,6 +33,8 @@ namespace PerRead.Backend.Models.FrontEnd
         public long TokenAmount { get; set; }
 
         public DateTime TransactionDate { get; set; }
+
+        public string Comment { get; set; }
     }
 
     public class FETransaction
@@ -52,5 +54,7 @@ namespace PerRead.Backend.Models.FrontEnd
         public FEAuthorPreview Sender { get; set; }
 
         public FEAuthorPreview Receiver { get; set; }
+
+        public string Comment { get; set; }
     }
 }

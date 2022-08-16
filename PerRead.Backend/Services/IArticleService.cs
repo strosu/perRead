@@ -164,7 +164,7 @@ namespace PerRead.Backend.Services
                 }
 
                 var uIntAmount = (uint)amount;
-                paymentTasks.Add(_walletService.UnlockArticle(owner.Author, uIntAmount));
+                paymentTasks.Add(_walletService.UnlockArticle(owner.Author, uIntAmount, article.ArticleId));
             }
 
             var listResult = await Task.WhenAll(paymentTasks);

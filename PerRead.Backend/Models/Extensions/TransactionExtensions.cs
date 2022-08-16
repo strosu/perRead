@@ -16,7 +16,8 @@ namespace PerRead.Backend.Models.Extensions
                 TransactionType = transaction.TransactionType,
                 TransactionDate = transaction.TransactionDate,
                 Sender = transaction.SourceWallet.Owner.ToFEAuthorPreview(),
-                Receiver = transaction.DestinationWallet.Owner.ToFEAuthorPreview()
+                Receiver = transaction.DestinationWallet.Owner.ToFEAuthorPreview(),
+                Comment = transaction.Comment
             };
         }
 
@@ -29,7 +30,8 @@ namespace PerRead.Backend.Models.Extensions
                 SourceWalletId = transaction.SourceWalletId,
                 TokenAmount = transaction.TokenAmount,
                 TransactionType = transaction.TransactionType,
-                TransactionDate = transaction.TransactionDate
+                TransactionDate = transaction.TransactionDate,
+                Comment = transaction.Comment
             };
         }
     }

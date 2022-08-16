@@ -13,7 +13,7 @@ export class TransactionsListComponent implements OnInit {
   
   total: number = 0;
 
-  displayedColumns: string[] = ['transaction-id', 'source', 'destination', 'amount', 'type', 'date'];
+  displayedColumns: string[] = ['transaction-id', 'source', 'destination', 'amount', 'type', 'date', 'comment'];
   
   constructor() {
    }
@@ -23,5 +23,9 @@ export class TransactionsListComponent implements OnInit {
 
   ngOnChanges() : void {
     this.total = this.transactionList?.map(x => x.tokenAmount).reduce((x, y) => x + y);
+  }
+
+  getLabel(transaction: TransactionPreview) : string {
+    return transaction?.comment;
   }
 }

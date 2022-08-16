@@ -17,7 +17,7 @@ namespace PerRead.Backend.Services
 
         Task MoveFromEscrow(Author author, long amount);
 
-        Task<TransactionResult> UnlockArticle(Author owner, long amount);
+        Task<TransactionResult> UnlockArticle(Author owner, long amount, string articleId);
 
         Task ReleaseInitialPledgeFunds(RequestPledge pledge);
 
@@ -83,13 +83,13 @@ namespace PerRead.Backend.Services
             await ReleasePledge(pledge, pledge.TotalTokenSum - pledge.TokensOnAccept, TransactionType.ReleaseRemainingPledgeAmount);
         }
 
-        public async Task<TransactionResult> UnlockArticle(Author owner, long amount)
+        public async Task<TransactionResult> UnlockArticle(Author owner, long amount, string articleId)
         {
             var buyer = await _requesterGetter.GetRequester();
 
             var ownerWallet = await _walletRepository.GetWalletWithTransactions(owner.MainWalletId);
 
-            return await Transact(buyer.MainWallet, ownerWallet, amount, TransactionType.ArticleRead);
+            return await Transact(buyer.MainWallet, ownerWallet, amount, TransactionType.ArticleRead, articleId);
         }
 
         public async Task ReleaseBackToPledger(RequestPledge pledge)
