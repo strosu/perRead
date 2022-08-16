@@ -27,7 +27,8 @@
 </div>
 
 <button (click)="acceptRequest()" *ngIf="this.canBeAccepted" mat-raised-button class="with-margin" color="primary">Accept request</button>
-<button (click)="acceptRequest()" *ngIf="this.canBeCompleted" mat-raised-button class="with-margin" color="primary">Complete request</button>
+<button (click)="completeRequest()" *ngIf="this.canBeCompleted" mat-raised-button class="with-margin" color="primary">Complete request</button>
+<input type="text" *ngIf="this.canBeCompleted" id="description" required [(ngModel)]="this.resultingArticleId" name="description" />
 <button (click)="acceptRequest()" *ngIf="this.canBeAbandoned" mat-raised-button class="with-margin" color="primary">Abandon request</button>
 
 <div>

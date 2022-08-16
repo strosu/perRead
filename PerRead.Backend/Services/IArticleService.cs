@@ -4,6 +4,7 @@ using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
+using PerRead.Backend.Models.Useful;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -231,9 +232,15 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException($"There is {available} available, but you requeted {requtedEditableSum}");
             }
 
-            var authorOwnerships = ownershipCommand.Owners.Select(x => (authors.First(y => y.AuthorId == x.AuthorId), x.OwnershipPercent));
+            var authorOwnerships = ownershipCommand.Owners.Select(x => new AuthorOwnership
+            {
+                Author = authors.First(y => y.AuthorId == x.AuthorId),
+                Ownership = x.OwnershipPercent / 100,
+                CanBeEdited = true, // TODO - this relies on the underlying implementation in UpdateOwners (i.e. these values are only used for new entries, which happes to make them correct), needs a cleaner way to do it
+                IsUserFacing = true
+            });
+            
             return (await _articleRepository.UpdateOwners(currentArticle, authorOwnerships)).ToFEArticleOwnership();
-
         }
 
         private async Task<IEnumerable<Author>> ValidateOwnersCommand(UpdateOwnershipCommand command)

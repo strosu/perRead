@@ -18,7 +18,9 @@ namespace PerRead.Backend.Repositories
             var newAuthor = new Author
             {
                 AuthorId = command.Id,
-                Name = command.Name
+                Name = command.Name,
+                MainWallet = command.MainWallet,
+                EscrowWallet = command.EscrowWallet,
             };
 
             _context.Authors.Add(newAuthor);
@@ -190,6 +192,10 @@ namespace PerRead.Backend.Repositories
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public Wallet MainWallet { get; set; }
+
+        public Wallet EscrowWallet { get; set; }
     }
 }
 

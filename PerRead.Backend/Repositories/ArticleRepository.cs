@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
+using PerRead.Backend.Models.Useful;
 using PerRead.Backend.Repositories.Extensions;
 
 namespace PerRead.Backend.Repositories
@@ -119,9 +120,9 @@ namespace PerRead.Backend.Repositories
                 .SingleAsync();
         }
 
-        public async Task<Article> UpdateOwners(Article article, IEnumerable<(Author author, double ownership)> owners)
+        public async Task<Article> UpdateOwners(Article article, IEnumerable<AuthorOwnership> owners)
         {
-            var ownersToRemove = article.AuthorsLink.Where(x => !owners.Any(y => y.author.AuthorId == x.AuthorId));
+            var ownersToRemove = article.AuthorsLink.Where(x => !owners.Any(y => y.Author.AuthorId == x.AuthorId));
 
             foreach (var toRemove in ownersToRemove)
             {
@@ -132,21 +133,21 @@ namespace PerRead.Backend.Repositories
 
             foreach (var owner in owners)
             {
-                var previousValue = article.AuthorsLink.FirstOrDefault(x => x.AuthorId == owner.author.AuthorId);
+                var previousValue = article.AuthorsLink.FirstOrDefault(x => x.AuthorId == owner.Author.AuthorId);
                 if (previousValue == null)
                 {
                     article.AuthorsLink.Add(new ArticleOwner
                     {
-                        AuthorId = owner.author.AuthorId,
+                        AuthorId = owner.Author.AuthorId,
                         ArticleId = article.ArticleId,
-                        CanBeEdited = true,
-                        IsUserFacing = true,
-                        OwningPercentage = owner.ownership / 100
+                        CanBeEdited = owner.CanBeEdited,
+                        IsUserFacing = owner.IsUserFacing,
+                        OwningPercentage = owner.Ownership
                     });
                 }
                 else
                 {
-                    previousValue.OwningPercentage = owner.ownership / 100;
+                    previousValue.OwningPercentage = owner.Ownership;
                 }
             }
 
@@ -175,5 +176,5 @@ public interface IArticleRepository
 
     IQueryable<Article> GetLatestArticles(string authorId);
 
-    Task<Article> UpdateOwners(Article article, IEnumerable<(Author author, double ownership)> owners);
+    Task<Article> UpdateOwners(Article article, IEnumerable<AuthorOwnership> owners);
 }

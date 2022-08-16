@@ -5,6 +5,7 @@ using PerRead.Backend.Models.BusinessRules;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
+using PerRead.Backend.Models.Useful;
 using PerRead.Backend.Repositories;
 
 namespace PerRead.Backend.Services
@@ -33,7 +34,7 @@ namespace PerRead.Backend.Services
         private readonly IRequestsRepository _requestsRepository;
         private readonly IPledgeRepository _pledgeRepository;
         private readonly IArticleRepository _articleRepository;
-        private IRequesterGetter _requesterGetter;
+        private readonly IRequesterGetter _requesterGetter;
 
         public RequestsService(IAuthorRepository authorRepository, IRequestsRepository requestsRepository, IPledgeRepository pledgeRepository, IRequesterGetter requesterGetter, IWalletService walletService, IArticleRepository articleRepository)
         {
@@ -124,32 +125,6 @@ namespace PerRead.Backend.Services
             return request.ToFERequest(request.TargetAuthor);
         }
 
-        public async Task<FERequest> CompleteRequest(CompleteRequestCommand completeRequestCommand)
-        {
-            var request = await ValidateUsersMatch(completeRequestCommand.RequestId);
-
-            if (request.RequestState != RequestState.Accepted)
-            {
-                throw new ArgumentException("A request can only be accepted if it's state is Created.");
-            }
-
-            var resultingArticle = await _articleRepository.GetSimpleArticle(completeRequestCommand.ResultingArticleId);
-            ;
-            if (resultingArticle == null)
-            {
-                throw new ArgumentException("Invalid article ID");
-            }
-
-            await _requestsRepository.CompleteRequest(request, resultingArticle);
-
-            foreach (var pledge in request.Pledges)
-            {
-                await _walletService.ReleaseInitialPledgeFunds(pledge);
-            }
-
-            return request.ToFERequest(request.TargetAuthor);
-        }
-
         public async Task<FERequest> AbandonRequest(AbandonRequestCommand abandonRequestCommand)
         {
             var request = await ValidateUsersMatch(abandonRequestCommand.RequestId);
@@ -169,6 +144,64 @@ namespace PerRead.Backend.Services
             return request.ToFERequest(request.TargetAuthor);
         }
 
+        public async Task<FERequest> CompleteRequest(CompleteRequestCommand completeRequestCommand)
+        {
+            var (request, resultingArticle) = await ValidateRequest(completeRequestCommand);
+
+            await _requestsRepository.CompleteRequest(request, resultingArticle);
+
+            var ownerships = await ComputeOwnership(request, resultingArticle);
+            await _articleRepository.UpdateOwners(resultingArticle, ownerships);
+
+            foreach (var pledge in request.Pledges)
+            {
+                await _walletService.ReleaseInitialPledgeFunds(pledge);
+            }
+
+            return request.ToFERequest(request.TargetAuthor);
+        }
+
+        private async Task<IEnumerable<AuthorOwnership>> ComputeOwnership(ArticleRequest request, Article resultingArticle)
+        {
+            if (resultingArticle.AuthorsLink.Count != 1)
+            {
+                throw new ArgumentException("This should have been validated earlier");
+            }
+
+            double percentageForPledgersNormalized = (double)request.PercentForledgers / 100;
+            double leftoverSum = 1;
+
+            var result = new List<AuthorOwnership>();
+
+            // At this point we're interested in the total amount pledged, as the request is about to be completed.
+            // The total amount is what gives the final ownership, the initial pledge amount has no impact here
+            var pledgedSum = request.Pledges.Sum(x => x.TotalTokenSum);
+
+            var pledgers = request.Pledges.GroupBy(x => x.Pledger).Select(group => new { Author = group.Key, TotalPledged = group.Sum(x => x.TotalTokenSum) });
+            foreach (var pledger in pledgers)
+            {
+                double percentageOfPledgers = (double)pledger.TotalPledged / pledgedSum;
+                var currentOwnership = percentageForPledgersNormalized * percentageOfPledgers;
+                leftoverSum -= currentOwnership;
+
+                result.Add(new AuthorOwnership
+                {
+                    Author = pledger.Author,
+                    Ownership = currentOwnership,
+                    CanBeEdited = false,
+                    IsUserFacing = false
+                });
+            }
+
+            result.Add(new AuthorOwnership 
+            {
+                Author = resultingArticle.AuthorsLink.First().Author,
+                Ownership = leftoverSum
+            });
+
+            return result;
+        }
+
         private async Task<ArticleRequest> ValidateUsersMatch(string requestId)
         {
             var request = await _requestsRepository.GetRequest(requestId).FirstOrDefaultAsync();
@@ -182,10 +215,38 @@ namespace PerRead.Backend.Services
 
             if (request.TargetAuthor != currentUser)
             {
-                throw new ArgumentException("You can only accept requests where you are the target author");
+                throw new ArgumentException("You can only act on requests where you are the target author");
             }
 
             return request;
+        }
+
+        private async Task<(ArticleRequest request, Article resultingArticle)> ValidateRequest(CompleteRequestCommand completeRequestCommand)
+        {
+            var request = await ValidateUsersMatch(completeRequestCommand.RequestId);
+
+            var resultingArticle = await _articleRepository.GetWithOwners(completeRequestCommand.ResultingArticleId, true);
+
+            if (resultingArticle == null)
+            {
+                throw new ArgumentException("Invalid article ID");
+            }
+
+            if (request.RequestState != RequestState.Accepted)
+            {
+                throw new ArgumentException("A request can only be accepted if it's state is Created.");
+            }
+
+            var users = resultingArticle.AuthorsLink.Select(x => x.AuthorId).ToList();
+
+            var currentUser = await _requesterGetter.GetRequester();
+
+            if (users.Count != 1 || users[0] != currentUser.AuthorId)
+            {
+                throw new ArgumentException("You need to be the only author of the target article");
+            }
+
+            return (request, resultingArticle);
         }
     }
 }

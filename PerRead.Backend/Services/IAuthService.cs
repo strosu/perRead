@@ -21,6 +21,7 @@ namespace PerRead.Backend.Services
         private readonly IAuthorRepository _authorRepository;
         private readonly IFeedRepository _feedRepository;
         private readonly ISectionRepository _sectionRepository;
+        private readonly IWalletRepository _walletRepository;
         private readonly JwtSettings _jwtSettings;
 
         public AuthService(
@@ -29,7 +30,8 @@ namespace PerRead.Backend.Services
             IOptionsSnapshot<JwtSettings> jwtSettings,
             IAuthorRepository authorRepository,
             IFeedRepository feedRepository,
-            ISectionRepository sectionRepository)
+            ISectionRepository sectionRepository,
+            IWalletRepository walletRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,6 +39,7 @@ namespace PerRead.Backend.Services
             _feedRepository = feedRepository;
             _sectionRepository = sectionRepository;
             _jwtSettings = jwtSettings.Value;
+            _walletRepository = walletRepository;
         }
 
         public Task GetCurrentUser()
@@ -91,10 +94,15 @@ namespace PerRead.Backend.Services
                 throw new ArgumentException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
             }
 
+            var mainWallet = await _walletRepository.CreateWallet();
+            var escrowWallet = await _walletRepository.CreateWallet();
+
             var newAuthor = await _authorRepository.CreateAsync(new AuthorCommand
             {
                 Id = user.Id,
-                Name = user.UserName
+                Name = user.UserName,
+                MainWallet = mainWallet,
+                EscrowWallet = escrowWallet
             });
 
             await _feedRepository.CreateNewFeed(newAuthor, "defaultFeedNameHere");

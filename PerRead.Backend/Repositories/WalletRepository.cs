@@ -26,6 +26,22 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<Wallet> CreateWallet()
+        {
+            var wallet = new Wallet
+            {
+                IncomingTransactions = new List<PaymentTransaction>(),
+                OutgoingTransactions = new List<PaymentTransaction>(),
+                TokenAmount = 0,
+                WalledId = Guid.NewGuid().ToString()
+            };
+
+            _context.Wallets.Add(wallet);
+            await _context.SaveChangesAsync();
+
+            return wallet;
+        }
+
         public async Task<Wallet> GetWallet(string walledId)
         {
             return await GetWalletQuery(walledId).SingleOrDefaultAsync();
@@ -58,5 +74,7 @@ namespace PerRead.Backend.Repositories
         Task AddIncomingTransaction(Wallet wallet, PaymentTransaction transaction);
 
         Task AddOutgoingTransaction(Wallet wallet, PaymentTransaction transaction);
+
+        Task<Wallet> CreateWallet();
     }
 }
