@@ -14,7 +14,9 @@
         <mat-card-title>{{articlePreview.articleTitle}}</mat-card-title>
         <mat-card-subtitle>
             <div id="block_container">
-                <app-author-preview [authorPreview]="articlePreview.authorPreviews[0]"></app-author-preview>
+                <div *ngFor="let author of articlePreview.authorPreviews">
+                    <app-author-preview [authorPreview]="author"></app-author-preview>
+                </div>
                 <div>{{articlePreview.articleCreatedAt | date:'EEEE, MMMM d, y'}}</div>
             </div>
 

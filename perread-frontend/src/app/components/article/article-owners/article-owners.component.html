@@ -28,17 +28,17 @@
             <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
             <mat-cell *matCellDef="let author">
                 <mat-form-field floatLabel="never">
-                    <input matInput placeholder="Id" [value]="author?.ownerPreview?.authorId" [(ngModel)]="author.ownerPreview.authorId">
+                    <input matInput placeholder="Id" [value]="author?.ownerPreview?.authorId" [(ngModel)]="author.ownerPreview.authorId" disabled="{{!author.canBeEdited}}">
                 </mat-form-field>
             </mat-cell>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="percent">
-            <mat-header-cell *matHeaderCellDef>Percent </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>Percent</mat-header-cell>
             <mat-cell *matCellDef="let owner">
                 <mat-form-field floatLabel="never">
-                    <input matInput placeholder="Percent" [value]="owner" [(ngModel)]="owner.ownershipPercent">
+                    <input matInput placeholder="Percent" [value]="owner" [(ngModel)]="owner.ownershipPercent" disabled="{{!owner.canBeEdited}}">
                 </mat-form-field>
             </mat-cell>
         </ng-container>

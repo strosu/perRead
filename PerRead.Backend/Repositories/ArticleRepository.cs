@@ -42,7 +42,7 @@ namespace PerRead.Backend.Repositories
                 {
                     Article = newArticle,
                     Author = author,
-                    CanBeEdited = false, // The initial author cannot be removed
+                    CanBeEdited = true, // The initial author cannot be removed
                     IsUserFacing = true,
                     OwningPercentage = 1 // Initially the main author owns the article in its entirety
                 }
@@ -95,7 +95,7 @@ namespace PerRead.Backend.Repositories
 
         public IQueryable<Article> GetLatestArticles(string authorId)
         {
-            return GetAll().Where(x => x.PublicAuthors.Any(a => a.AuthorId == authorId))
+            return GetAll().Where(x => x.AuthorsLink.Any(a => a.AuthorId == authorId && a.IsUserFacing))
                 .OrderByDescending(x => x.CreatedAt).Take(20);
         }
 
