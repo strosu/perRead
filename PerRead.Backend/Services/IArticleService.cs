@@ -122,9 +122,14 @@ namespace PerRead.Backend.Services
                 return TransactionResult.Success;
             }
 
+            var result = await PayOwners(requester, article);
+            
+            if (result.Result == PaymentResultEnum.Success)
+            {
+                await _authorRepository.MarkAsRead(requester, article);
+            }
 
-            return await PayOwners(requester, article);
-
+            return result;
             //var price = ComputeArticleCost(requester, article);
             //return await _walletService.UnlockArticle(article.ArticleAuthors.First().Author, price);
         }

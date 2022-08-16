@@ -102,19 +102,14 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task MarkAsRead(string authorId, Article article)
+        public async Task MarkAsRead(Author author, Article article)
         {
-            var author = await (_context.Authors.Where(x => x.AuthorId == authorId)
-                .Include(x => x.UnlockedArticles)).FirstOrDefaultAsync();
-
-            //var author = await GetAuthorWithReadArticles(authorId).FirstOrDefaultAsync();
-
             author.UnlockedArticles.Add(new ArticleUnlock
             {
                 AquisitionDate = DateTime.UtcNow,
                 AquisitionPrice = article.Price,
                 ArticleId = article.ArticleId,
-                AuthorId = authorId,
+                Author = author
             });
 
             await _context.SaveChangesAsync();
@@ -176,7 +171,7 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Section> GetAuthorSections(string authorId);
 
-        Task MarkAsRead(string authorId, Article article);
+        Task MarkAsRead(Author author, Article article);
 
         // TODO - rename userSettings object to something else;
         // Should be fine to use it directly, as it's simply a representation of the data from the DB
