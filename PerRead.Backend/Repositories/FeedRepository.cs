@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 
 namespace PerRead.Backend.Repositories
@@ -83,7 +84,7 @@ namespace PerRead.Backend.Repositories
 
             if (feed == null)
             {
-                throw new ArgumentException("feed does not exist");
+                throw new NotFoundException("feed does not exist");
             }
 
             if (feed.SubscribedSections == null)
@@ -152,7 +153,7 @@ namespace PerRead.Backend.Repositories
 
             if (feed == null)
             {
-                throw new ArgumentException("feed does not exist");
+                throw new NotFoundException("feed does not exist");
             }
 
             var sectionFeedMap = feed.SubscribedSections.FirstOrDefault(x => x.SectionId == sectionToRemove.SectionId);

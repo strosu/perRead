@@ -1,4 +1,5 @@
-﻿using PerRead.Backend.Models.BackEnd;
+﻿using PerRead.Backend.Helpers.Errors;
+using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Repositories;
 using System.Security.Claims;
 
@@ -22,7 +23,7 @@ namespace PerRead.Backend.Extensions
 
             if (claim == null)
             {
-                throw new InvalidOperationException("Could not identify the user, please login");
+                throw new UnauthorizedException("Could not identify the user, please login");
             }
 
             return claim.Value;

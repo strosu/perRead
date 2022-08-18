@@ -4,7 +4,7 @@ namespace PerRead.Backend.Models.BusinessRules
 {
     public static class RequestRules
     {
-        public static bool IsEditable(ArticleRequest request, Author requester)
+        public static bool IsEditableBy(this ArticleRequest request, Author requester)
         {
             if (request.RequestState != RequestState.Created)
             {

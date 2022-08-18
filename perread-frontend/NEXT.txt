@@ -11,23 +11,22 @@ P1 scenarios:
 - search by author
 
 TODO NEXT:
-- pagination for all lists: articles, authors, tags, requests, pledges, transactions
-- custom error for not found, translate to 404 instead of 500
+- return the ID as comment and create URL on the frontend to link to the respective item
+- transfer from customer to company account, and from company account to all the other authors
+- personal user profile, e.g. take me to my profile page
 
 TODO Pledges:
 - see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
 
 TODO Requests:
 - allow finishing a request and associating it with a new article (during article creation maybe) - DONE, needs a new associating page
-- use the type of request later on (concept of exclusives, profit sharing) - needs to profit share only when set to; for exclusives, needs a flag in the article itself to remove from the list if current user is not an owner already
 - private requests: either a single pledge for a request, request hidden and resulting in a private article 
     - alternatively, mechanism for sharing a private request (via a key?)
 
 TODO Transactions:
-- return the ID as comment and create URL on the frontend to link to the respective item
-- transfer from customer to company account, and from company account to all the other authors
 
 MISC:
+- pagination for all lists: articles, authors, tags, requests, pledges, transactions
 - component for presenting an article in the list of read articles
     - for read articles, show something clickable. Display more information, e.g. acquire date
 - component for editing a feed's properties, authors etc
@@ -143,6 +142,7 @@ DONE:
     - page with "prices" and token amounts
 - new table for user history, preferences etc
 - add reading tokens (under Account) - DONE
+- custom error for not found, translate to 404 instead of 500 - DONE
 
 Author:
 - Buy credits - DONE
@@ -162,3 +162,4 @@ Requests:
 - allow editing a request, only if you're the only pledger - DONE
 - allow accepting a request - DONE
 - properly set the type of request - DONE
+- use the type of request later on (concept of exclusives, profit sharing) - needs to profit share only when set to; for exclusives, needs a flag in the article itself to remove from the list if current user is not an owner already - DONE

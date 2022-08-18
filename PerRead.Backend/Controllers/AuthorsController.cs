@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Services;
 
@@ -22,7 +23,7 @@ namespace PerRead.Backend.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new ArgumentNullException();
+                throw new MalformedDataException("Id cannot be null");
             }
 
             var author = await _authorsService.GetAuthorAsync(id);

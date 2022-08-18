@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
@@ -38,7 +39,7 @@ namespace PerRead.Backend.Services
 
             if (request == null)
             {
-                throw new ArgumentException("Request does not exist");
+                throw new NotFoundException("Request does not exist");
             }
 
             var requester = await _requesterGetter.GetRequester();
@@ -55,13 +56,13 @@ namespace PerRead.Backend.Services
 
             if (pledge == null)
             {
-                throw new ArgumentException("Pledge does not exist");
+                throw new NotFoundException("Pledge does not exist");
             }
 
             var requester = await _requesterGetter.GetRequester();
             if (pledge.Pledger.AuthorId != requester.AuthorId)
             {
-                throw new ArgumentException("You don't own this, and thus cannot delete it");
+                throw new UnauthorizedException("You don't own this, and thus cannot delete it");
             }
 
             await _pledgeRepository.DeletePledge(pledge);
@@ -82,14 +83,14 @@ namespace PerRead.Backend.Services
         {
             if (string.IsNullOrEmpty(pledgeComand.PledgeId))
             {
-                throw new ArgumentException("You need an id to edit an existing pledge");
+                throw new ArgumentNullException("You need an id to edit an existing pledge");
             }
 
             var pledge = await GetPledgeObject(pledgeComand.PledgeId);
 
             if (pledge == null)
             {
-                throw new ArgumentException($"Could not find the targeted pledge {pledgeComand.PledgeId}");
+                throw new NotFoundException($"Could not find the targeted pledge {pledgeComand.PledgeId}");
             }
 
             var initialAmount = pledge.TotalTokenSum;

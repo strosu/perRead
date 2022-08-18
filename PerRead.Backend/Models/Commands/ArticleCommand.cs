@@ -1,4 +1,5 @@
 ﻿using PerRead.Backend.Constants;
+using PerRead.Backend.Helpers.Errors;
 
 namespace PerRead.Backend.Models.Commands
 {
@@ -50,12 +51,12 @@ namespace PerRead.Backend.Models.Commands
 
             if (article.Tags == null || !article.Tags.Any())
             {
-                throw new ArgumentException("Each article requires at least one tag");
+                throw new MalformedDataException("Each article requires at least one tag");
             }
 
             if (article.Content == null || article.Content.Length < BusinessConstants.MinimumArticleContentLength)
             {
-                throw new ArgumentException($"Content must be at least {BusinessConstants.MinimumArticleContentLength}");
+                throw new MalformedDataException($"Content must be at least {BusinessConstants.MinimumArticleContentLength}");
             }
         }
     }

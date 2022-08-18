@@ -24,7 +24,7 @@ namespace PerRead.Backend.Models.Extensions
                 ResultingArticle = request.ResultingArticle?.ToFEArticlePreview(requester),
                 CreatedAt = request.CreatedAt,
                 PledgePreviews = request.Pledges.Select(x => x.ToFEPledgePreview()),
-                EditableByCurrentUser = RequestRules.IsEditable(request, requester),
+                EditableByCurrentUser = request.IsEditableBy(requester),
                 AcceptsNewPledges = RequestRules.AcceptsNewPledges(request)
             };
         }

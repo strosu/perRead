@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Constants;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -62,7 +63,7 @@ namespace PerRead.Backend.Services
 
             if (owner == null)
             {
-                throw new ArgumentException("could not find the user for which to create the feed");
+                throw new NotFoundException("Could not find the user for which to create the feed.");
             }
 
             var feed = await _feedsRepository.CreateNewFeed(owner, feedName);
@@ -78,14 +79,14 @@ namespace PerRead.Backend.Services
 
             if (feed.Owner.AuthorId != requester.AuthorId)
             {
-                throw new ArgumentException("cannot add for someone else lol");
+                throw new UnauthorizedException("Cannot add for someone else lol.");
             }
 
             var section = await _sectionRepository.GetSection(sectionId);
 
             if (section == null)
             {
-                throw new ArgumentException("could not find the section to subscribe to");
+                throw new NotFoundException("Could not find the section to subscribe to.");
             }
 
             await _feedsRepository.AddToFeed(feedId, section);
@@ -123,7 +124,7 @@ namespace PerRead.Backend.Services
 
             if (feed == null)
             {
-                throw new ArgumentException($"Could not find feed with Id {feedId}");
+                throw new NotFoundException($"Could not find feed with Id {feedId}");
             }
 
             return feed.ToFEFeedInfo();
@@ -145,7 +146,7 @@ namespace PerRead.Backend.Services
             // Only the owner can delete a feed
             if (feed.Owner.AuthorId != requester.AuthorId)
             {
-                throw new ArgumentException("You don't own this feed");
+                throw new UnauthorizedException("You don't own this feed");
             }
 
             await _feedsRepository.DeleteFeed(feed);
@@ -197,14 +198,14 @@ namespace PerRead.Backend.Services
 
             if (subscribedFeedIds.Any(x => !userFeeds.Any(feed => feed.FeedId == x)))
             {
-                throw new ArgumentException("one or more feed don't belong to the current user");
+                throw new UnauthorizedException("One or more feed don't belong to the current user");
             }
 
             var section = await _sectionRepository.GetSection(sectionId);
 
             if (section == null)
             {
-                throw new ArgumentException("could not find the section to subscribe to");
+                throw new NotFoundException("Could not find the section to subscribe to");
             }
 
             (var toSubscribe, var toUnsub) = GetList(userFeeds, subscribedFeedIds, section);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.FrontEnd;
 
@@ -71,7 +72,7 @@ namespace PerRead.Backend.Repositories
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException(nameof(name));
+                throw new ArgumentNullException(nameof(name));
             }
 
             return _context.Authors.AsNoTracking()

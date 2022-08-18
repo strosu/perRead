@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models;
 using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Models.Commands;
@@ -42,18 +43,13 @@ namespace PerRead.Backend.Services
             _walletRepository = walletRepository;
         }
 
-        public Task GetCurrentUser()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<JWTModel> Login(ClaimsPrincipal user, string username, string password)
         {
             var userFromDb = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == username);
 
             if (userFromDb is null)
             {
-                throw new ArgumentException("user not found");
+                throw new NotFoundException("User not found.");
             }
 
             var userSigninResult = await _userManager.CheckPasswordAsync(userFromDb, password);
@@ -63,7 +59,7 @@ namespace PerRead.Backend.Services
 
             if (!userSigninResult)
             {
-                throw new ArgumentException("Could not log it");
+                throw new UnauthorizedException("Could not log in, please check the username and password combination provided are correct.");
             }
 
             var token = GenerateJwt(userFromDb, Enumerable.Empty<string>());
@@ -91,7 +87,7 @@ namespace PerRead.Backend.Services
 
             if (!registrationResult.Succeeded)
             {
-                throw new ArgumentException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
+                throw new MalformedDataException($"Could not register. Please see details: {BuildRegisterError(registrationResult)}");
             }
 
             var mainWallet = await _walletRepository.CreateWallet();
@@ -151,8 +147,6 @@ namespace PerRead.Backend.Services
 
     public interface IAuthService
     {
-        Task GetCurrentUser();
-
         Task Register(string username, string password, string email);
 
         Task<JWTModel> Login(ClaimsPrincipal user, string username, string password);

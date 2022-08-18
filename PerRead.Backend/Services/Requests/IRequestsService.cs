@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.BusinessRules;
 using PerRead.Backend.Models.Commands;
@@ -56,7 +57,7 @@ namespace PerRead.Backend.Services
 
             if (targetAuthor == null)
             {
-                throw new ArgumentException("Could not find the target author");
+                throw new NotFoundException("Could not find the target author");
             }
 
             var request = await _requestsRepository.CreateRequest(requester, targetAuthor, requestCommand);
@@ -87,19 +88,19 @@ namespace PerRead.Backend.Services
 
             if (request == null)
             {
-                throw new ArgumentException("Could not find the request");
+                throw new NotFoundException("Could not find the request");
             }
 
             if (request.RequestState != RequestState.Created)
             {
-                throw new ArgumentException("Request has already been accepted.");
+                throw new ConflictException("Request has already been accepted.");
             }
 
             var requester = await _requesterGetter.GetRequester();
 
-            if (!RequestRules.IsEditable(request, requester))
+            if (!request.IsEditableBy(requester))
             {
-                throw new ArgumentException("Request is not editable by the current user.");
+                throw new UnauthorizedException("Request is not editable by the current user.");
             }
 
 
@@ -112,7 +113,7 @@ namespace PerRead.Backend.Services
 
             if (request.RequestState != RequestState.Created)
             {
-                throw new ArgumentException("Request cannot be accepted");
+                throw new ConflictException($"Only requests in the {nameof(RequestState.Created)} state can be accepted.");
             }
 
             await _requestsRepository.UpdateState(request, RequestState.Accepted);
@@ -131,7 +132,7 @@ namespace PerRead.Backend.Services
 
             if (request.RequestState != RequestState.Accepted)
             {
-                throw new ArgumentException("You can only abandon requests that are active and accepted");
+                throw new ConflictException("You can only abandon requests that are active and accepted");
             }
 
             await _requestsRepository.UpdateState(request, RequestState.Cancelled);
@@ -186,7 +187,7 @@ namespace PerRead.Backend.Services
         {
             if (resultingArticle.AuthorsLink.Count != 1)
             {
-                throw new ArgumentException("This should have been validated earlier");
+                throw new ConflictException("This should have been validated earlier");
             }
 
             double percentageForPledgersNormalized = (double)request.PercentForledgers / 100;
@@ -229,14 +230,14 @@ namespace PerRead.Backend.Services
 
             if (request == null)
             {
-                throw new ArgumentException("Could not find the request");
+                throw new NotFoundException("Could not find the request");
             }
 
             var currentUser = await _requesterGetter.GetRequester();
 
             if (request.TargetAuthor != currentUser)
             {
-                throw new ArgumentException("You can only act on requests where you are the target author");
+                throw new UnauthorizedException("You can only act on requests where you are the target author");
             }
 
             return request;
@@ -250,12 +251,12 @@ namespace PerRead.Backend.Services
 
             if (resultingArticle == null)
             {
-                throw new ArgumentException("Invalid article ID");
+                throw new NotFoundException("Invalid article ID");
             }
 
             if (request.RequestState != RequestState.Accepted)
             {
-                throw new ArgumentException("A request can only be accepted if it's state is Created.");
+                throw new ConflictException("A request can only be accepted if it's state is Created.");
             }
 
             var users = resultingArticle.AuthorsLink.Select(x => x.AuthorId).ToList();
@@ -264,7 +265,7 @@ namespace PerRead.Backend.Services
 
             if (users.Count != 1 || users[0] != currentUser.AuthorId)
             {
-                throw new ArgumentException("You need to be the only author of the target article");
+                throw new UnauthorizedException("You need to be the only author of the target article");
             }
 
             return (request, resultingArticle);

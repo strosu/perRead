@@ -10,6 +10,7 @@ using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
+using PerReadPerRead.Backend.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +24,13 @@ builder.Services.AddCors(
 
 // Add services to the container.
 
-builder.Services.AddControllers(
-    options => options.Filters.Add<LogAsyncResourceFilter>()) // Add a global filter to all controllers
-    .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
-;
 
+builder.Services.AddControllers(
+    options => {
+        options.Filters.Add<LogAsyncResourceFilter>();
+        options.Filters.Add<ExceptionFilter>();
+    }) // Add a global filter to all controllers
+    .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

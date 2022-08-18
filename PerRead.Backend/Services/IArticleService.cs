@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerRead.Backend.Helpers;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
@@ -62,7 +63,7 @@ namespace PerRead.Backend.Services
 
             if (author == null)
             {
-                throw new ArgumentException("Only existing users are allowed to create articles");
+                throw new UnauthorizedException("Only existing users are allowed to create articles");
             }
 
             // Ensure the tags are created
@@ -94,7 +95,12 @@ namespace PerRead.Backend.Services
         public async Task<FEArticle?> GetIfVisible(string id)
         {
             var requester = await _requesterGetter.GetRequesterWithArticles();
-            var article = await _articleRepository.GetVisible(id, requester.AuthorId).SingleAsync();
+            var article = await _articleRepository.GetVisible(id, requester.AuthorId).FirstOrDefaultAsync();
+
+            if (article == null)
+            {
+                throw new NotFoundException($"Article id {id} does not exist");
+            }
             return article?.ToFEArticle();
         }
 
@@ -104,7 +110,7 @@ namespace PerRead.Backend.Services
 
             if (article == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(id));
+                throw new NotFoundException($"Article id {id} does not exist");
             }
 
             await _articleRepository.Delete(id);
@@ -146,7 +152,7 @@ namespace PerRead.Backend.Services
 
             if (!article.AuthorsLink.Any(x => x.AuthorId == requester.AuthorId))
             {
-                throw new ArgumentException("You're not an owner");
+                throw new UnauthorizedException("You're not an owner");
             }
 
             return article.ToFEArticleOwnership();
@@ -167,12 +173,12 @@ namespace PerRead.Backend.Services
 
                 if (updated == null)
                 {
-                    throw new ArgumentException($"You removed author {updated.AuthorId} which cannot be edited");
+                    throw new MalformedDataException($"You removed author {updated.AuthorId} which cannot be edited");
                 }
 
                 if (updated.OwnershipPercent != notEditable.OwningPercentage * 100)
                 {
-                    throw new ArgumentException($"You cannot edit user {updated.AuthorId}'s percentage");
+                    throw new MalformedDataException($"You cannot edit user {updated.AuthorId}'s percentage");
                 }
             }
 
@@ -180,7 +186,7 @@ namespace PerRead.Backend.Services
             var reserved = notEditableList.Sum(x => x.OwningPercentage) * 100;
             if (reserved > 100)
             {
-                throw new ArgumentException("Somehow we ended up with more than 100% ownership, better call someone");
+                throw new MalformedDataException("Somehow we ended up with more than 100% ownership, better call someone");
             }
 
             var available = 100 - reserved;
@@ -188,7 +194,7 @@ namespace PerRead.Backend.Services
             var requtedEditableSum = requetedEditable.Sum(x => x.OwnershipPercent);
             if (available != requtedEditableSum)
             {
-                throw new ArgumentException($"There is {available} available, but you requeted {requtedEditableSum}");
+                throw new MalformedDataException($"There is {available} available, but you requeted {requtedEditableSum}");
             }
 
             var authorOwnerships = ownershipCommand.Owners.Select(x => new AuthorOwnership
@@ -206,7 +212,7 @@ namespace PerRead.Backend.Services
         {
             if (command.Owners.GroupBy(x => x.AuthorId).Any(x => x.Count() > 1))
             {
-                throw new ArgumentException("An author can only appear once");
+                throw new MalformedDataException("An author can only appear once");
             }
 
 
@@ -214,7 +220,7 @@ namespace PerRead.Backend.Services
             {
                 if (owner.OwnershipPercent > 100)
                 {
-                    throw new ArgumentException("An ownership percentage cannot exceed 100");
+                    throw new MalformedDataException("An ownership percentage cannot exceed 100");
                 }
             }
 
@@ -227,7 +233,7 @@ namespace PerRead.Backend.Services
             var nonExistingAuthorIds = requestedAuthorIds.Where(x => !existingAuthors.Any(y => x == y.AuthorId));
             if (nonExistingAuthorIds.Any())
             {
-                throw new ArgumentException($"Could not find the following authorIds: {string.Join(' ', nonExistingAuthorIds)}");
+                throw new NotFoundException($"Could not find the following authorIds: {string.Join(' ', nonExistingAuthorIds)}");
             }
 
             return existingAuthors;

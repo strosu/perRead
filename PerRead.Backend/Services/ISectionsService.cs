@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Extensions;
 using PerRead.Backend.Models.FrontEnd;
@@ -46,7 +47,7 @@ namespace PerRead.Backend.Services
 
             if (section == null)
             {
-                throw new ArgumentException("Section does not exist lol");
+                throw new NotFoundException("Section does not exist lol");
             }
 
             var requester = await _requesterGetter.GetRequester();
@@ -54,7 +55,7 @@ namespace PerRead.Backend.Services
 
             if (section.AuthorId != requester.AuthorId)
             {
-                throw new ArgumentException("You're not the owner here");
+                throw new UnauthorizedException("You're not the owner here");
             }
 
             await _sectionRepository.DeleteSection(section);
@@ -66,7 +67,7 @@ namespace PerRead.Backend.Services
 
             if (section == null)
             {
-                throw new ArgumentException("Could not identify the session");
+                throw new NotFoundException("Could not find the session");
             }
 
             var requester = await _requesterGetter.GetRequesterWithArticles();
@@ -99,7 +100,7 @@ namespace PerRead.Backend.Services
 
             if (section.AuthorId != requester.AuthorId)
             {
-                throw new ArgumentException("you don't own this");
+                throw new UnauthorizedException("You don't own this");
             }
 
             var feeds = await _feedRepository.GetUserFeeds(requester).ToListAsync();
