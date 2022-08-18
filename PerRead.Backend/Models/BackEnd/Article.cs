@@ -25,6 +25,8 @@ namespace PerRead.Backend.Models.BackEnd
 
         public ICollection<ArticleOwner> AuthorsLink { get; set; }
 
+        public bool VisibleOnlyToOwners { get; set; }
+
         [NotMapped]
         public IEnumerable<ArticleOwner> PublicAuthors => AuthorsLink.Where(x => x.IsUserFacing);
     }

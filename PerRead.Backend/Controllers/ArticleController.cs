@@ -26,13 +26,13 @@ namespace PerRead.Controllers
         //[Route("")]
         public async Task<IEnumerable<FEArticlePreview>> GetAll()
         {
-            return await _articleService.GetAll();
+            return await _articleService.GetAllVisible();
         }
 
         [HttpGet("articles/{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var article = await _articleService.Get(id);
+            var article = await _articleService.GetIfVisible(id);
 
             if (article == null)
             {
@@ -83,7 +83,7 @@ namespace PerRead.Controllers
         [HttpGet("articles/{id}/owners")]
         public async Task<IActionResult> GetOwners(string id)
         {
-            var article = await _articleService.Get(id);
+            var article = await _articleService.GetIfVisible(id);
 
             if (article == null)
             {

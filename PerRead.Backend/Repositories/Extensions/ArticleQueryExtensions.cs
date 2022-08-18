@@ -28,6 +28,11 @@ namespace PerRead.Backend.Repositories.Extensions
             return query.Include(x => x.AuthorsLink)
                 .ThenInclude(x => x.Author);
         }
+
+        public static IQueryable<Article> IfEligible(this IQueryable<Article> query, string requesterId)
+        {
+            return query.Where(x => !x.VisibleOnlyToOwners || x.AuthorsLink.Select(link => link.AuthorId).Contains(requesterId));
+        }
     }
 }
 

@@ -74,50 +74,64 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Article?> Get(string id)
+        public IQueryable<Article> GetInternal(string id, bool withTracking = false)
         {
-            return await _context.Articles
-                .AsNoTracking()
+            return _context.Articles
+                .WithTrackingIfNeeded(withTracking)
                 .Where(x => x.ArticleId == id)
                 .IncludeOwners()
                 .IncludeTags()
-                .IncludeSections()
-                .SingleOrDefaultAsync();
+                .IncludeSections();
         }
 
-        public IQueryable<Article> GetAll()
+        public IQueryable<Article> GetVisible(string id, string requesterId, bool withTracking = false)
+        {
+            return GetInternal(id, withTracking).IfEligible(requesterId);
+        }
+
+        public IQueryable<Article> GetAllInternal(bool withTracking = false)
         {
             return _context.Articles
-                .AsNoTracking()
+                .WithTrackingIfNeeded(withTracking)
                 .IncludeOwners()
                 .IncludeSections()
                 .IncludeTags();
         }
 
+        public IQueryable<Article> GetAllVisible(string requesterId, bool withTracking = false)
+        {
+            return GetAllInternal(withTracking).IfEligible(requesterId);
+        }
+
         public IQueryable<Article> GetLatestArticles(string authorId)
         {
-            return GetAll().Where(x => x.AuthorsLink.Any(a => a.AuthorId == authorId && a.IsUserFacing))
+            return GetAllInternal().Where(x => x.AuthorsLink.Any(a => a.AuthorId == authorId && a.IsUserFacing))
                 .OrderByDescending(x => x.CreatedAt).Take(20);
         }
 
-        public async Task<Article?> GetSimpleArticle(string id)
+        public IQueryable<Article> GetLatestVisibleArticles(string authorId, string requesterId)
         {
-            return await _context.Articles
-                .AsNoTracking().FirstOrDefaultAsync(x => x.ArticleId == id);
+            return GetAllVisible(requesterId).Where(x => x.AuthorsLink.Any(a => a.AuthorId == authorId && a.IsUserFacing))
+                .OrderByDescending(x => x.CreatedAt).Take(20);
         }
 
-        public async Task<Article?> GetWithOwners(string id, bool withTracking = false)
+        public IQueryable<Article> GetWithOwnersInternal(string id, bool withTracking = false)
         {
-            var query = _context.Articles
-                .Where(x => x.ArticleId == id);
+            return _context.Articles
+                .Where(x => x.ArticleId == id)
+                .WithTrackingIfNeeded(withTracking)
+                .IncludeOwners();
+        }
 
-            if (!withTracking)
-            {
-                query = query.AsNoTracking();
-            }
+        public IQueryable<Article> GetVisibleWithOwners(string id, string requesterId, bool withTracking = false)
+        {
+            return GetWithOwnersInternal(id, withTracking).IfEligible(requesterId);
+        }
 
-            return await query.IncludeOwners()
-                .SingleAsync();
+        public async Task MarkAsOwnersOnly(Article article)
+        {
+            article.VisibleOnlyToOwners = true;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Article> UpdateOwners(Article article, IEnumerable<AuthorOwnership> owners)
@@ -164,17 +178,23 @@ public interface IArticleRepository
     // TODO - extract parameters to something else
     Task<Article> Create(Author author, IEnumerable<Tag> tags, IEnumerable<Section> sections, string articleImagePath, CreateArticleCommand article);
 
-    IQueryable<Article> GetAll();
-
-    Task<Article?> Get(string id);
-
-    Task<Article?> GetWithOwners(string id, bool withTracking = false);
-
     Task Delete(string id);
 
-    Task<Article?> GetSimpleArticle(string id);
-
-    IQueryable<Article> GetLatestArticles(string authorId);
+    Task MarkAsOwnersOnly(Article article);
 
     Task<Article> UpdateOwners(Article article, IEnumerable<AuthorOwnership> owners);
+
+    IQueryable<Article> GetAllInternal(bool withTracking = false);
+    
+    IQueryable<Article> GetAllVisible(string requesterId, bool withTracking = false);
+
+    IQueryable<Article> GetInternal(string id, bool withTracking = false);
+
+    IQueryable<Article> GetVisible(string id, string requesterId, bool withTracking = false);
+
+    IQueryable<Article> GetWithOwnersInternal(string id, bool withTracking = false);
+
+    IQueryable<Article> GetVisibleWithOwners(string id, string requesterId, bool withTracking = false);
+
+    IQueryable<Article> GetLatestVisibleArticles(string authorId, string requesterId);
 }

@@ -149,9 +149,7 @@ namespace PerRead.Backend.Services
             var (request, resultingArticle) = await ValidateRequest(completeRequestCommand);
 
             await _requestsRepository.CompleteRequest(request, resultingArticle);
-
-            var ownerships = await ComputeOwnership(request, resultingArticle);
-            await _articleRepository.UpdateOwners(resultingArticle, ownerships);
+            await PostProcessing(request, resultingArticle);
 
             foreach (var pledge in request.Pledges)
             {
@@ -159,6 +157,29 @@ namespace PerRead.Backend.Services
             }
 
             return request.ToFERequest(request.TargetAuthor);
+        }
+
+        private async Task PostProcessing(ArticleRequest request, Article resultingArticle)
+        {
+            if (request.PostPublishState == RequestPostPublishState.Public)
+            {
+                // If public, nothing to do here. The original author retains all the ownership and the article is visible
+                return;
+            }
+
+            if (request.PostPublishState == RequestPostPublishState.Exclusive)
+            {
+                // Mark the article as exclusive. The rest should be handled via the same route as ProfitShare (which just sets the ownership percentages)
+                await _articleRepository.MarkAsOwnersOnly(resultingArticle);
+            }
+
+            // The ownership needs to be computed for both ProfitShare and Exclusive (we're using a 100% ownership for exclusive)
+            var ownerships = await ComputeOwnership(request, resultingArticle);
+            await _articleRepository.UpdateOwners(resultingArticle, ownerships);
+
+            return;
+
+
         }
 
         private async Task<IEnumerable<AuthorOwnership>> ComputeOwnership(ArticleRequest request, Article resultingArticle)
@@ -225,7 +246,7 @@ namespace PerRead.Backend.Services
         {
             var request = await ValidateUsersMatch(completeRequestCommand.RequestId);
 
-            var resultingArticle = await _articleRepository.GetWithOwners(completeRequestCommand.ResultingArticleId, true);
+            var resultingArticle = await _articleRepository.GetWithOwnersInternal(completeRequestCommand.ResultingArticleId, true).SingleAsync(); // The target article should never be exclusive at this point
 
             if (resultingArticle == null)
             {

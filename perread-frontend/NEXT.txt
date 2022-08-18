@@ -12,15 +12,20 @@ P1 scenarios:
 
 TODO NEXT:
 - pagination for all lists: articles, authors, tags, requests, pledges, transactions
+- custom error for not found, translate to 404 instead of 500
 
 TODO Pledges:
 - see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
 
 TODO Requests:
-- allow finishing a request and associating it with a new article (during article creation maybe)
-- use the type of request later on (concept of exclusives, profit sharing)
+- allow finishing a request and associating it with a new article (during article creation maybe) - DONE, needs a new associating page
+- use the type of request later on (concept of exclusives, profit sharing) - needs to profit share only when set to; for exclusives, needs a flag in the article itself to remove from the list if current user is not an owner already
 - private requests: either a single pledge for a request, request hidden and resulting in a private article 
     - alternatively, mechanism for sharing a private request (via a key?)
+
+TODO Transactions:
+- return the ID as comment and create URL on the frontend to link to the respective item
+- transfer from customer to company account, and from company account to all the other authors
 
 MISC:
 - component for presenting an article in the list of read articles
@@ -89,6 +94,7 @@ Bugs:
 - unlock article UI
 - do not load article if not enough money; show modal with the error in case of bad requests?
 - refactor event bring raised from article-details instead of the service (somehow, maybe via maps. see comments). Alternatively, return a tuple of article, userData, although both messy
+- add event for token change to all other places where a user can spend tokens (so many of them lol)
 
 - add home page
 - present all authors nicely

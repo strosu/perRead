@@ -41,7 +41,7 @@ namespace PerRead.Backend.Repositories
                 Title = requestCommand.Title,
                 Description = requestCommand.Description,
                 Deadline = requestCommand.Deadline,
-                PercentForledgers = requestCommand.PercentForPledgers,
+                PercentForledgers = requestCommand.PostPublishState == RequestPostPublishState.Exclusive ? 100 : requestCommand.PercentForPledgers,
                 PostPublishState = requestCommand.PostPublishState,
                 RequestState = RequestState.Created,
                 Pledges = new List<RequestPledge>(),
@@ -96,7 +96,6 @@ namespace PerRead.Backend.Repositories
 
             return request;
         }
-
 
         public async Task CompleteRequest(ArticleRequest request, Article resultingArticle)
         {

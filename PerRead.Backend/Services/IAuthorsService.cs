@@ -26,7 +26,7 @@ namespace PerRead.Backend.Services
 
             var requester = await _requesterGetter.GetRequesterWithArticles();
 
-            authorWithArticles.LatestArticles = await _articleRepository.GetLatestArticles(authorId).Select(x => x.ToFEArticlePreview(requester)).ToListAsync();
+            authorWithArticles.LatestArticles = await _articleRepository.GetLatestVisibleArticles(authorId, requester.AuthorId).Select(x => x.ToFEArticlePreview(requester)).ToListAsync();
 
             return authorWithArticles;
         }
