@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TransactionPreview } from 'src/app/models/wallet/transaction-preview.model';
 
 @Component({
   selector: 'app-token-withdrawal-comment',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./token-withdrawal-comment.component.css']
 })
 export class TokenWithdrawalCommentComponent implements OnInit {
-
+  @Input()
+  transactionPreview: TransactionPreview = <TransactionPreview>{};
+  
   constructor() { }
 
   ngOnInit(): void {

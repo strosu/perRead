@@ -47,4 +47,8 @@ export class UserService {
   getCurrentUserMainWallet() : Observable<Wallet> {
     return this.httpClient.get<Wallet>(`${Constants.BACKENDURL}/user/wallet`);
   }
+
+  getCurrentUserEscrowWallet() : Observable<Wallet> {
+    return this.httpClient.get<Wallet>(`${Constants.BACKENDURL}/user/escrow`);
+  }
 }

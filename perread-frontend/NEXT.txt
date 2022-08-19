@@ -11,8 +11,6 @@ P1 scenarios:
 - search by author
 
 TODO NEXT:
-- return the ID as comment and create URL on the frontend to link to the respective item
-- transfer from customer to company account, and from company account to all the other authors; needs a persisted ID to track the transaction from one end to the other; maybe make the transactionService's lifecycle to be the request?
 - personal user profile, e.g. take me to my profile page
 - add rating to articles
 - have articles set as draft when created, with an option later on to publish them
@@ -20,6 +18,7 @@ TODO NEXT:
 
 TODO Pledges:
 - see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
+- see all open pledges under the escrow wallet?
 
 TODO Requests:
 - private requests: either a single pledge for a request, request hidden and resulting in a private article 
@@ -160,6 +159,8 @@ Pledges:
 
 TODO Transactions:
 - each token move needs to be logged; users needs to be able to see their list of transactions - DONE
+- transfer from customer to company account, and from company account to all the other authors; needs a persisted ID to track the transaction from one end to the other; maybe make the transactionService's lifecycle to be the request? - DONE
+- return the ID as comment and create URL on the frontend to link to the respective item - DONE!!
 
 Requests:
 - allow editing a request, only if you're the only pledger - DONE

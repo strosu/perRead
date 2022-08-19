@@ -3,11 +3,11 @@ import { UrlHelper } from 'src/app/helpers/url-helper.model';
 import { TransactionPreview } from 'src/app/models/wallet/transaction-preview.model';
 
 @Component({
-  selector: 'app-request-accepted-comment',
-  templateUrl: './request-accepted-comment.component.html',
-  styleUrls: ['./request-accepted-comment.component.css']
+  selector: 'app-request-completed-comment',
+  templateUrl: './request-completed-comment.component.html',
+  styleUrls: ['./request-completed-comment.component.css']
 })
-export class RequestAcceptedCommentComponent implements OnInit {
+export class RequestCompletedCommentComponent implements OnInit {
   @Input()
   transactionPreview: TransactionPreview = <TransactionPreview>{};
   

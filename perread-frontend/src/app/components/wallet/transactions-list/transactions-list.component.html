@@ -94,7 +94,15 @@
             <div class="with-margin">
                 <container-element [ngSwitch]="transaction.transactionType">
                     <app-token-purchase-comment *ngSwitchCase="transactionTypeEnum.TokenPurchase" [transactionPreview]="transaction"></app-token-purchase-comment>
+                    <app-token-withdrawal-comment *ngSwitchCase="transactionTypeEnum.TokenWithdrawal" [transactionPreview]="transaction"></app-token-withdrawal-comment>
                     <app-article-read-comment *ngSwitchCase="transactionTypeEnum.ArticleRead" [transactionPreview]="transaction"></app-article-read-comment>
+                    <app-pledge-created-comment *ngSwitchCase="transactionTypeEnum.PledgeCreated" [transactionPreview]="transaction"></app-pledge-created-comment>
+                    <app-pledge-cancelled-comment *ngSwitchCase="transactionTypeEnum.PledgeCancelled" [transactionPreview]="transaction"></app-pledge-cancelled-comment>
+                    <app-pledge-edited-comment *ngSwitchCase="transactionTypeEnum.PledgeEdited" [transactionPreview]="transaction"></app-pledge-edited-comment>
+                    <app-request-accepted-comment *ngSwitchCase="transactionTypeEnum.RequestAccepted" [transactionPreview]="transaction"></app-request-accepted-comment>
+                    <app-request-completed-comment *ngSwitchCase="transactionTypeEnum.RequestCompleted" [transactionPreview]="transaction"></app-request-completed-comment>
+                    <app-request-cancelled-comment *ngSwitchCase="transactionTypeEnum.RequestCancelled" [transactionPreview]="transaction"></app-request-cancelled-comment>
+                    <app-request-refused-comment *ngSwitchCase="transactionTypeEnum.RequestRefused" [transactionPreview]="transaction"></app-request-refused-comment>
                     <!--default case when there are no matches -->
                     <!-- <some-element *ngSwitchDefault>...</some-element> -->
                   </container-element>

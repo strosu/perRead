@@ -78,7 +78,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ArticleReadCommentComponent } from './components/wallet/transaction-comments/article-read-comment/article-read-comment.component';
 import { PledgeCreatedCommentComponent } from './components/wallet/transaction-comments/pledge-created-comment/pledge-created-comment.component';
-import { RequestCompleteCommentComponent } from './components/wallet/transaction-comments/request-complete-comment/request-complete-comment.component';
 import { RequestAbandonedCommentComponent } from './components/wallet/transaction-comments/request-abandoned-comment/request-abandoned-comment.component';
 import { RequestRefusedCommentComponent } from './components/wallet/transaction-comments/request-refused-comment/request-refused-comment.component';
 import { RequestAcceptedCommentComponent } from './components/wallet/transaction-comments/request-accepted-comment/request-accepted-comment.component';
@@ -86,7 +85,8 @@ import { TokenPurchaseCommentComponent } from './components/wallet/transaction-c
 import { TokenWithdrawalCommentComponent } from './components/wallet/transaction-comments/token-withdrawal-comment/token-withdrawal-comment.component';
 import { PledgeCancelledCommentComponent } from './components/wallet/transaction-comments/pledge-cancelled-comment/pledge-cancelled-comment.component';
 import { PledgeEditedCommentComponent } from './components/wallet/transaction-comments/pledge-edited-comment/pledge-edited-comment.component';
-import { RequestCancelledCommentComponent } from './components/wallet/transaction-comments/request-cancelled-comment/request-cancelled-comment.component'
+import { RequestCancelledCommentComponent } from './components/wallet/transaction-comments/request-cancelled-comment/request-cancelled-comment.component';
+import { RequestCompletedCommentComponent } from './components/wallet/transaction-comments/request-completed-comment/request-completed-comment.component'
 
 @NgModule({
   declarations: [
@@ -147,7 +147,6 @@ import { RequestCancelledCommentComponent } from './components/wallet/transactio
     ArticleOwnersComponent,
     ArticleReadCommentComponent,
     PledgeCreatedCommentComponent,
-    RequestCompleteCommentComponent,
     RequestAbandonedCommentComponent,
     RequestRefusedCommentComponent,
     RequestAcceptedCommentComponent,
@@ -155,7 +154,8 @@ import { RequestCancelledCommentComponent } from './components/wallet/transactio
     TokenWithdrawalCommentComponent,
     PledgeCancelledCommentComponent,
     PledgeEditedCommentComponent,
-    RequestCancelledCommentComponent
+    RequestCancelledCommentComponent,
+    RequestCompletedCommentComponent
   ],
   imports: [
     BrowserModule,

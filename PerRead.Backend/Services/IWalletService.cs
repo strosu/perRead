@@ -31,6 +31,8 @@ namespace PerRead.Backend.Services
         Task<FEWallet> GetWallet(string walletId);
 
         Task<FEWallet> GetCurrentUserMainWallet();
+
+        Task<FEWallet> GetCurrentUserEscrowWallet();
     }
 
     public class WalletService : IWalletService
@@ -118,13 +120,6 @@ namespace PerRead.Backend.Services
             return await _walletRepository.GetWalletQuery(walletId).Select(x => x.ToFEWallet()).FirstOrDefaultAsync();
         }
 
-        public async Task<FEWallet> GetCurrentUserMainWallet()
-        {
-            var curentUser = await _requesterGetter.GetRequester();
-            var wallet = await _walletRepository.GetWalletWithTransactions(curentUser.MainWalletId);
-            return wallet.ToFEWallet();
-        }
-
         public async Task<TransactionResult> TransferArticlePriceToCompany(Author buyer, long amount, string articleId)
         {
             var buyerWallet = await _walletRepository.GetWalletWithTransactions(buyer.MainWalletId);
@@ -141,6 +136,20 @@ namespace PerRead.Backend.Services
             var companyWallet = await _walletRepository.GetWallet(ModelConstants.CompanyWalletId);
 
             return await Transact(companyWallet, ownerWallet, amount, TransactionType.ArticleRead, articleId);
+        }
+
+        public async Task<FEWallet> GetCurrentUserMainWallet()
+        {
+            var curentUser = await _requesterGetter.GetRequester();
+            var wallet = await _walletRepository.GetWalletWithTransactions(curentUser.MainWalletId);
+            return wallet.ToFEWallet();
+        }
+
+        public async Task<FEWallet> GetCurrentUserEscrowWallet()
+        {
+            var curentUser = await _requesterGetter.GetRequester();
+            var wallet = await _walletRepository.GetWalletWithTransactions(curentUser.EscrowWalletId);
+            return wallet.ToFEWallet();
         }
     }
 }

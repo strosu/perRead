@@ -28,13 +28,14 @@ import { SectionPageComponent } from './components/sections/section-page/section
 import { TagDetailsComponent } from './components/tags/tag-details/tag-details.component';
 import { UserPreferencesComponent } from './components/user/user-preferences/user-preferences.component';
 import { UserUnlockedComponent } from './components/user/user-unlocked/user-unlocked.component';
+import { EscrowWalletDetailsComponent } from './components/wallet/escrow-wallet-details/escrow-wallet-details.component';
 import { MainWalletDetailsComponent } from './components/wallet/main-wallet-details/main-wallet-details.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'articles', component: AllArticlesComponent },
-  { path: 'article/:id', component: ArticleDetailsComponent},
-  { path: 'article/:id/owners', component: ArticleOwnersComponent},
+  { path: 'articles/:id', component: ArticleDetailsComponent},
+  { path: 'articles/:id/owners', component: ArticleOwnersComponent},
   { path: 'articles/new', component: AddArticleComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
@@ -60,7 +61,8 @@ const routes: Routes = [
   { path: 'requests/:requestId/pledges/add', component: AddPledgeComponent },
   { path: 'pledges/:id', component: PledgeDetailsComponent },
   { path: 'pledges/:id/edit', component: EditPledgeComponent },
-  { path: 'main-wallet', component: MainWalletDetailsComponent }
+  { path: 'main-wallet', component: MainWalletDetailsComponent },
+  { path: 'escrow-wallet', component: EscrowWalletDetailsComponent },
 ];
 
 @NgModule({

@@ -1,1 +1,17 @@
-<p>escrow-wallet-details works!</p>
+<h1>Your escrow wallet</h1>
+
+<b>
+    Current tokens: {{escrowWallet.tokenAmount}}
+</b>
+
+<div>
+    Incoming transactions:
+</div>
+
+<app-transactions-list [transactionList]="escrowWallet.incomingTransactions"></app-transactions-list>
+
+<div>
+    Outoing transactions: 
+</div>
+
+<app-transactions-list [transactionList]="escrowWallet.outgoingTransactions"></app-transactions-list>

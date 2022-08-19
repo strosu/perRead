@@ -1,6 +1,7 @@
 <div *ngIf="transactionPreview?.isSender;else is_receiver">
-    You unlocked article <a href="{{articleUrl}}">{{transactionPreview.comment}}</a> 
+    <!-- You unlocked article <a href="{{articleUrl}}">{{transactionPreview.comment}}</a>  -->
+    You unlocked article <a [routerLink]="[articleUrl]" routerLinkActive="active">{{transactionPreview.comment}}</a>
 </div>
 <ng-template #is_receiver>
-    Someone read your article <a href="{{articleUrl}}">{{transactionPreview.comment}}</a> 
+    Someone read your article <a [routerLink]="[articleUrl]" routerLinkActive="active">{{transactionPreview.comment}}</a>
 </ng-template>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UrlHelper } from 'src/app/helpers/url-helper.model';
 import { TransactionPreview } from 'src/app/models/wallet/transaction-preview.model';
 
 @Component({
@@ -16,6 +17,6 @@ export class ArticleReadCommentComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.articleUrl = `article/${this.transactionPreview.comment}`
+    this.articleUrl = UrlHelper.getArticleUrl(this.transactionPreview.comment);
   }
 }
