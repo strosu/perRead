@@ -11,8 +11,8 @@ namespace PerRead.Backend.Models.Extensions
             {
                 WalletId = wallet.WalledId,
                 TokenAmount = wallet.TokenAmount,
-                IncomingTransactions = wallet.IncomingTransactions?.OrderByDescending(x => x.TransactionDate).Select(x => x.ToFETransactionPreview()),
-                OutgoingTransactions = wallet.OutgoingTransactions?.OrderByDescending(x => x.TransactionDate).Select(x => x.ToFETransactionPreview())
+                IncomingTransactions = wallet.IncomingTransactions?.OrderByDescending(x => x.TransactionDate).Select(x => x.ToFETransactionPreview(false)),
+                OutgoingTransactions = wallet.OutgoingTransactions?.OrderByDescending(x => x.TransactionDate).Select(x => x.ToFETransactionPreview(true))
             };
         }
 

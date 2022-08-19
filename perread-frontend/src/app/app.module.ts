@@ -75,7 +75,18 @@ import { TransactionsListComponent } from './components/wallet/transactions-list
 import { ArticleOwnersComponent } from './components/article/article-owners/article-owners.component'; 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { ArticleReadCommentComponent } from './components/wallet/transaction-comments/article-read-comment/article-read-comment.component';
+import { PledgeCreatedCommentComponent } from './components/wallet/transaction-comments/pledge-created-comment/pledge-created-comment.component';
+import { RequestCompleteCommentComponent } from './components/wallet/transaction-comments/request-complete-comment/request-complete-comment.component';
+import { RequestAbandonedCommentComponent } from './components/wallet/transaction-comments/request-abandoned-comment/request-abandoned-comment.component';
+import { RequestRefusedCommentComponent } from './components/wallet/transaction-comments/request-refused-comment/request-refused-comment.component';
+import { RequestAcceptedCommentComponent } from './components/wallet/transaction-comments/request-accepted-comment/request-accepted-comment.component';
+import { TokenPurchaseCommentComponent } from './components/wallet/transaction-comments/token-purchase-comment/token-purchase-comment.component';
+import { TokenWithdrawalCommentComponent } from './components/wallet/transaction-comments/token-withdrawal-comment/token-withdrawal-comment.component';
+import { PledgeCancelledCommentComponent } from './components/wallet/transaction-comments/pledge-cancelled-comment/pledge-cancelled-comment.component';
+import { PledgeEditedCommentComponent } from './components/wallet/transaction-comments/pledge-edited-comment/pledge-edited-comment.component';
+import { RequestCancelledCommentComponent } from './components/wallet/transaction-comments/request-cancelled-comment/request-cancelled-comment.component'
 
 @NgModule({
   declarations: [
@@ -133,7 +144,18 @@ import { MatIconModule } from '@angular/material/icon'
     MainWalletDetailsComponent,
     EscrowWalletDetailsComponent,
     TransactionsListComponent,
-    ArticleOwnersComponent
+    ArticleOwnersComponent,
+    ArticleReadCommentComponent,
+    PledgeCreatedCommentComponent,
+    RequestCompleteCommentComponent,
+    RequestAbandonedCommentComponent,
+    RequestRefusedCommentComponent,
+    RequestAcceptedCommentComponent,
+    TokenPurchaseCommentComponent,
+    TokenWithdrawalCommentComponent,
+    PledgeCancelledCommentComponent,
+    PledgeEditedCommentComponent,
+    RequestCancelledCommentComponent
   ],
   imports: [
     BrowserModule,

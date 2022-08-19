@@ -12,20 +12,24 @@ P1 scenarios:
 
 TODO NEXT:
 - return the ID as comment and create URL on the frontend to link to the respective item
-- transfer from customer to company account, and from company account to all the other authors
+- transfer from customer to company account, and from company account to all the other authors; needs a persisted ID to track the transaction from one end to the other; maybe make the transactionService's lifecycle to be the request?
 - personal user profile, e.g. take me to my profile page
+- add rating to articles
+- have articles set as draft when created, with an option later on to publish them
+- UI for editing an article, associating it with a section / - allow editing an article
 
 TODO Pledges:
 - see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
 
 TODO Requests:
-- allow finishing a request and associating it with a new article (during article creation maybe) - DONE, needs a new associating page
 - private requests: either a single pledge for a request, request hidden and resulting in a private article 
     - alternatively, mechanism for sharing a private request (via a key?)
 
 TODO Transactions:
+N/A
 
 MISC:
+- new associate article with request component; have a dropdown of the article candidates
 - pagination for all lists: articles, authors, tags, requests, pledges, transactions
 - component for presenting an article in the list of read articles
     - for read articles, show something clickable. Display more information, e.g. acquire date
@@ -38,15 +42,11 @@ MISC:
     - use initials or similar in case no picture provided
     - display image, description etc in author page
 - on empty feed, add button to redirect to browse all authors
-- add Requests concept; map them to authors, allow users to create new ones and pledge to existing ones
-- add rating to articles
 - add confirmation dialog when the price can be paid but is higher than the threshold; 
 - do not allow navigating to unaffordable articles
 
 TODO Sections:
-- add list of sections when creating an article, require at least one
-- UI for editing an article, associating it with a section
-
+N/A
 
 TODO BACKEND:
 
@@ -143,6 +143,9 @@ DONE:
 - new table for user history, preferences etc
 - add reading tokens (under Account) - DONE
 - custom error for not found, translate to 404 instead of 500 - DONE
+- allow finishing a request and associating it with a new article (during article creation maybe) - DONE
+- add Requests concept; map them to authors, allow users to create new ones and pledge to existing ones - DONE
+- add list of sections when creating an article, require at least one - DONE
 
 Author:
 - Buy credits - DONE

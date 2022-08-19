@@ -6,10 +6,12 @@ namespace PerRead.Backend.Repositories
     public class TransactionRepository : ITransactionRepository
     {
         private readonly AppDbContext _context;
+        private string _transactionTrackingId;
 
         public TransactionRepository(AppDbContext context)
 {
             _context = context;
+            _transactionTrackingId = Guid.NewGuid().ToString();
         }
 
         public async Task<TransactionResult> AddTransaction(Wallet from, Wallet to, long amount, TransactionType type, string? comment = null)
@@ -28,8 +30,9 @@ namespace PerRead.Backend.Repositories
                 DestinationWalletId = to.WalledId,
                 TransactionType = type,
                 TokenAmount = amount,
-                TransactionDate =  DateTime.UtcNow,
-                Comment = comment
+                TransactionDate = DateTime.UtcNow,
+                Comment = comment,
+                TransactionTrackingId = _transactionTrackingId
             };
 
             _context.Transactions.Add(transaction);

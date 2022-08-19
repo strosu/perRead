@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TransactionPreview } from 'src/app/models/wallet/transaction-preview.model';
+import { TransactionPreview, TransactionType } from 'src/app/models/wallet/transaction-preview.model';
 
 @Component({
   selector: 'app-transactions-list',
@@ -12,9 +12,9 @@ export class TransactionsListComponent implements OnInit {
   transactionList: TransactionPreview[] = [];
   
   total: number = 0;
-
   displayedColumns: string[] = ['transaction-id', 'source', 'destination', 'amount', 'type', 'date', 'comment'];
-  
+  transactionTypeEnum: typeof TransactionType = TransactionType;
+
   constructor() {
    }
 

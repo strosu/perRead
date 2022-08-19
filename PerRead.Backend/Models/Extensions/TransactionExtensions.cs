@@ -5,7 +5,7 @@ namespace PerRead.Backend.Models.Extensions
 {
     public static class TransactionExtensions
     {
-        public static FETransaction TOFETransaction(this PaymentTransaction transaction)
+        public static FETransaction ToFETransaction(this PaymentTransaction transaction, bool isSender)
         {
             return new FETransaction()
             {
@@ -17,11 +17,12 @@ namespace PerRead.Backend.Models.Extensions
                 TransactionDate = transaction.TransactionDate,
                 Sender = transaction.SourceWallet.Owner.ToFEAuthorPreview(),
                 Receiver = transaction.DestinationWallet.Owner.ToFEAuthorPreview(),
-                Comment = transaction.Comment
+                Comment = transaction.Comment,
+                IsSender = isSender
             };
         }
 
-        public static FETransactionPreview ToFETransactionPreview(this PaymentTransaction transaction)
+        public static FETransactionPreview ToFETransactionPreview(this PaymentTransaction transaction, bool isSender)
         {
             return new FETransactionPreview
             {
@@ -31,7 +32,8 @@ namespace PerRead.Backend.Models.Extensions
                 TokenAmount = transaction.TokenAmount,
                 TransactionType = transaction.TransactionType,
                 TransactionDate = transaction.TransactionDate,
-                Comment = transaction.Comment
+                Comment = transaction.Comment,
+                IsSender = isSender
             };
         }
     }

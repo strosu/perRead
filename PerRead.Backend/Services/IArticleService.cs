@@ -249,9 +249,18 @@ namespace PerRead.Backend.Services
                 return TransactionResult.Success;
             }
 
-            // TODO - this needs to be a single transaction for the consumer, while still splitting the momey between different authors.
-            // Either transact once from the reader and then split somehow (intermediate company wallet?)
-            // Or do as is, but somehow group the transactions when returning to the user
+            var firstLeg = await _walletService.TransferArticlePriceToCompany(requester, article.Price, article.ArticleId);
+
+            if (firstLeg.Result != PaymentResultEnum.Success)
+            {
+                return firstLeg;
+            }
+
+            return await PayAuthors(article);
+        }
+
+        private async Task<TransactionResult> PayAuthors(Article article)
+        {
             var paymentTasks = new List<Task<TransactionResult>>();
             uint sumToBePaid = 0;
             foreach (var owner in article.AuthorsLink.Where(x => !x.IsPublisher))
@@ -269,14 +278,14 @@ namespace PerRead.Backend.Services
 
                 var uIntAmount = (uint)amount;
                 sumToBePaid += uIntAmount;
-                paymentTasks.Add(_walletService.UnlockArticle(owner.Author, uIntAmount, article.ArticleId));
+                paymentTasks.Add(_walletService.CompanyTransferToAuthor(owner.Author, uIntAmount, article.ArticleId));
             }
 
             // Add the final task, to the original publisher. We do this at the end in order to round up the value
             var publisher = article.AuthorsLink.FirstOrDefault(x => x.IsPublisher);
             if (publisher != null)
             {
-                paymentTasks.Add(_walletService.UnlockArticle(publisher.Author, article.Price - sumToBePaid, article.ArticleId));
+                paymentTasks.Add(_walletService.CompanyTransferToAuthor(publisher.Author, article.Price - sumToBePaid, article.ArticleId));
             }
 
             var listResult = await Task.WhenAll(paymentTasks);

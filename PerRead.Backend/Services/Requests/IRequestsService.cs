@@ -64,8 +64,8 @@ namespace PerRead.Backend.Services
 
             var pledgeCommand = createRequestCommand.PledgeCommand;
 
-            await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
-            await _walletService.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount);
+            var pledge = await _pledgeRepository.CreatePledge(requester, request, pledgeCommand);
+            await _walletService.MoveToEscrow(requester, pledgeCommand.TotalPledgeAmount, pledge.RequestPledgeId);
 
             return await _requestsRepository.GetRequest(request.ArticleRequestId).Select(x => x.ToFERequest(requester)).SingleAsync();
         }

@@ -22,6 +22,8 @@ namespace PerRead.Backend.Models.BackEnd
         public long TokenAmount { get; set; }
 
         public string? Comment { get; set; }
+
+        public string TransactionTrackingId { get; set; }
     }
 
     public enum TransactionType
@@ -35,19 +37,25 @@ namespace PerRead.Backend.Models.BackEnd
         [EnumMember(Value = nameof(ArticleRead))]
         ArticleRead,
 
-        [EnumMember(Value = nameof(MoveToEscrow))]
-        MoveToEscrow,
+        [EnumMember(Value = nameof(PledgeCreated))]
+        PledgeCreated,
 
-        [EnumMember(Value = nameof(MoveFromEscrow))]
-        MoveFromEscrow,
+        [EnumMember(Value = nameof(PledgeCancelled))]
+        PledgeCancelled,
 
-        [EnumMember(Value = nameof(ReleaseInitialPledgeAmount))]
-        ReleaseInitialPledgeAmount,
+        [EnumMember(Value = nameof(PledgeEdited))]
+        PledgeEdited,
 
-        [EnumMember(Value = nameof(ReleaseRemainingPledgeAmount))]
-        ReleaseRemainingPledgeAmount,
+        [EnumMember(Value = nameof(RequestAccepted))]
+        RequestAccepted,
 
-        [EnumMember(Value = nameof(RleaseFromEscrowForCancelled))]
-        RleaseFromEscrowForCancelled
+        [EnumMember(Value = nameof(RequestCompleted))]
+        RequestCompleted,
+
+        [EnumMember(Value = nameof(RequestCancelled))]
+        RequestCancelled,
+
+        [EnumMember(Value = nameof(RequestRefused))]
+        RequestRefused
     }
 }
