@@ -19,5 +19,7 @@
         //public PaymentTransaction? CorrespondingTransaction { get; set; }
 
         //public ArticleReview? Review { get; set; }
+
+        public bool? Recommends { get; set; }
     }
 }

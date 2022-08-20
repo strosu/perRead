@@ -27,6 +27,12 @@ namespace PerRead.Backend.Models.BackEnd
 
         //public ICollection<ArticleReview> Reviews { get; set; }
 
+        public ICollection<ArticleUnlock> Reviews { get; set; }
+
+        public int RecommendsReadingCount { get; set; }
+
+        public int NotRecommendsReadingCount { get; set; }
+
         public bool VisibleOnlyToOwners { get; set; }
 
         //public ArticleRequest SourceRequest { get; set; }

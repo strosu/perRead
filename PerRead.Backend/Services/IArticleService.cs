@@ -25,6 +25,12 @@ namespace PerRead.Backend.Services
         Task<FEArticleOwnership> GetOwnership(string id);
 
         Task<FEArticleOwnership> SetOwnership(string id, UpdateOwnershipCommand ownership);
+
+        Task<Article> Recommend(string id);
+        
+        Task<Article> DoNotRecommend(string id);
+
+        Task<Article> ClearRecommendation(string id);
     }
 
     public class ArticleService : IArticleService
@@ -81,7 +87,7 @@ namespace PerRead.Backend.Services
 
             await _authorRepository.IncrementPublishedArticleCount(author.AuthorId);
 
-            return articleModel.ToFEArticle();
+            return articleModel.ToFEArticle(author);
         }
 
         public async Task<IEnumerable<FEArticlePreview>> GetAllVisible()
@@ -101,7 +107,7 @@ namespace PerRead.Backend.Services
             {
                 throw new NotFoundException($"Article id {id} does not exist");
             }
-            return article?.ToFEArticle();
+            return article?.ToFEArticle(requester);
         }
 
         public async Task Delete(string id)
@@ -298,6 +304,27 @@ namespace PerRead.Backend.Services
             }
 
             return TransactionResult.Success;
+        }
+
+        public async Task<Article> Recommend(string articleId)
+        {
+            return await SetRecommendation(articleId, true);
+        }
+
+        public async Task<Article> DoNotRecommend(string articleId)
+        {
+            return await SetRecommendation(articleId, false);
+        }
+
+        public async Task<Article> ClearRecommendation(string articleId)
+        {
+            return await SetRecommendation(articleId, null);
+        }
+
+        private async Task<Article> SetRecommendation(string articleId, bool? state)
+        {
+            var requester = await _requesterGetter.GetRequester();
+            return await _articleRepository.SetReview(articleId, requester.AuthorId, false);
         }
     }
 }

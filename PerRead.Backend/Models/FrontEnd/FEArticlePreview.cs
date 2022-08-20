@@ -30,6 +30,10 @@ namespace PerRead.Backend.Models.FrontEnd
         public ReadingState ReadingState { get; set; }
 
         public IEnumerable<FESectionPreview> SectionPreviews { get; set; }
+
+        public int RecommendsReadingCount { get; set; }
+
+        public int NotRecommendsReadingCount { get; set; }
     }
 
     public enum ReadingState

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PerRead.Backend.Helpers.Errors;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.Useful;
@@ -178,6 +179,65 @@ namespace PerRead.Backend.Repositories
 
             return article;
         }
+
+        public async Task<Article> SetReview(string articleId, string requesterId, bool? recommends)
+        {
+            var article = await GetVisible(articleId, requesterId, true)
+                .IncludeReviews().SingleAsync();
+
+            if (article == null)
+            {
+                throw new NotFoundException("Could not find the article");
+            }
+
+            var currentRequesterUnlock = article.Reviews.FirstOrDefault(x => x.AuthorId == requesterId);
+
+            if (currentRequesterUnlock == null)
+            {
+                throw new NotFoundException("You havent unlocked this article");
+            }
+
+            var previousValue = currentRequesterUnlock.Recommends;
+            currentRequesterUnlock.Recommends = recommends;
+
+            if (previousValue.HasValue)
+            {
+                // If we had a value previously, make sure to clear it
+                if (previousValue.Value)
+                {
+                    article.RecommendsReadingCount--;
+                }
+                else
+                {
+                    article.NotRecommendsReadingCount--;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+
+            if (recommends == null)
+            {
+                // Nothing, we already cleared
+                return article;
+            }
+
+            if (recommends.Value)
+            {
+                if (recommends.Value)
+                {
+                    article.RecommendsReadingCount++;
+                }
+                else
+                {
+                    article.NotRecommendsReadingCount++;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            return article;
+        }
     }
 }
 
@@ -207,4 +267,7 @@ public interface IArticleRepository
     IQueryable<Article> GetVisibleWithOwners(string id, string requesterId, bool withTracking = false);
 
     IQueryable<Article> GetLatestVisibleArticles(string authorId, string requesterId);
+
+    Task<Article> SetReview(string articleId, string authorId, bool? recommends);
+
 }

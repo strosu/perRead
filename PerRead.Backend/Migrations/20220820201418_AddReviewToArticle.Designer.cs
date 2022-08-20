@@ -11,8 +11,8 @@ using PerRead.Backend.Repositories;
 namespace PerRead.Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220820105145_AddArticleReviews")]
-    partial class AddArticleReviews
+    [Migration("20220820201418_AddReviewToArticle")]
+    partial class AddReviewToArticle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,7 +178,13 @@ namespace PerRead.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("NotRecommendsReadingCount")
+                        .HasColumnType("INTEGER");
+
                     b.Property<uint>("Price")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RecommendsReadingCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -273,31 +279,6 @@ namespace PerRead.Backend.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("PerRead.Backend.Models.BackEnd.ArticleReview", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ArticleId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ArticleUnlockId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Recommends")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("ArticleUnlockId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("PerRead.Backend.Models.BackEnd.ArticleUnlock", b =>
                 {
                     b.Property<string>("Id")
@@ -316,6 +297,9 @@ namespace PerRead.Backend.Migrations
                     b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool?>("Recommends")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -641,29 +625,10 @@ namespace PerRead.Backend.Migrations
                     b.Navigation("TargetAuthor");
                 });
 
-            modelBuilder.Entity("PerRead.Backend.Models.BackEnd.ArticleReview", b =>
-                {
-                    b.HasOne("PerRead.Backend.Models.BackEnd.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PerRead.Backend.Models.BackEnd.ArticleUnlock", "ArticleUnlock")
-                        .WithMany()
-                        .HasForeignKey("ArticleUnlockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("ArticleUnlock");
-                });
-
             modelBuilder.Entity("PerRead.Backend.Models.BackEnd.ArticleUnlock", b =>
                 {
                     b.HasOne("PerRead.Backend.Models.BackEnd.Article", "Article")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -806,6 +771,8 @@ namespace PerRead.Backend.Migrations
             modelBuilder.Entity("PerRead.Backend.Models.BackEnd.Article", b =>
                 {
                     b.Navigation("AuthorsLink");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("Sections");
                 });
