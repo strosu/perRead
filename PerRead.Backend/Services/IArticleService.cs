@@ -128,10 +128,10 @@ namespace PerRead.Backend.Services
                 return TransactionResult.Success;
             }
 
-            if (requester.Owns(article))
+            if (requester.Owns(article, out var buyingTransaction))
             {
                 // If owned (e.g. via a request), mark that it is now read and don't charge anyt
-                await _authorRepository.MarkAsRead(requester, article);
+                await _authorRepository.MarkAsRead(requester, article, buyingTransaction);
                 return TransactionResult.Success;
             }
 
@@ -139,7 +139,7 @@ namespace PerRead.Backend.Services
             
             if (result.Result == PaymentResultEnum.Success)
             {
-                await _authorRepository.MarkAsRead(requester, article);
+                await _authorRepository.MarkAsRead(requester, article, result.Transaction);
             }
 
             return result;

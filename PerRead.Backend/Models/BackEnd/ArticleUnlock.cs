@@ -2,7 +2,7 @@
 {
     public class ArticleUnlock
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public string AuthorId { get; set; }
 
@@ -15,5 +15,9 @@
         public DateTime AquisitionDate { get; set; }
 
         public uint AquisitionPrice { get; set; }
+
+        //public PaymentTransaction? CorrespondingTransaction { get; set; }
+
+        //public ArticleReview? Review { get; set; }
     }
 }

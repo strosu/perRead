@@ -103,14 +103,15 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task MarkAsRead(Author author, Article article)
+        public async Task MarkAsRead(Author author, Article article, PaymentTransaction correspondingTransaction)
         {
             author.UnlockedArticles.Add(new ArticleUnlock
             {
                 AquisitionDate = DateTime.UtcNow,
                 AquisitionPrice = article.Price,
                 ArticleId = article.ArticleId,
-                Author = author
+                Author = author,
+                //CorrespondingTransaction = correspondingTransaction
             });
 
             await _context.SaveChangesAsync();
@@ -126,7 +127,7 @@ namespace PerRead.Backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds)
+        public async Task UpdateReadArticles(string authorId, IEnumerable<string> unlockedIds)
         {
             var author = await _context.Authors
                 .Include(x => x.UnlockedArticles).FirstOrDefaultAsync(x => x.AuthorId == authorId);
@@ -172,13 +173,13 @@ namespace PerRead.Backend.Repositories
 
         IQueryable<Section> GetAuthorSections(string authorId);
 
-        Task MarkAsRead(Author author, Article article);
+        Task MarkAsRead(Author author, Article article, PaymentTransaction correspondingTransaction);
 
         // TODO - rename userSettings object to something else;
         // Should be fine to use it directly, as it's simply a representation of the data from the DB
         Task UpdateSettings(string authorId, FEUserSettings userSettings);
 
-        Task UpdateReadArticles(string authorId, IEnumerable<long> unlockedIds);
+        Task UpdateReadArticles(string authorId, IEnumerable<string> unlockedIds);
 
         Task IncrementPublishedArticleCount(string authorId);
     }

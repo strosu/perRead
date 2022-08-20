@@ -89,7 +89,7 @@ namespace PerRead.Backend.Controllers
         }
 
         [HttpPost("/user/acquired")]
-        public async Task UpdateUnlockedArticles([FromBody] IEnumerable<long> articleInfos)
+        public async Task UpdateUnlockedArticles([FromBody] IEnumerable<string> articleInfos)
         {
             await _userService.UpdateUnlockedArticles(articleInfos);
         }

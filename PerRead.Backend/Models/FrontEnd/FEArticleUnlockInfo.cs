@@ -2,7 +2,7 @@
 {
     public class FEArticleUnlockInfo
     {
-        public long ArticleUnlockId { get; set; }
+        public string ArticleUnlockId { get; set; }
 
         public FEArticlePreview Article { get; set; }
 

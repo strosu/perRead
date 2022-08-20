@@ -27,6 +27,8 @@ namespace PerRead.Backend.Repositories
 
         public DbSet<PaymentTransaction> Transactions { get; set; }
 
+        public DbSet<ArticleReview> Reviews { get; set; }
+
         //public DbSet<ArticleOwner> ArticleOwners { get; set; }
 
         //public DbSet<ArticleTag> ArticleTags { get; set; }
@@ -104,6 +106,18 @@ namespace PerRead.Backend.Repositories
                 .WithMany(t => t.IncomingTransactions)
                 .HasForeignKey(t => t.DestinationWalletId)
                 .HasPrincipalKey(t => t.WalledId);
+
+            //modelBuilder.Entity<ArticleRequest>()
+            //    .HasOne(x => x.ResultingArticle)
+            //    .WithOne(x => x.SourceRequest)
+            //    .HasForeignKey<Article>(x => x.ArticleId)
+            //    .IsRequired(false);
+
+            //modelBuilder.Entity<ArticleReview>()
+            //    .HasOne(x => x.ArticleUnlock)
+            //    .WithOne(x => x.Review)
+            //    .HasForeignKey<ArticleUnlock>(x => x.Id)
+            //    .IsRequired(false);
 
             //modelBuilder.Entity<PaymentTransaction>()
             //    .HasOne(x => x.SourceWallet)

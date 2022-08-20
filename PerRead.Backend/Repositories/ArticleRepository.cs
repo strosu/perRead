@@ -170,6 +170,14 @@ namespace PerRead.Backend.Repositories
             return await _context.Articles
                 .Include(x => x.AuthorsLink).FirstAsync(x => x.ArticleId == article.ArticleId);
         }
+
+        public async Task<Article> UpdateSourceRequest(Article article, ArticleRequest request)
+        {
+            //article.SourceRequest = request;
+            await _context.SaveChangesAsync();
+
+            return article;
+        }
     }
 }
 
@@ -183,6 +191,8 @@ public interface IArticleRepository
     Task MarkAsOwnersOnly(Article article);
 
     Task<Article> UpdateOwners(Article article, IEnumerable<AuthorOwnership> owners);
+
+    Task<Article> UpdateSourceRequest(Article article, ArticleRequest request);
 
     IQueryable<Article> GetAllInternal(bool withTracking = false);
     

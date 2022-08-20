@@ -150,6 +150,8 @@ namespace PerRead.Backend.Services
             var (request, resultingArticle) = await ValidateRequest(completeRequestCommand);
 
             await _requestsRepository.CompleteRequest(request, resultingArticle);
+            await _articleRepository.UpdateSourceRequest(resultingArticle, request);
+
             await PostProcessing(request, resultingArticle);
 
             foreach (var pledge in request.Pledges)

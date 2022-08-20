@@ -40,8 +40,8 @@ export class UserService {
     return this.httpClient.get<ArticleUnlockInfo[]>(`${Constants.BACKENDURL}/user/acquired`);
   }
 
-  updateCurrentUserUnlockedArticles(articles: number[]) : Observable<any> {
-    return this.httpClient.post<number[]>(`${Constants.BACKENDURL}/user/acquired`, articles);
+  updateCurrentUserUnlockedArticles(articles: string[]) : Observable<any> {
+    return this.httpClient.post<string[]>(`${Constants.BACKENDURL}/user/acquired`, articles);
   }
 
   getCurrentUserMainWallet() : Observable<Wallet> {

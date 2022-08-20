@@ -1,20 +1,12 @@
-MVP
+In progress:
+- add rating to articles
 
-P0 scenarios:
-User:
-- register
-- log in
-- allow subscribing to an author; needs feed to author mappings too
-
-P1 scenarios:
-- search by titles
-- search by author
 
 TODO NEXT:
 - personal user profile, e.g. take me to my profile page
-- add rating to articles
 - have articles set as draft when created, with an option later on to publish them
 - UI for editing an article, associating it with a section / - allow editing an article
+- !!!!! different URLs for different tabs
 
 TODO Pledges:
 - see all pledges under user profile - DONE, needs categories (created, in progress, done etc.)
@@ -105,7 +97,17 @@ Image upload for new articles:
 - restrict button to the right on the new article form
 - extract image upload form to separate component, need to use it for authors as well
 
+MVP
 
+P0 scenarios:
+User:
+- register - DONE
+- log in - DONE
+- allow subscribing to an author; needs feed to author mappings too - DONE
+
+P1 scenarios:
+- search by titles
+- search by author
 
 DONE:
 - present all articles nicely - SOMEWHAT
