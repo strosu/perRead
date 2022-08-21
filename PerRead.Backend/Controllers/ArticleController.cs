@@ -4,7 +4,7 @@ using PerRead.Backend.Filters;
 using PerRead.Backend.Models.Commands;
 using PerRead.Backend.Models.FrontEnd;
 using PerRead.Backend.Repositories;
-using PerRead.Backend.Services;
+using PerRead.Backend.Services.Articles;
 
 namespace PerRead.Controllers
 {
@@ -14,10 +14,12 @@ namespace PerRead.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IArticleRecommendService _articleRecommendService;
 
-        public ArticleController(IArticleService articleService)
+        public ArticleController(IArticleService articleService, IArticleRecommendService articleRecommendService)
         {
             _articleService = articleService;
+            _articleRecommendService = articleRecommendService;
         }
 
         [HttpGet("articles")]
@@ -52,11 +54,12 @@ namespace PerRead.Controllers
         }
 
         [HttpPost("articles")]
-        public async Task<IActionResult> Post([FromBody] CreateArticleCommand articleCommand)
+        public async Task<IActionResult> Create([FromBody] CreateArticleCommand articleCommand)
         {
             try
             {
                 var article = await _articleService.Create(articleCommand);
+                await _articleService.UnlockForCurrentUser(article.Id);
                 return Ok(article);
             }
             catch (Exception ex)
@@ -103,15 +106,15 @@ namespace PerRead.Controllers
         [HttpPost("articles/{id}/owners")]
         public async Task<IActionResult> UpdateOwners(string id, [FromBody] UpdateOwnershipCommand ownership)
         {
-            try
-            {
-                var result = await _articleService.SetOwnership(id, ownership);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _articleService.SetOwnership(id, ownership);
+            return Ok(result);
+        }
+
+        [HttpPost("articles/{id}/recommend")]
+        public async Task<IActionResult> Recommend(string id, [FromBody] ArticleRecommendCommand command)
+        {
+            var result = await _articleRecommendService.ApplyRecommendation(id, command);
+            return Ok(result);
         }
     }
 }

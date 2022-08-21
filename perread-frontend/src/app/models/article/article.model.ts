@@ -12,4 +12,7 @@ export class Article {
     tagPreviews?: TagPreview[];
     articleImageUrl: string = '';
     sectionPreviews: SectionPreview[] = [];
+    recommendsReadingCount: number = 0;
+    notRecommendsReadingCount: number = 0;
+    currentUserRecommends: boolean | null = null;
 }

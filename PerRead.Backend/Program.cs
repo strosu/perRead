@@ -10,6 +10,7 @@ using PerRead.Backend.Models.Auth;
 using PerRead.Backend.Models.BackEnd;
 using PerRead.Backend.Repositories;
 using PerRead.Backend.Services;
+using PerRead.Backend.Services.Articles;
 using PerReadPerRead.Backend.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -92,6 +93,7 @@ static void AddServices(WebApplicationBuilder builder)
 
     // Services
     builder.Services.AddScoped<IArticleService, ArticleService>();
+    builder.Services.AddScoped<IArticleRecommendService, ArticleRecommendService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IAuthorsService, AuthorsService>();
     builder.Services.AddScoped<ITagService, TagService>();

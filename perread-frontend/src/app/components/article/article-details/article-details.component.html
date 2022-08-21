@@ -1,7 +1,7 @@
 <div class="image-header mx-auto">
   <img src={{articleImagePath}} class="img-fluid shadow-1-strong rounded" alt="">
 
-  <h2>{{article?.title}}</h2>
+  <h2>{{article.title}}</h2>
   
   <div id="block_container">
     <strong>Authors: </strong>
@@ -20,10 +20,29 @@
   <div id="block_container">
     <label>
       <strong>Price: </strong>
-      {{article?.price}}
+      {{article.price}}
     </label>
   </div>
   
+  <div id="block_container">
+    <label>
+      <strong>Approval rate: </strong>
+      {{article.recommendsReadingCount}} of {{article.recommendsReadingCount + article.notRecommendsReadingCount}}
+      <div *ngIf="article.recommendsReadingCount + article.notRecommendsReadingCount > 0"> ( {{this.approvalRate}} percent)</div>
+    </label>
+  </div>
+
+  <div id="block_container">
+    <label>
+      <strong>Worth reading: </strong>
+      <mat-button-toggle-group multiple [value]="selectedVal" (change)="toggleChange($event)">
+        <mat-button-toggle value="no">No</mat-button-toggle>
+        <mat-button-toggle value="yes">Yes</mat-button-toggle>
+    </mat-button-toggle-group>
+      
+    </label>
+  </div>
+
   <br>
-  <p>{{article?.content}}</p>
+  <p>{{article.content}}</p>
 </div>

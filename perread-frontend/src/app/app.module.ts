@@ -87,6 +87,7 @@ import { PledgeCancelledCommentComponent } from './components/wallet/transaction
 import { PledgeEditedCommentComponent } from './components/wallet/transaction-comments/pledge-edited-comment/pledge-edited-comment.component';
 import { RequestCancelledCommentComponent } from './components/wallet/transaction-comments/request-cancelled-comment/request-cancelled-comment.component';
 import { RequestCompletedCommentComponent } from './components/wallet/transaction-comments/request-completed-comment/request-completed-comment.component'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { RequestCompletedCommentComponent } from './components/wallet/transactio
     MatInputModule,
     MatButtonModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonToggleModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

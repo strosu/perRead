@@ -11,3 +11,9 @@ export class ArticleImage {
     fileName: string = '';
     base64Encoded: string = '';
 }
+
+export enum ArticleRecommendEnum {
+    Clear,
+    Yes,
+    Not
+}

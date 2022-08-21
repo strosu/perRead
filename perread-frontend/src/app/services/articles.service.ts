@@ -4,7 +4,7 @@ import { concat, Observable, switchMap } from 'rxjs';
 import { Constants } from '../constants';
 import { ArticlePreview } from '../models/article/article-preview.model';
 import { Article } from '../models/article/article.model';
-import { ArticleCommand } from '../models/article/article-command.model';
+import { ArticleCommand, ArticleRecommendEnum } from '../models/article/article-command.model';
 import { concatMap } from 'rxjs';
 import { OwnerCollection } from '../models/author/article-ownership.model';
 import { UpdateOwnershipCommand } from '../models/author/owner-description.model';
@@ -58,5 +58,9 @@ export class ArticlesService {
 
   updateOwners(id: string, updateOwnershipCommand: UpdateOwnershipCommand) : Observable<OwnerCollection> {
     return this.httpClient.post<OwnerCollection>(`${this.baseUrl}/${id}/owners`, updateOwnershipCommand);
+  }
+
+  recommend(id: string, recommendCommand: ArticleRecommendEnum) : Observable<Article> {
+    return this.httpClient.post<Article>(`${this.baseUrl}/${id}/recommend`, recommendCommand);
   }
 }

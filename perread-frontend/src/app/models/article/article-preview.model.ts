@@ -3,7 +3,7 @@ import { SectionPreview } from "../section/section-preview.model";
 import { TagPreview } from "../tag/tag-preview.model";
 
 export class ArticlePreview {
-    articleId: number = 0;
+    articleId: string = '';
     authorPreviews: AuthorPreview[] = [];
     tagPreviews: TagPreview[] = [];
 
@@ -14,6 +14,8 @@ export class ArticlePreview {
     articleImageUrl: string = '';
     readingState: string = '';
     sectionPreviews: SectionPreview[] = [];
+    recommendsReadingCount: number = 0;
+    notRecommendsReadingCount: number = 0;
 }
 
 export enum ReadingState {
