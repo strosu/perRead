@@ -107,6 +107,7 @@ namespace PerRead.Backend.Repositories
         {
             author.UnlockedArticles.Add(new ArticleUnlock
             {
+                Id = Guid.NewGuid().ToString(),
                 AquisitionDate = DateTime.UtcNow,
                 AquisitionPrice = article.Price,
                 ArticleId = article.ArticleId,

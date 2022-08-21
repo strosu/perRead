@@ -87,7 +87,7 @@ namespace PerRead.Backend.Repositories
 
         public IQueryable<Article> GetVisible(string id, string requesterId, bool withTracking = false)
         {
-            return GetInternal(id, withTracking).IfEligible(requesterId);
+            return GetInternal(id, withTracking).IfEligible(requesterId).IncludeReviews();
         }
 
         public IQueryable<Article> GetAllInternal(bool withTracking = false)
@@ -224,17 +224,14 @@ namespace PerRead.Backend.Repositories
 
             if (recommends.Value)
             {
-                if (recommends.Value)
-                {
-                    article.RecommendsReadingCount++;
-                }
-                else
-                {
-                    article.NotRecommendsReadingCount++;
-                }
-
-                await _context.SaveChangesAsync();
+                article.RecommendsReadingCount++;
             }
+            else
+            {
+                article.NotRecommendsReadingCount++;
+            }
+
+            await _context.SaveChangesAsync();
 
             return article;
         }

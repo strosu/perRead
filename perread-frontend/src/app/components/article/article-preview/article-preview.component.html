@@ -36,7 +36,7 @@
 
             <p>Price: {{articlePreview.articlePrice}}</p>
 
-            <p>Approval rate: {{articlePreview.recommendsReadingCount}} out of {{articlePreview.recommendsReadingCount + articlePreview.notRecommendsReadingCount}}</p>
+            <app-review-count [article]="articlePreview"></app-review-count>
 
         </mat-card-subtitle>
     </mat-card-title-group>

@@ -1,0 +1,7 @@
+<div *ngIf="totalReviewCount > 0;else is_receiver">
+  <!-- You unlocked article <a href="{{articleUrl}}">{{transactionPreview.comment}}</a>  -->
+  {{article.recommendsReadingCount}} of {{totalReviewCount}} ( {{this.approvalRate}} percent)
+</div>
+<ng-template #is_receiver>
+  No reviews yet, feel free to add one
+</ng-template>

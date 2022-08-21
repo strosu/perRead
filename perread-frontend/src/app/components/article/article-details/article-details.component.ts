@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleRecommendEnum } from 'src/app/models/article/article-command.model';
 import { Article } from 'src/app/models/article/article.model';
@@ -16,7 +15,7 @@ export class ArticleDetailsComponent implements OnInit {
 
   article: Article = <Article>{};
   articleImagePath: string = '';
-  selectedVal: string = '';
+  selectedVal: string[] = [];
 
   totalReviewCount: number = 0;
   approvalRate: number = 0;
@@ -32,24 +31,8 @@ export class ArticleDetailsComponent implements OnInit {
     this.articleService.get(id).subscribe(
       {
         next: data => {
-          console.log(data);
           this.article = data;
-          this.articleImagePath = this.uriService.getStaticFileUri(this.article.articleImageUrl);
-          this.totalReviewCount = this.article.recommendsReadingCount + this.article.notRecommendsReadingCount;
-          if (this.totalReviewCount > 0) {
-            this.approvalRate = this.article.recommendsReadingCount / this.totalReviewCount * 100;
-          }
-
-          if (this.article.currentUserRecommends != null) {
-            if (this.article.currentUserRecommends) {
-              this.selectedVal = "yes";
-            }
-            else {
-              this.selectedVal = "no";
-            }
-          }
-
-          this.articleService.onArticleServed.emit(null);
+          this.articleRefreshed(data);
         },
         error: err => console.log(err)
       }
@@ -59,7 +42,7 @@ export class ArticleDetailsComponent implements OnInit {
 toggleChange(event: MatButtonToggleChange) {
   let toggle = event.source;
   
-  let argument: ArticleRecommendEnum;
+  let argument: ArticleRecommendEnum = ArticleRecommendEnum.Clear;
   
   if (toggle) {
       let group = toggle.buttonToggleGroup;
@@ -73,8 +56,35 @@ toggleChange(event: MatButtonToggleChange) {
           }
       }
   }
-  else {
-    argument = ArticleRecommendEnum.Clear;
+
+  this.articleService.recommend(this.article.id, argument).subscribe({
+    next: data => {
+      console.log(data);
+      this.articleRefreshed(data);
+    },
+    error: err => console.log(err)
+
+  });
+}
+
+articleRefreshed(data: Article) : void {
+  console.log(data);
+  this.article = data;
+  this.articleImagePath = this.uriService.getStaticFileUri(this.article.articleImageUrl);
+  this.totalReviewCount = this.article.recommendsReadingCount + this.article.notRecommendsReadingCount;
+  if (this.totalReviewCount > 0) {
+    this.approvalRate = this.article.recommendsReadingCount / this.totalReviewCount * 100;
   }
+
+  if (this.article.currentUserRecommends != null) {
+    if (this.article.currentUserRecommends) {
+      this.selectedVal = ["yes"];
+    }
+    else {
+      this.selectedVal = ["no"];
+    }
+  }
+
+  this.articleService.onArticleServed.emit(null);
 }
 }

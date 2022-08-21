@@ -23,14 +23,8 @@
       {{article.price}}
     </label>
   </div>
-  
-  <div id="block_container">
-    <label>
-      <strong>Approval rate: </strong>
-      {{article.recommendsReadingCount}} of {{article.recommendsReadingCount + article.notRecommendsReadingCount}}
-      <div *ngIf="article.recommendsReadingCount + article.notRecommendsReadingCount > 0"> ( {{this.approvalRate}} percent)</div>
-    </label>
-  </div>
+
+  <app-review-count [article]="article"></app-review-count>
 
   <div id="block_container">
     <label>

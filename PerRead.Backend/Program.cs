@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PerRead.Backend.Extensions;
 using PerRead.Backend.Filters;
@@ -31,7 +32,11 @@ builder.Services.AddControllers(
         options.Filters.Add<LogAsyncResourceFilter>();
         options.Filters.Add<ExceptionFilter>();
     }) // Add a global filter to all controllers
-    .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
+    .AddNewtonsoftJson(opt =>
+    {
+        opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+        opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

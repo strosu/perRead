@@ -1,16 +1,18 @@
 ﻿using PerRead.Backend.Models.BackEnd;
+using PerRead.Backend.Models.Extensions;
+using PerRead.Backend.Models.FrontEnd;
 
 namespace PerRead.Backend.Services.Articles
 {
     public interface IArticleRecommendService
     {
-        Task<Article> ApplyRecommendation(string id, ArticleRecommendCommand command);
+        Task<FEArticle> ApplyRecommendation(string id, ArticleRecommendCommand command);
 
-        Task<Article> Recommend(string id);
+        Task<FEArticle> Recommend(string id);
 
-        Task<Article> DoNotRecommend(string id);
+        Task<FEArticle> DoNotRecommend(string id);
 
-        Task<Article> ClearRecommendation(string id);
+        Task<FEArticle> ClearRecommendation(string id);
     }
 
     public class ArticleRecommendService : IArticleRecommendService
@@ -24,28 +26,29 @@ namespace PerRead.Backend.Services.Articles
             _articleRepository = articleRepository;
         }
 
-        public async Task<Article> Recommend(string articleId)
+        public async Task<FEArticle> Recommend(string articleId)
         {
             return await SetRecommendation(articleId, true);
         }
 
-        public async Task<Article> DoNotRecommend(string articleId)
+        public async Task<FEArticle> DoNotRecommend(string articleId)
         {
             return await SetRecommendation(articleId, false);
         }
 
-        public async Task<Article> ClearRecommendation(string articleId)
+        public async Task<FEArticle> ClearRecommendation(string articleId)
         {
             return await SetRecommendation(articleId, null);
         }
 
-        private async Task<Article> SetRecommendation(string articleId, bool? state)
+        private async Task<FEArticle> SetRecommendation(string articleId, bool? state)
         {
             var requester = await _requesterGetter.GetRequester();
-            return await _articleRepository.SetReview(articleId, requester.AuthorId, false);
+            var article = await _articleRepository.SetReview(articleId, requester.AuthorId, state);
+            return article.ToFEArticle(requester);
         }
 
-        public async Task<Article> ApplyRecommendation(string id, ArticleRecommendCommand command)
+        public async Task<FEArticle> ApplyRecommendation(string id, ArticleRecommendCommand command)
         {
             switch (command) {
                 case ArticleRecommendCommand.Clear:

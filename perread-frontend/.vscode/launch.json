@@ -18,6 +18,12 @@
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}",
             "runtimeExecutable": "/Users/stefan/Desktop/Google Chrome.app/Contents/MacOS/Google Chrome"
+        },
+        {
+            "name": "Launch firefox",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://localhost:4200"
         }
     ]
 }
